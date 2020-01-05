@@ -28,4 +28,5 @@ public class ExampleCommand extends CommandBase
         this.subsystem = subsystem;
         addRequirements(subsystem);
     }
+
 }
