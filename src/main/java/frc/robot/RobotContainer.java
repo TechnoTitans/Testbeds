@@ -18,6 +18,8 @@ import frc.robot.subsystems.ExampleSubsystem;
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
+ *
+ * This is like the `TechnoTitan` class in previous years.
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
