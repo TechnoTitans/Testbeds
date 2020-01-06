@@ -18,14 +18,18 @@ import frc.robot.subsystems.ExampleSubsystem;
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
- *
- * This is like the `TechnoTitan` class in previous years.
  */
 public class RobotContainer {
+
+	// Declare the robot's components here
+	// see
+
 	// The robot's subsystems and commands are defined here...
 	private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
 	private final ExampleCommand autonomousCommand = new ExampleCommand(exampleSubsystem);
+
+	private OI oi;
 
 
 	/**
@@ -43,7 +47,7 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-
+		oi = new OI();
 	}
 
 
