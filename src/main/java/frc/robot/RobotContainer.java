@@ -10,8 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.motor.TitanSRX;
+import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,9 +29,13 @@ public class RobotContainer {
 	// see
 
 	// The robot's subsystems and commands are defined here...
-	private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-	private final ExampleCommand autonomousCommand = new ExampleCommand(exampleSubsystem);
+	private TitanSRX shootMotor;
+	private TitanSRX zMotor;
+	private TitanSRX hoodMotor;
+	private TitanSRX beltMotor;
+	public static TurretSubsystem turret;
+	private CommandBase autonomousCommand;
 
 	private OI oi;
 
@@ -36,8 +44,15 @@ public class RobotContainer {
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		shootMotor = new TitanSRX(0, false);
+		zMotor = new TitanSRX(0, false);
+		hoodMotor = new TitanSRX(0, false);
+		beltMotor = new TitanSRX(0, false);
+		zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
+		turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor);
 		// Configure the button bindings
 		configureButtonBindings();
+
 	}
 
 	/**
