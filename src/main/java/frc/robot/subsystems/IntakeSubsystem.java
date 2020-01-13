@@ -7,15 +7,40 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PWMTalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
-public class ExampleSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
 	/**
 	 * Creates a new ExampleSubsystem.
 	 */
-	public ExampleSubsystem() {
-		//Hello
+	private TitanSRX intakeMotor;
+
+	private static final double ExpelSpeed = 1;
+	private static final double IntakeSpeed = -1;
+
+	public IntakeSubsystem(TitanSRX intakeMotor) {
+		this.intakeMotor = intakeMotor;
+	}
+
+	public void expel() {
+		intakeMotor.set(ExpelSpeed);
+	}
+
+	public void stop() {
+		intakeMotor.set(0);
+	}
+
+	public void intake() {
+		intakeMotor.set(IntakeSpeed);
+	}
+
+	public void hold() {
+		intakeMotor.set(IntakeSpeed / 4);
+	}
+
+	public void setGrabberMotor(double speed) {
+		intakeMotor.set(speed);
 	}
 
 	/**
