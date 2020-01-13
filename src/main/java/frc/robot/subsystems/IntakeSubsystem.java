@@ -27,19 +27,11 @@ public class IntakeSubsystem extends SubsystemBase {
 		intakeMotor.set(ExpelSpeed);
 	}
 
-	public void stop() {
-		intakeMotor.set(0);
-	}
-
 	public void intake() {
 		intakeMotor.set(IntakeSpeed);
 	}
 
-	public void hold() {
-		intakeMotor.set(IntakeSpeed / 4);
-	}
-
-	public void setGrabberMotor(double speed) {
+	public void setSpeed(double speed) {
 		intakeMotor.set(speed);
 	}
 
