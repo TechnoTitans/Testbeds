@@ -2,34 +2,34 @@ package frc.robot.subsystems;
 
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class NewSubsystem extends Subsystem {
+
+public class ClimbSubsystem extends Subsystem {
 
 // Any variables/fields used in the constructor must appear before the "INSTANCE" variable
 // so that they are initialized before the constructor is called.
 
     /**
-     * The Singleton instance of this NewSubsystem. External classes should
+     * The Singleton instance of this ClimbSubsystem. External classes should
      * use the {@link #getInstance()} method to get the instance.
      */
-    private final static NewSubsystem INSTANCE = new NewSubsystem();
+    private final static ClimbSubsystem INSTANCE = new ClimbSubsystem();
 
     /**
-     * Creates a new instance of this NewSubsystem.
+     * Creates a new instance of this ClimbSubsystem.
      * This constructor is private since this class is a Singleton. External classes
      * should use the {@link #getInstance()} method to get the instance.
      */
-    private NewSubsystem() {
+    private ClimbSubsystem() {
 
     }
 
     /**
-     * Returns the Singleton instance of this NewSubsystem. This static method
-     * should be used -- {@code NewSubsystem.getInstance();} -- by external
+     * Returns the Singleton instance of this ClimbSubsystem. This static method
+     * should be used -- {@code ClimbSubsystem.getInstance();} -- by external
      * classes, rather than the constructor to get the instance of this class.
      */
-    public static NewSubsystem getInstance() {
+    public static ClimbSubsystem getInstance() {
         return INSTANCE;
     }
 
