@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.PWMTalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.motor.TitanSRX;
 
 public class IntakeSubsystem extends SubsystemBase {
 	/**
