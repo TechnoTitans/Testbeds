@@ -1,0 +1,9 @@
+turret subsystem
+
+components: 
+- wheel motor to shoot
+- assuming z is up and down dimension, z axis rotation motor
+- aim up and down motor (hood)
+- belt motor - move belt to get ball to shooter
+- all motor controllers talon
+
