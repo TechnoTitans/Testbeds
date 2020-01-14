@@ -17,4 +17,12 @@ package frc.robot;
  */
 public final class Constants {
 
+    // Left TalonFX
+
+    public static final int Left_Talon_Front = 5, Left_Talon_Back = 6;
+
+    // Right TalonFX
+
+    public static final int Right_Talon_Front = 7, Right_Talon_Back= 8;
+
 }
