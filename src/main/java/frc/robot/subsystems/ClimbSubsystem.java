@@ -12,6 +12,7 @@ public class ClimbSubsystem implements Subsystem {
     Solenoid RightPiston = new Solenoid(2);
     Spark winchMotor = new Spark(8);
 
+
     public void openPistons() {
         LeftPiston.set(true);
         RightPiston.set(true);
@@ -26,10 +27,9 @@ public class ClimbSubsystem implements Subsystem {
         winchMotor.set(-1);
     }
 
-    @Override
-    public void periodic() {
-        LeftPiston.set(false);
-        RightPiston.set(false);
+    public void reversePullUp() {
+        winchMotor.set(1);
     }
+
 }
 
