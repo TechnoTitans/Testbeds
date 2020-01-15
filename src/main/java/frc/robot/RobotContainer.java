@@ -15,6 +15,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 /**
@@ -34,6 +35,8 @@ public class RobotContainer {
 	private TitanSRX zMotor;
 	private TitanSRX hoodMotor;
 	private TitanSRX beltMotor;
+	private TitanSRX intakeMotor;
+	public static IntakeSubsystem intake;
 	public static TurretSubsystem turret;
 	private CommandBase autonomousCommand;
 
@@ -48,8 +51,10 @@ public class RobotContainer {
 		zMotor = new TitanSRX(0, false);
 		hoodMotor = new TitanSRX(0, false);
 		beltMotor = new TitanSRX(0, false);
+		intakeMotor = new TitanSRX(0, false);
 		zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
 		turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor);
+		intake = new IntakeSubsystem(intakeMotor);
 		// Configure the button bindings
 		configureButtonBindings();
 
