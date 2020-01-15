@@ -7,3 +7,9 @@ components:
 - belt motor - move belt to get ball to shooter
 - all motor controllers talon
 
+
+Sensors:
+- Encoder used for z axis rotation motor to determine angle
+- Encoder used on hood motor to find angle of hood
+- Prescence sensor (laser) for belt to check if ball is available, may be harder for mechanical to implement: alternative is encoder
+
