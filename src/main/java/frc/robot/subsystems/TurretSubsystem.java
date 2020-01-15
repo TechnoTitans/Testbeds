@@ -41,41 +41,41 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void setShooter(double speed){
         if (speed > 1){
-            shooter.set(ControlMode.PercentOutput, 1);
+            shooter.set(1);
         } else if (speed < -1){
-            shooter.set(ControlMode.PercentOutput, -1);
+            shooter.set(-1);
         } else {
-            shooter.set(ControlMode.PercentOutput, speed);
+            shooter.set(speed);
         }
     }
 
     public void setZMotor(double speed){
         if (speed > 1){
-            zMotor.set(ControlMode.PercentOutput, 1);
+            zMotor.set(1);
         } else if (speed < -1){
-            zMotor.set(ControlMode.PercentOutput, -1);
+            zMotor.set(-1);
         } else {
-            zMotor.set(ControlMode.PercentOutput, speed);
+            zMotor.set(speed);
         }
     }
 
     public void setHood(double speed){
         if (speed > 1){
-            hood.set(ControlMode.PercentOutput, 1);
+            hood.set(1);
         } else if (speed < -1){
-            hood.set(ControlMode.PercentOutput, -1);
+            hood.set(-1);
         } else {
-            hood.set(ControlMode.PercentOutput, speed);
+            hood.set(speed);
         }
     }
 
     public void setBelt(double speed){
         if (speed > 1){
-            belt.set(ControlMode.PercentOutput, 1);
+            belt.set(1);
         } else if (speed < -1){
-            belt.set(ControlMode.PercentOutput, -1);
+            belt.set(-1);
         } else {
-            belt.set(ControlMode.PercentOutput, speed);
+            belt.set(speed);
         }
     }
 
