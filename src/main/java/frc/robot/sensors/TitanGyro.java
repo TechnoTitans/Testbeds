@@ -45,14 +45,6 @@ public class TitanGyro implements Gyro {
         return m_internalGyro.getRate();
     }
 
-    @Override
-    public void free() {
-        try {
-            m_internalGyro.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void close() throws Exception {

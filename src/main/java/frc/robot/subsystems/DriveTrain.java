@@ -1,56 +1,50 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Sendable;
+
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.robot.sensors.TitanGyro;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.motors.Encoder;
+import frc.robot.motors.TitanFX;
 
-import java.util.HashMap;
-import java.util.Map;
+public abstract class DriveTrain implements Subsystem {
 
-public class DriveTrain {
+	public abstract void set(double speed);
+	
+	public abstract void set(double leftSpeed, double rightSpeed);
 
-    private TalonFX left;
-    private TalonFX right;
-    private Gyro gyro;
+	public abstract void stop();
 
-    public DriveTrain(TalonFX leftFTalonFX, TalonFX rightFTalonFX) {
-        this(leftFTalonFX, rightFTalonFX, new TitanGyro(new AnalogGyro(12)));
-    }
+	public abstract void coast();
 
-    public DriveTrain(TalonFX leftFTalonFX, TalonFX rightFTalonFX, Gyro gyro) {
-        this.left = leftFTalonFX;
-        this.right = rightFTalonFX;
-    }
+	public abstract void resetEncoders();
 
-    public void set(double speed) {
-        left.set(speed);
-        right.set(speed);
-    }
+	public abstract Encoder getLeftEncoder();
 
-    private static final Map<Object, LiveWindow.Component> components = new HashMap<>();
-    private boolean m_channelAllocated;
+	public abstract Encoder getRightEncoder();
 
-    public AnalogGyro(int channel) {
-        this(new AnalogInput(channel));
-        m_channelAllocated = true;
-        addChild(m_analog);
-    }
+	public abstract TitanFX getLeft();
 
-    public static synchronized void addChild(Sendable parent, Object child) {
-        LiveWindow.Component component = components.get(child);
-        if (component == null) {
-            component = new LiveWindow.Component(null, parent);
-            components.put(child, component);
-        } else {
-            component.m_parent = parent;
-        }
-        component.m_telemetryEnabled = false;
-    }
+	public abstract TitanFX getRight();
+
+	public abstract Gyro getGyro();
+
+	/**
+	 * @param right
+	 *            True if should turn right (clockwise), false if left
+	 * @param speed
+	 *            Speed of motors
+	 */
+	public abstract void turnInPlace(boolean right, double speed);
+
+	public abstract void setLeft(double speed);
+
+	public abstract void setRight(double speed);
+	
+	public abstract double[] getSpeed();
+	
+	public abstract void enableBrownoutProtection();
+	
+	public abstract void disableBrownoutProtection();
 
 
 }
-
