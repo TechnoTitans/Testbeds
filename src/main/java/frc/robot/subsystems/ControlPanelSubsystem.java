@@ -72,9 +72,9 @@ public class ControlPanelSubsystem extends SubsystemBase {
         return colorString;
     }
 
-    public ColorSensorV3.RawColor testColor(){
-        Data rawColor = (Data) colorSensor.getRawColor();
-        SmartDashboard.putData("data", (Sendable) rawColor);
+    public ColorSensorV3.RawColor getColor(){
+        ColorSensorV3.RawColor rawColor = colorSensor.getRawColor();
+
         return colorSensor.getRawColor();
     }
 
