@@ -2,11 +2,11 @@ package frc.robot.subsystems;
 
 
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motors.Encoder;
 import frc.robot.motors.TitanFX;
 
-public abstract class DriveTrain implements Subsystem {
+public abstract class DriveTrain extends SubsystemBase {
 
 	public abstract void set(double speed);
 	

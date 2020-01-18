@@ -13,7 +13,7 @@ import frc.robot.subsystems.TankDrive;
 /**
  * An example command that uses an example subsystem.
  */
-public class ExampleCommand extends CommandBase {
+public class DriveTrainCommand extends CommandBase {
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "FieldCanBeLocal"})
 	private final TankDrive subsystem;
 
@@ -22,7 +22,7 @@ public class ExampleCommand extends CommandBase {
 	 *
 	 * @param subsystem The subsystem used by this command.
 	 */
-	public ExampleCommand(TankDrive subsystem) {
+	public DriveTrainCommand(TankDrive subsystem) {
 		this.subsystem = subsystem;
 		addRequirements(subsystem);
 	}
