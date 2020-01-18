@@ -1,0 +1,4 @@
+Components:
+    - color sensor
+    - wheel to spin color sensor
+Control panel is on top of the hood of turret.
