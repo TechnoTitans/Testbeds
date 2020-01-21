@@ -1,36 +1,36 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 
-public class RotateHood extends CommandBase {
+public class ShootBall extends CommandBase {
     private double speed;
-    private double angle;
-    public RotateHood(double speed, double angle) {
-        this.speed = speed;
-        this.angle = angle;
+    private Timer timer = new Timer();
+    public ShootBall(double speed) {
         addRequirements(RobotContainer.turret);
+        this.speed = speed;
     }
 
     @Override
     public void initialize() {
-
+        timer.reset();
     }
 
     @Override
     public void execute() {
-        RobotContainer.turret.setHood(speed);
+        RobotContainer.turret.setShooter(speed);
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return RobotContainer.turret.getHoodEncoder().getDistance() > angle; // calculations here
+        return timer.get() >= 3000; //change later
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.turret.setHood(0);
+        RobotContainer.turret.setShooter(0);
     }
 }

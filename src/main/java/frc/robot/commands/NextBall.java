@@ -4,13 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 
-public class RotateHood extends CommandBase {
+public class NextBall extends CommandBase {
     private double speed;
-    private double angle;
-    public RotateHood(double speed, double angle) {
+    public NextBall(double speed) {
         this.speed = speed;
-        this.angle = angle;
-        addRequirements(RobotContainer.turret);
     }
 
     @Override
@@ -20,17 +17,18 @@ public class RotateHood extends CommandBase {
 
     @Override
     public void execute() {
-        RobotContainer.turret.setHood(speed);
+        RobotContainer.turret.setBelt(speed);
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return RobotContainer.turret.getHoodEncoder().getDistance() > angle; // calculations here
+        // when sensor detects ball
+        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.turret.setHood(0);
+        RobotContainer.turret.setBelt(0);
     }
 }
