@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,6 +37,7 @@ public class RobotContainer {
 	private TitanSRX beltMotor;
 	public static TurretSubsystem turret;
 	private CommandBase autonomousCommand;
+	private DigitalInput beltLimitSwitch;
 
 	private OI oi;
 
@@ -48,8 +50,9 @@ public class RobotContainer {
 		zMotor = new TitanSRX(0, false);
 		hoodMotor = new TitanSRX(0, false);
 		beltMotor = new TitanSRX(0, false);
+		beltLimitSwitch = new DigitalInput(0);
 		zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
-		turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor);
+		turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
 		// Configure the button bindings
 		configureButtonBindings();
 

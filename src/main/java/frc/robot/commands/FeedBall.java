@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 
-public class NextBall extends CommandBase {
+public class FeedBall extends CommandBase {
     private double speed;
-    public NextBall(double speed) {
+    public FeedBall(double speed) {
         this.speed = speed;
     }
 
@@ -24,7 +24,7 @@ public class NextBall extends CommandBase {
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
         // when sensor detects ball
-        return false;
+        return RobotContainer.turret.getBeltLimitSwitch().get();
     }
 
     @Override

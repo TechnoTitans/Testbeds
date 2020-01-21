@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -31,7 +32,8 @@ public class TurretSubsystem extends SubsystemBase{
      */
     private TitanSRX shooter, zMotor, hood, belt;
     private PIDController zMotorPID, hoodPID;
-    public TurretSubsystem(TitanSRX shooter, TitanSRX zMotor, TitanSRX hood, TitanSRX belt) {
+    private DigitalInput beltLimitSwitch;
+    public TurretSubsystem(TitanSRX shooter, TitanSRX zMotor, TitanSRX hood, TitanSRX belt, DigitalInput beltLimitSwitch) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
@@ -40,6 +42,7 @@ public class TurretSubsystem extends SubsystemBase{
         this.zMotor = zMotor;
         this.hood = hood;
         this.belt = belt;
+        this.beltLimitSwitch = beltLimitSwitch;
         zMotorPID = new PIDController(0, 0, 0);
         hoodPID = new PIDController(0, 0, 0);
     }
@@ -70,6 +73,9 @@ public class TurretSubsystem extends SubsystemBase{
     }
     public PIDController getHoodPID(){
         return hoodPID;
+    }
+    public DigitalInput getBeltLimitSwitch(){
+        return beltLimitSwitch;
     }
 
 
