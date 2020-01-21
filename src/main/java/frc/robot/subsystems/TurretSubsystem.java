@@ -29,10 +29,8 @@ public class TurretSubsystem extends SubsystemBase{
      * This constructor is private since this class is a Singleton. External classes
      * should use the {@link #getInstance()} method to get the instance.
      */
-    private final static double P = 0;
-    private final static double I = 0;
-    private final static double D = 0;
     private TitanSRX shooter, zMotor, hood, belt;
+    private PIDController zMotorPID, hoodPID;
     public TurretSubsystem(TitanSRX shooter, TitanSRX zMotor, TitanSRX hood, TitanSRX belt) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
@@ -42,8 +40,9 @@ public class TurretSubsystem extends SubsystemBase{
         this.zMotor = zMotor;
         this.hood = hood;
         this.belt = belt;
+        zMotorPID = new PIDController(0, 0, 0);
+        hoodPID = new PIDController(0, 0, 0);
     }
-
     public void setShooter(double speed){
         shooter.set(speed);
     }
@@ -66,6 +65,13 @@ public class TurretSubsystem extends SubsystemBase{
     public Encoder getHoodEncoder(){
         return hood.getEncoder();
     }
+    public PIDController getZMotorPID(){
+        return zMotorPID;
+    }
+    public PIDController getHoodPID(){
+        return hoodPID;
+    }
+
 
     /**
      * Returns the Singleton instance of this TurretSubsystem. This static method

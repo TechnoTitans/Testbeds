@@ -9,24 +9,24 @@ public class RotateHood extends CommandBase {
     private double angle;
     public RotateHood(double speed, double angle) {
         this.speed = speed;
-        this.angle = angle;
+        this.angle = angle; // calculations here to convert angle into encoders
         addRequirements(RobotContainer.turret);
     }
 
     @Override
     public void initialize() {
-
+        RobotContainer.turret.getHoodPID().setSetpoint(angle);
     }
 
     @Override
     public void execute() {
-        RobotContainer.turret.setHood(speed);
+        RobotContainer.turret.setHood(RobotContainer.turret.getHoodPID().calculate(RobotContainer.turret.getHoodEncoder().getDistance()));
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return RobotContainer.turret.getHoodEncoder().getDistance() > angle; // calculations here
+        return RobotContainer.turret.getHoodPID().atSetpoint();
     }
 
     @Override
