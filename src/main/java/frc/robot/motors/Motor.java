@@ -1,13 +1,13 @@
-package frc.robot.motor;
+package frc.robot.motors;
 
-import frc.robot.sensors.Encoder;
+
 
 public interface Motor {
 
-	void set(double speed);
+	static void set(double speed);
 
 	double getPercentSpeed();
-	
+
 	double getSpeed();
 
 	void stop();
@@ -26,5 +26,5 @@ public interface Motor {
 
 	boolean isReversed();
 
-    double getCurrent();
+	double getCurrent();
 }

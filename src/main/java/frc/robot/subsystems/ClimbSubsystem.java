@@ -3,41 +3,41 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.motor.TalonSRX;
+import frc.robot.motors.Motor;
+import frc.robot.motors.TalonSRX;
+import frc.robot.motors.TitanFX;
 
 
 public class ClimbSubsystem implements Subsystem {
 
-    private TalonSRX Motor;
-    Solenoid LeftPiston = new Solenoid(1);
-    Solenoid RightPiston = new Solenoid(2);
+    TitanFX motor = new TitanFX(8);
+    Solenoid leftPiston = new Solenoid(1);
+    Solenoid rightPiston = new Solenoid(2);
 
-    public void robotInit() {
-        LeftPiston.close();
-        RightPiston.close();
-        Motor.stop();
-    }
 
-    public ClimbSubsystem(TalonSRX pullUpMotor){
-        this.Motor = pullUpMotor;
+
+    public boolean isPistonOpen = false;
+
+    public ClimbSubsystem(TitanFX pullUpMotor){
+        this.motor = pullUpMotor;
     }
 
     public void pullUp() {
-        Motor.set(1);
-    }
-
-    public void reversePullUp() {
-        Motor.set(-1);
+        motor.set(1);
     }
 
     public void openPistons() {
-        LeftPiston.set(true);
-        RightPiston.set(true);
+        leftPiston.set(true);
+        rightPiston.set(true);
+        isPistonOpen = true;
     }
 
     public void closePistons() {
-        LeftPiston.set(false);
-        RightPiston.set(false);
+        leftPiston.set(false);
+        rightPiston.set(false);
+        isPistonOpen = false;
     }
+
+
 }
 
