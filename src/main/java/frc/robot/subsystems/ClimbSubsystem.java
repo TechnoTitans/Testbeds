@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.motors.Motor;
-import frc.robot.motors.TalonSRX;
 import frc.robot.motors.TitanFX;
 
 

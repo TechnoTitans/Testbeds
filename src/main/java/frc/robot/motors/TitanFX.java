@@ -1,5 +1,6 @@
 package frc.robot.motors;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -27,10 +28,8 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
      *
      * @param channel
      *            The port where the TalonFX is plugged in.
-     * @param reversed
-     *            If the TalonFX should invert the signal.
      */
-    public TitanFX(int channel, boolean reversed) {
+    public TitanFX(int channel) {
         super(channel);
         super.setInverted(reversed);
     }
@@ -50,10 +49,6 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
         super.setInverted(reversed);
 
         this.encoder = encoder;
-    }
-
-    public TitanFX(int i) {
-
     }
 
     /**
