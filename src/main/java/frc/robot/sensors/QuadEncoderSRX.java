@@ -2,26 +2,27 @@ package frc.robot.sensors;
 
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.motors.Encoder;
 import frc.robot.motors.Motor;
-import frc.robot.motors.TitanFX;
+import frc.robot.motors.TitanSRX;
 
 /**
  * Encoder class. Used to measure how far the robot traveled
  */
 
-public class QuadEncoder implements Encoder {
+public class QuadEncoderSRX implements Encoder {
 
-	private TitanFX talonFX;
+	private TitanSRX talonSRX;
 	public static final double PULSES_PER_ROTATION = 4096;
 	private double inchesPerPulse; // configure
 	
-	public QuadEncoder(TitanFX talonFX, double inchesPerPulse, boolean reversed) {
-		this.talonFX = talonFX;
+	public QuadEncoderSRX(TitanSRX TitanSRX, double inchesPerPulse, boolean reversed) {
+		this.talonSRX = TitanSRX;
 		this.inchesPerPulse = inchesPerPulse;
 		// this.talonSRX.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		this.talonFX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		talonFX.setSensorPhase(reversed);
+		this.talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		TitanSRX.setSensorPhase(reversed);
 	}
 
 	/**
@@ -31,7 +32,7 @@ public class QuadEncoder implements Encoder {
 	 */
 	@Override
 	public double getDistance() {
-		return talonFX.getSelectedSensorPosition(0) * inchesPerPulse;
+		return talonSRX.getSelectedSensorPosition(0) * inchesPerPulse;
 	}
 
 	/**
@@ -43,31 +44,31 @@ public class QuadEncoder implements Encoder {
 	// 4096 encoder counts * 100 milliseconds
 	@Override
 	public double getSpeed() {
-		return (talonFX.getSelectedSensorVelocity(0) * 60) / (PULSES_PER_ROTATION * 0.1);
+		return (talonSRX.getSelectedSensorVelocity(0) * 60) / (PULSES_PER_ROTATION * 0.1);
 	}
 
 	@Override
 	public double getSpeedInches() {
-		return talonFX.getSelectedSensorVelocity(0) * 10 * inchesPerPulse;
+		return TitanSRX.getSelectedSensorVelocity(0) * 10 * inchesPerPulse;
 	}
 
 	@Override
 	public void reset() {
-		talonFX.setSelectedSensorPosition(0, 0, 0);
+		talonSRX.setSelectedSensorPosition(0, 0, 0);
 	}
 
 	@Override
 	public void resetToRaw(int position) {
-		talonFX.setSelectedSensorPosition(position, 0, 0);
+		talonSRX.setSelectedSensorPosition(position, 0, 0);
 	}
 
 	@Override
 	public void resetTo(double position) {
-		talonFX.setSelectedSensorPosition((int) (position / inchesPerPulse), 0, 0);
+		talonSRX.setSelectedSensorPosition((int) (position / inchesPerPulse), 0, 0);
 	}
 
 	public double getRawPosition() {
-		return talonFX.getSelectedSensorPosition(0);
+		return talonSRX.getSelectedSensorPosition(0);
 	}
 
 	@Override
@@ -76,6 +77,6 @@ public class QuadEncoder implements Encoder {
 	}
 
 	public Motor getTalon() {
-		return talonFX;
+		return talonSRX;
 	}
 }

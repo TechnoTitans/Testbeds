@@ -59,10 +59,11 @@ public class OI {
 		btnClimbDown = new Btn(left, 12);
 		btnCellIntake = new Btn(left, 6);
 		btnCellOuttake = new Btn(left, 7);
-		btnPanelArmExtend = new Btn(left, 8);
-		btnPanelArmRetract = new Btn(left, 9);
-		btnPanelSpin = new Btn(left, 10);
-		btnTarget = new Btn(left, 11);
+		btnPanelArmExtend = new Btn(right, 8);
+		btnPanelArmRetract = new Btn(right, 9);
+		btnPanelSpin = new Btn(right, 10);
+		btnTarget = new Btn(right, 11);
+		btnShoot = new Btn(right, 12);
 	}
 
 
