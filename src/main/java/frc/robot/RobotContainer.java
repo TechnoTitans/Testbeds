@@ -9,18 +9,17 @@ package frc.robot;
 
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.DriveTrainCommand;
 import frc.robot.motor.TitanSRX;
+import frc.robot.motors.TitanFX;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.commands.DriveTrainCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.TankDrive;
+import frc.robot.subsystems.TurretSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -44,9 +43,11 @@ public class RobotContainer {
     public static TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
     private CommandBase autonomousCommand;
-
+    private TitanFX leftFrontMotorFX;
+    private TitanFX leftBackMotorFX;
+    private TitanFX rightFrontMotorFX;
+    private TitanFX rightBackMotorFX;
     private DriveTrain driveTrain;
-	private DriveTrainCommand autonomousCommand;
 
 
     private OI oi;
@@ -56,6 +57,7 @@ public class RobotContainer {
      * The container for the robot.  Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+
         shootMotor = new TitanSRX(0, false);
         zMotor = new TitanSRX(0, false);
         hoodMotor = new TitanSRX(0, false);
@@ -63,10 +65,16 @@ public class RobotContainer {
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
         turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor);
         spinningMotor = new TitanSRX(0, false);
-        colorSensor = new ColorSensorV3(Constants.COLOR_SENSOR_PORT);
+        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
-        
-    	driveTrain = new TankDrive();
+
+        leftFrontMotorFX = new TitanFX(0, false);
+        leftBackMotorFX = new TitanFX(0, false);
+        rightFrontMotorFX = new TitanFX(0, false);
+        rightBackMotorFX = new TitanFX(0, false);
+        leftBackMotorFX.follow(leftFrontMotorFX);
+        rightBackMotorFX.follow(rightFrontMotorFX);
+    	driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
         autonomousCommand = new DriveTrainCommand(driveTrain);
         // Configure the button bindings
         configureButtonBindings();

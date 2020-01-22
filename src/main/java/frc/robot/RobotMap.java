@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.I2C;
  * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class RobotMap {
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
     public static final int LEFT_SOLENOID = 1;
