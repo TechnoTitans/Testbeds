@@ -4,7 +4,7 @@ package frc.robot.motors;
 
 public interface Motor {
 
-	static void set(double speed);
+	void set(double speed);
 
 	double getPercentSpeed();
 

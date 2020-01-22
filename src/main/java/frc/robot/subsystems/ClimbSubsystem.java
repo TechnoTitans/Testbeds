@@ -9,7 +9,7 @@ import frc.robot.motors.TitanFX;
 
 public class ClimbSubsystem implements Subsystem {
 
-    TitanFX motor = new TitanFX(8);
+    TitanFX motor = new TitanFX(8, false);
     Solenoid leftPiston = new Solenoid(1);
     Solenoid rightPiston = new Solenoid(2);
 

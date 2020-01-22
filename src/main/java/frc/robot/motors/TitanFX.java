@@ -29,7 +29,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
      * @param channel
      *            The port where the TalonFX is plugged in.
      */
-    public TitanFX(int channel) {
+    public TitanFX(int channel, boolean reversed) {
         super(channel);
         super.setInverted(reversed);
     }
