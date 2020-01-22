@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveTrainCommand;
+import frc.robot.motors.TitanFX;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.TankDrive;
 
@@ -20,9 +21,14 @@ import frc.robot.subsystems.TankDrive;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+
 public class RobotContainer {
 
 	// Declare the robot's components here
+	private TitanFX leftFrontMotor;
+	private TitanFX leftBackMotor;
+	private TitanFX rightFrontMotor;
+	private TitanFX rightBackMotor;
 	// see
 
 	// The robot's subsystems and commands are defined here...
@@ -37,6 +43,10 @@ public class RobotContainer {
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		leftFrontMotor = new TitanFX(0, false);
+		leftBackMotor = new TitanFX(0, false);
+		rightFrontMotor = new TitanFX(0, false);
+		rightBackMotor = new TitanFX(0, false);
 		// Configure the button bindings
 		configureButtonBindings();
 	}
