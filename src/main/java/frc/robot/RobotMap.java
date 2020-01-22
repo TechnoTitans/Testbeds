@@ -25,6 +25,15 @@ public final class Constants {
 
     public static final int WINCH_MOTOR = 8;
 
-    public static final int Left_Talon_Front = 10, Left_Talon_Back = 11;
-    public static final int RIGHT_TALON_FRONT = 20, RIGHT_TALON_BACK = 21;
+    // Left TalonFX
+
+    public static final int LEFT_TALON_FRONT = 5, LEFT_TALON_BACK = 6;
+
+    // Right TalonFX
+
+    public static final int RIGHT_TALON_FRONT = 7, Right_Talon_BACK = 8;
+
+    public static final int LEFT_JOYSTICK = 0;
+    public static final int RIGHT_JOYSTICK = 1;
+    public static final int AUX_JOYSTICK_1 = 2;
 }

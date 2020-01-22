@@ -17,10 +17,10 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-
-import javax.naming.ldap.Control;
+import frc.robot.commands.DriveTrainCommand;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.TankDrive;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -45,6 +45,10 @@ public class RobotContainer {
     public ControlPanelSubsystem controlPanel;
     private CommandBase autonomousCommand;
 
+    private DriveTrain driveTrain;
+	private DriveTrainCommand autonomousCommand;
+
+
     private OI oi;
 
 
@@ -61,6 +65,9 @@ public class RobotContainer {
         spinningMotor = new TitanSRX(0, false);
         colorSensor = new ColorSensorV3(Constants.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
+        
+    	driveTrain = new TankDrive();
+        autonomousCommand = new DriveTrainCommand(driveTrain);
         // Configure the button bindings
         configureButtonBindings();
 

@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
  * Motor control (talonFX)
- * TitanFX is our enhanced version of the regular TalonFX code
+ * TitanSRX is our enhanced version of the regular TalonFX code
  */
-public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
+public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
 
 	private Encoder encoder;
 	private static final int TIMEOUT_MS = 30;
@@ -20,7 +20,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	public static final int CURRENT_LIMIT_THRESHOLD = 41;
 	public static final int LIMIT_TIMEOUT = 200; //ms
 
-	private TitanFX brownoutFollower = null;
+	private TitanSRX brownoutFollower = null;
 	private boolean brownout = false;
 
 	/**
@@ -31,7 +31,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	 * @param reversed
 	 *            If the TalonFX should invert the signal.
 	 */
-	public TitanFX(int channel, boolean reversed) {
+	public TitanSRX(int channel, boolean reversed) {
 		super(channel);
 		super.setInverted(reversed);
 	}
@@ -46,7 +46,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	 * @param encoder
 	 *            Encoder to attach to this TalonFX.
 	 */
-	public TitanFX(int channel, boolean reversed, Encoder encoder) {
+	public TitanSRX(int channel, boolean reversed, Encoder encoder) {
 		super(channel);
 		super.setInverted(reversed);
 
@@ -130,7 +130,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 		set(0);
 	}
 	
-	public void follow(TitanFX other) {
+	public void follow(TitanSRX other) {
 		other.brownoutFollower = this;
 		this.set(ControlMode.Follower, other.getChannel());
 	}
