@@ -35,7 +35,7 @@ public class RobotContainer {
 	private TitanSRX zMotor;
 	private TitanSRX hoodMotor;
 	private TitanSRX beltMotor;
-	public static TurretSubsystem turret;
+	public TurretSubsystem turret;
 	private CommandBase autonomousCommand;
 	private DigitalInput beltLimitSwitch;
 
