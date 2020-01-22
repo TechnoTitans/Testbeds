@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.TankDrive;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,9 +26,9 @@ public class RobotContainer {
 	// see
 
 	// The robot's subsystems and commands are defined here...
-	private final DriveTrain exampleSubsystem = new DriveTrain();
+	private final DriveTrain driveTrain = new TankDrive();
 
-	private final DriveTrainCommand autonomousCommand = new DriveTrainCommand(exampleSubsystem);
+	private final DriveTrainCommand autonomousCommand = new DriveTrainCommand(driveTrain);
 
 	private OI oi;
 

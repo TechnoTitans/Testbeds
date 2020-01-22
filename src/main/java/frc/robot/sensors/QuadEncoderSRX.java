@@ -2,7 +2,6 @@ package frc.robot.sensors;
 
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.motors.Encoder;
 import frc.robot.motors.Motor;
 import frc.robot.motors.TitanSRX;
@@ -49,7 +48,7 @@ public class QuadEncoderSRX implements Encoder {
 
 	@Override
 	public double getSpeedInches() {
-		return TitanSRX.getSelectedSensorVelocity(0) * 10 * inchesPerPulse;
+		return talonSRX.getSelectedSensorVelocity(0) * 10 * inchesPerPulse;
 	}
 
 	@Override
