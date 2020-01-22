@@ -15,7 +15,7 @@ package frc.robot;
  * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class RobotMap {
 
     // Left TalonFX
 
@@ -23,6 +23,10 @@ public final class Constants {
 
     // Right TalonFX
 
-    public static final int RIGHT_TALON_FRONT = 7, Right_Talon_BACK= 8;
+    public static final int RIGHT_TALON_FRONT = 7, Right_Talon_BACK = 8;
+
+    public static final int LEFT_JOYSTICK = 0;
+    public static final int RIGHT_JOYSTICK = 1;
+    public static final int AUX_JOYSTICK_1 = 2;
 
 }

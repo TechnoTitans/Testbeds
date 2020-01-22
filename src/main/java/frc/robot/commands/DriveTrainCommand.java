@@ -1,30 +1,35 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TankDrive;
+import frc.robot.subsystems.DriveTrain;
 
-/**
- * An example command that uses an example subsystem.
- */
+
 public class DriveTrainCommand extends CommandBase {
-	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField", "FieldCanBeLocal"})
-	private final TankDrive subsystem;
+    private final DriveTrain driveTrain;
 
-	/**
-	 * Creates a new ExampleCommand.
-	 *
-	 * @param subsystem The subsystem used by this command.
-	 */
-	public DriveTrainCommand(TankDrive subsystem) {
-		this.subsystem = subsystem;
-		addRequirements(subsystem);
-	}
+    public DriveTrainCommand(DriveTrain driveTrain) {
+        this.driveTrain = driveTrain;
+        addRequirements(driveTrain);
+    }
 
+    @Override
+    public void initialize() {
+
+    }
+
+    @Override
+    public void execute() {
+
+    }
+
+    @Override
+    public boolean isFinished() {
+        // TODO: Make this return true when this Command no longer needs to run execute()
+        return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+
+    }
 }

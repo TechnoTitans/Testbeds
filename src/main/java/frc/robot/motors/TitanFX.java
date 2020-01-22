@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
  * Motor control (talonFX)
+ * TitanFX is our enhanced version of the regular TalonFX code
  */
 public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
 

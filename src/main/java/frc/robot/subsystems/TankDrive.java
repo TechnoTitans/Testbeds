@@ -48,7 +48,7 @@ public class TankDrive extends DriveTrain {
 
     }
 
-    //Turning
+    //Turning in place
 
     public void turnInPlace(boolean ifRight, double speed) {
         if (ifRight) {
@@ -59,6 +59,8 @@ public class TankDrive extends DriveTrain {
             right.set(speed);
         }
     }
+
+    //Other movements
 
     public void brake() {
         left.brake();
