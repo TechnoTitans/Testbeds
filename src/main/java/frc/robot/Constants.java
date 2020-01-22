@@ -17,4 +17,11 @@ package frc.robot;
  */
 public final class Constants {
 
+    public static final int LEFT_SOLENOID = 1;
+    public static final int RIGHT_SOLENOID = 2;
+
+    public static final int WINCH_MOTOR = 8;
+
+    public static final int Left_Talon_Front = 10, Left_Talon_Back = 11;
+    public static final int RIGHT_TALON_FRONT = 20, RIGHT_TALON_BACK = 21;
 }
