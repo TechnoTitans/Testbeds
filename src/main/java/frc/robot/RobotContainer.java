@@ -68,10 +68,10 @@ public class RobotContainer {
         colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
 
-        leftFrontMotorFX = new TitanFX(0, false);
-        leftBackMotorFX = new TitanFX(0, false);
-        rightFrontMotorFX = new TitanFX(0, false);
-        rightBackMotorFX = new TitanFX(0, false);
+        leftFrontMotorFX = new TitanFX(RobotMap.LEFT_TALON_FRONT, RobotMap.REVERSED_LF_TALON);
+        leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
+        rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
+        rightBackMotorFX = new TitanFX(RobotMap.Right_Talon_BACK, RobotMap.REVERSED_RB_TALON);
         leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
     	driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
