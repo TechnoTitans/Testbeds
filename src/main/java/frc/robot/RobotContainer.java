@@ -8,8 +8,10 @@
 package frc.robot;
 
 import com.revrobotics.ColorSensorV3;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.DriveTrainCommand;
@@ -48,6 +50,7 @@ public class RobotContainer {
     private TitanFX rightFrontMotorFX;
     private TitanFX rightBackMotorFX;
     private DriveTrain driveTrain;
+    private DigitalInput beltLimitSwitch;
 
 
     private OI oi;
@@ -63,7 +66,8 @@ public class RobotContainer {
         hoodMotor = new TitanSRX(0, false);
         beltMotor = new TitanSRX(0, false);
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
-        turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor);
+        beltLimitSwitch = new DigitalInput(0);
+        turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
         spinningMotor = new TitanSRX(0, false);
         colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -74,7 +78,7 @@ public class RobotContainer {
         rightBackMotorFX = new TitanFX(0, false);
         leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
-    	driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
         autonomousCommand = new DriveTrainCommand(driveTrain);
         // Configure the button bindings
         configureButtonBindings();
@@ -102,3 +106,6 @@ public class RobotContainer {
         return autonomousCommand;
     }
 }
+
+
+
