@@ -6,8 +6,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class StopIntake extends CommandBase {
 
-    public StopIntake() {
-        addRequirements(RobotContainer.intake);
+    private IntakeSubsystem intakeSubsystem;
+
+    public StopIntake(IntakeSubsystem intake) {
+        intakeSubsystem = intake;
+        addRequirements(intake);
     }
 
     @Override
@@ -17,7 +20,7 @@ public class StopIntake extends CommandBase {
 
     @Override
     public void execute() {
-        RobotContainer.intake.stop();
+        intakeSubsystem.stop();
     }
 
     @Override

@@ -1,39 +1,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.TurretSubsystem;
 
 
-public class RotateHood extends CommandBase {
+public class FeedBall extends CommandBase {
     private double speed;
-    private double angle;
     private TurretSubsystem turret;
-    public RotateHood(double speed, double angle, TurretSubsystem turret) {
+    public FeedBall(double speed, TurretSubsystem turret) {
         this.speed = speed;
-        this.angle = angle; // calculations here to convert angle into encoders
         this.turret = turret;
         addRequirements(turret);
     }
 
     @Override
     public void initialize() {
-        turret.getHoodPID().setSetpoint(angle);
+
     }
 
     @Override
     public void execute() {
-        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
+        turret.setBelt(speed);
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return turret.getHoodPID().atSetpoint();
+        // when sensor detects ball
+        return turret.getBeltLimitSwitch().get();
     }
 
     @Override
     public void end(boolean interrupted) {
-        turret.setHood(0);
+        turret.setBelt(0);
     }
 }

@@ -6,8 +6,13 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class Intake extends CommandBase {
 
-    public Intake() {
-        addRequirements(RobotContainer.intake);
+    private IntakeSubsystem intakeSubsystem;
+    private double speed;
+
+    public Intake(IntakeSubsystem intake, double speed) {
+        this.speed = speed;
+        intakeSubsystem = intake;
+        addRequirements(intake);
     }
 
     @Override
@@ -17,12 +22,12 @@ public class Intake extends CommandBase {
 
     @Override
     public void execute() {
-        RobotContainer.intake.intake();
+        intakeSubsystem.setSpeed(speed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.intake.stop();
+        intakeSubsystem.stop();
     }
 
     @Override

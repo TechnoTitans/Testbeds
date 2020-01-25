@@ -1,0 +1,24 @@
+List of Autonomous Paths:
+
+Top -farthest position from loading bay
+Middle - Closest to shooting
+Bottom - Closest to loading (extreme point that's not the top one)
+(assuming robot is perpendicular to initiation line)
+
+$START$FUNCTION$END$ALTERNATIVE_NUMBER
+
+Starting positions:
+	Middle: center is 94.66" from the top
+	
+
+* TopShootTrench1
+	1. Aim turret
+	2. Shoot
+	3. Drive to trench
+
+* TopShootRendevouz1
+
+
+Robot Dimensons: 28x31 inches
+	* Not including bumpers (bumpers add about 2-3 inches per side)
+	* This would make 32x35` inches

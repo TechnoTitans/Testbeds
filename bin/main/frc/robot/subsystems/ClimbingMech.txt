@@ -1,0 +1,3 @@
+Two pistons will activate and fill tubes with air which will lift the hooks.
+When fully extended up, motors will activate and will pull up the robot.
+Make a current limit so that the motor won't destroy the battery.

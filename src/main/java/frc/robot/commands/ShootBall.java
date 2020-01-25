@@ -1,40 +1,39 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.TurretSubsystem;
 
 
-public class RotateTurret extends CommandBase {
-    private double angle;
+public class ShootBall extends CommandBase {
     private double speed;
+    private Timer timer = new Timer();
     private TurretSubsystem turret;
-    public RotateTurret(double angle, double speed, TurretSubsystem turret) {
+    public ShootBall(double speed, TurretSubsystem turret) {
         addRequirements(turret);
         this.turret = turret;
-        this.angle = angle; //calculations here to convert angle into encoder distance
         this.speed = speed;
     }
 
     @Override
     public void initialize() {
-        turret.getZMotorPID().setSetpoint(angle);
+        timer.reset();
     }
 
     @Override
     public void execute() {
-        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
+        turret.setShooter(speed);
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return turret.getZMotorPID().atSetpoint(); // some calculations will be made here
+        return timer.get() >= 3000; //change later
     }
 
     @Override
     public void end(boolean interrupted) {
-        turret.setZMotor(0);
+        turret.setShooter(0);
     }
 }
