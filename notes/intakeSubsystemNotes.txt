@@ -1,0 +1,11 @@
+intake subsystem
+
+There's legit one motor in this entire thing
+Everything is self-explanatory
+
+"stop" makes the motor not move at all
+"expel" turns the motor so that it moves away
+"intake" turns the motor to that it moves in
+custom speed setting is also available
+
+Yaseen stop leaving early

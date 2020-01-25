@@ -11,17 +11,13 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motors.TitanFX;
 import frc.robot.sensors.QuadEncoder;
-import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.TankDrive;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -41,7 +37,9 @@ public class RobotContainer {
     private TitanSRX hoodMotor;
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
+    private TitanSRX intakeMotor;
     private ColorSensorV3 colorSensor;
+	public IntakeSubsystem intake;
     public static TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
     private CommandBase autonomousCommand;
@@ -80,6 +78,11 @@ public class RobotContainer {
         rightBackMotorFX.follow(rightFrontMotorFX);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
         autonomousCommand = new DriveTrainCommand(driveTrain);
+
+
+        intakeMotor = new TitanSRX(0, false);
+        intake = new IntakeSubsystem(intakeMotor);
+
         // Configure the button bindings
         configureButtonBindings();
 
