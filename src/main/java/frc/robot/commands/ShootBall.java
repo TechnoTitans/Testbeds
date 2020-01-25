@@ -3,13 +3,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.TurretSubsystem;
 
 
 public class ShootBall extends CommandBase {
     private double speed;
     private Timer timer = new Timer();
-    public ShootBall(double speed) {
-        addRequirements(RobotContainer.turret);
+    private TurretSubsystem turret;
+    public ShootBall(double speed, TurretSubsystem turret) {
+        addRequirements(turret);
+        this.turret = turret;
         this.speed = speed;
     }
 
@@ -20,7 +23,7 @@ public class ShootBall extends CommandBase {
 
     @Override
     public void execute() {
-        RobotContainer.turret.setShooter(speed);
+        turret.setShooter(speed);
     }
 
     @Override
@@ -31,6 +34,6 @@ public class ShootBall extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.turret.setShooter(0);
+        turret.setShooter(0);
     }
 }
