@@ -25,6 +25,7 @@ public class StopIntake extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        intakeSubsystem.stop();
     }
 
     @Override
