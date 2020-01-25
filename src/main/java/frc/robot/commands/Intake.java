@@ -6,6 +6,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class Intake extends CommandBase {
 
+    public Intake() {
+        addRequirements(RobotContainer.intake);
+    }
+
     @Override
     public void initialize() {
 

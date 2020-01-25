@@ -6,6 +6,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class StopIntake extends CommandBase {
 
+    public StopIntake() {
+        addRequirements(RobotContainer.intake);
+    }
+
     @Override
     public void initialize() {
 

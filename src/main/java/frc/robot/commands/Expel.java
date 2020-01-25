@@ -6,6 +6,10 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class Expel extends CommandBase {
 
+    public Expel() {
+        addRequirements(RobotContainer.intake);
+    }
+
     @Override
     public void initialize() {
 
