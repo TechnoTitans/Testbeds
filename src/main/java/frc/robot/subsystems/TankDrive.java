@@ -1,7 +1,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.motors.Encoder;
 import frc.robot.motors.TitanFX;
 import frc.robot.sensors.TitanGyro;
@@ -12,18 +18,32 @@ public class TankDrive extends DriveTrain {
     private TitanFX right;
     private Gyro gyro;
 
+    private DifferentialDriveOdometry odometry;
+
     //TankDrive setup
 
-    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX) {
-        this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(12)));
+    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, DifferentialDriveKinematics kinematics) {
+        this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(12)), kinematics);
+        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
     }
 
-    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro) {
+    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, DifferentialDriveKinematics kinematics) {
         this.left = leftTalonFX;
         this.right = rightTalonFX;
     }
 
+    public Rotation2d getAngle(){
+        return Rotation2d.fromDegrees(gyro.getAngle());
+    }
+
+    public Pose2d getPose(){
+        return odometry.getPoseMeters();
+    }
     //set the speed the motors
+
+    public void periodic(){
+        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
+    }
 
     public void set(double speed) {
         left.set(speed);

@@ -11,7 +11,14 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.DriveTrainCommand;
@@ -22,6 +29,8 @@ import frc.robot.subsystems.ControlPanelSubsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.TankDrive;
 import frc.robot.subsystems.TurretSubsystem;
+
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -51,6 +60,7 @@ public class RobotContainer {
     private TitanFX rightBackMotorFX;
     private DriveTrain driveTrain;
     private DigitalInput beltLimitSwitch;
+    private DifferentialDriveKinematics kinematics;
 
 
     private OI oi;
@@ -78,7 +88,10 @@ public class RobotContainer {
         rightBackMotorFX = new TitanFX(0, false);
         leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, kinematics);
+
+        kinematics = new DifferentialDriveKinematics(0);
+
         autonomousCommand = new DriveTrainCommand(driveTrain);
         // Configure the button bindings
         configureButtonBindings();
@@ -103,6 +116,18 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
+
+        TrajectoryConfig config = new TrajectoryConfig(0, 0).setKinematics(kinematics);
+        Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
+                new Pose2d(0, 0, new Rotation2d(0)),
+                List.of(
+                        new Translation2d(0, 0),
+                        new Translation2d(0, 0)
+                ),
+                new Pose2d(0, 0, new Rotation2d(0)),
+                config
+        );
+
         return autonomousCommand;
     }
 }
