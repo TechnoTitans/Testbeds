@@ -26,12 +26,12 @@ public final class RobotMap {
     public static final int WINCH_MOTOR = 8;
 
     // Left TalonFX
-
     public static final int LEFT_TALON_FRONT = 5, LEFT_TALON_BACK = 6;
+    public static final boolean REVERSED_LF_TALON = false, REVERSED_LB_TALON = false;
 
     // Right TalonFX
-
     public static final int RIGHT_TALON_FRONT = 7, Right_Talon_BACK = 8;
+    public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
 
     public static final int LEFT_JOYSTICK = 0;
     public static final int RIGHT_JOYSTICK = 1;
