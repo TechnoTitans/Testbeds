@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.revrobotics.ColorSensorV3;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,10 +17,7 @@ import frc.robot.commands.DriveTrainCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motors.TitanFX;
 import frc.robot.sensors.QuadEncoder;
-import frc.robot.subsystems.ControlPanelSubsystem;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.TankDrive;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -39,7 +37,9 @@ public class RobotContainer {
     private TitanSRX hoodMotor;
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
+    private TitanSRX intakeMotor;
     private ColorSensorV3 colorSensor;
+	public IntakeSubsystem intake;
     public static TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
     private CommandBase autonomousCommand;
@@ -48,6 +48,7 @@ public class RobotContainer {
     private TitanFX rightFrontMotorFX;
     private TitanFX rightBackMotorFX;
     private DriveTrain driveTrain;
+    private DigitalInput beltLimitSwitch;
 
 
     private OI oi;
@@ -63,7 +64,8 @@ public class RobotContainer {
         hoodMotor = new TitanSRX(0, false);
         beltMotor = new TitanSRX(0, false);
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
-        turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor);
+        beltLimitSwitch = new DigitalInput(0);
+        turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
         spinningMotor = new TitanSRX(0, false);
         colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -74,8 +76,13 @@ public class RobotContainer {
         rightBackMotorFX = new TitanFX(RobotMap.Right_Talon_BACK, RobotMap.REVERSED_RB_TALON);
         leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
-    	driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
         autonomousCommand = new DriveTrainCommand(driveTrain);
+
+
+        intakeMotor = new TitanSRX(0, false);
+        intake = new IntakeSubsystem(intakeMotor);
+
         // Configure the button bindings
         configureButtonBindings();
 
@@ -102,3 +109,6 @@ public class RobotContainer {
         return autonomousCommand;
     }
 }
+
+
+
