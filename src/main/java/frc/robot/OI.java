@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class OI {
 
 	public static final int BTNNUM_TOGGLE_SHIFTER = 4;
+	public static final int BTNNUM_TOGGLE_INTAKE = 5;
 
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;

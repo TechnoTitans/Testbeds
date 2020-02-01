@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.ToggleGearShifter;
+import frc.robot.commands.ToggleIntake;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.sensors.QuadEncoder;
@@ -65,7 +66,8 @@ public class RobotContainer {
     private CommandBase autonomousCommand;
 
     private OI oi;
-    private Button btnToggleShifter;
+    private TitanButton btnToggleShifter;
+    private TitanButton btnToggleIntake;
 
 
     /**
@@ -119,9 +121,11 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
+        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+        btnToggleIntake.whenPressed(new ToggleIntake(intake));
     }
 
 
