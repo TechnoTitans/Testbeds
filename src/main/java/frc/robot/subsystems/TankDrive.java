@@ -29,6 +29,7 @@ public class TankDrive extends DriveTrain {
     public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid) {
         this.left = leftTalonFX;
         this.right = rightTalonFX;
+        this.gyro = gyro;
         this.shifterSolenoid = shifterSolenoid;
     }
 
