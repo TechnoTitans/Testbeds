@@ -44,14 +44,14 @@ public class RobotContainer {
 
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
-    public static TurretSubsystem turret;
-    public ControlPanelSubsystem controlPanel;
     private TitanFX leftFrontMotorFX;
     private TitanFX leftBackMotorFX;
     private TitanFX rightFrontMotorFX;
     private TitanFX rightBackMotorFX;
 
-    private DriveTrain driveTrain;
+    public TurretSubsystem turret;
+    public ControlPanelSubsystem controlPanel;
+    public DriveTrain driveTrain;
 
     private CommandBase autonomousCommand;
 
