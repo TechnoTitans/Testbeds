@@ -3,8 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import frc.robot.motors.Encoder;
-import frc.robot.motors.TitanFX;
+import frc.robot.motor.Encoder;
+import frc.robot.motor.TitanFX;
 import frc.robot.sensors.TitanGyro;
 
 @SuppressWarnings("ConstantConditions")

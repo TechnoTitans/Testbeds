@@ -24,12 +24,7 @@ public class PistonExtenderCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (climbSubsystem.isPistonOpen == true) {
-            return true;
-        }
-        else {
-            return false;
-        }
+		return climbSubsystem.isPistonOpen == true;
     }
 
     @Override

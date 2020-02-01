@@ -2,7 +2,7 @@ package frc.robot.sensors;
 
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
+import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanSRX;
 
 /**

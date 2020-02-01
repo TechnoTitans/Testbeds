@@ -1,4 +1,4 @@
-package frc.robot.motors;
+package frc.robot.motor;
 
 public interface Encoder {
 

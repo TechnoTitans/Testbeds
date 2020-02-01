@@ -2,9 +2,9 @@ package frc.robot.sensors;
 
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import frc.robot.motors.Encoder;
-import frc.robot.motors.Motor;
-import frc.robot.motors.TitanFX;
+import frc.robot.motor.Encoder;
+import frc.robot.motor.Motor;
+import frc.robot.motor.TitanFX;
 
 /**
  * Encoder class. Used to measure how far the robot traveled

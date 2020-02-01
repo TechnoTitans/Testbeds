@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.TitanSRX;
-import frc.robot.sensors.Encoder;
+import frc.robot.motor.Encoder;
 
 public class TurretSubsystem extends SubsystemBase{
 

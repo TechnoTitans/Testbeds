@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.motor.TitanSRX;
-import frc.robot.motors.TitanFX;
+import frc.robot.motor.TitanFX;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.*;
 

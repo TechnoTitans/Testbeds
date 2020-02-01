@@ -2,8 +2,8 @@ package frc.robot.sensors;
 
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import frc.robot.motors.Encoder;
-import frc.robot.motors.Motor;
+import frc.robot.motor.Encoder;
+import frc.robot.motor.Motor;
 import frc.robot.motor.TitanSRX;
 
 /**
@@ -76,6 +76,6 @@ public class QuadEncoderSRX implements Encoder {
 	}
 
 	public Motor getTalon() {
-		return (Motor) talonSRX;
+		return talonSRX;
 	}
 }
