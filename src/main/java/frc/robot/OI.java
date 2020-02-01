@@ -54,6 +54,7 @@ public class OI {
 		right = new Joystick(RobotMap.RIGHT_JOYSTICK);
 		xbox = new XboxController(RobotMap.AUX_JOYSTICK_1);
 
+		// todo refactor out this old stuff
 		btnClimberExtend = new Btn(left, 4);
 		btnClimbUp = new Btn(left,11);
 		btnClimbDown = new Btn(left, 12);
