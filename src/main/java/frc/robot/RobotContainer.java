@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
@@ -49,9 +50,13 @@ public class RobotContainer {
     private TitanFX rightFrontMotorFX;
     private TitanFX rightBackMotorFX;
 
+    // MARK - Subsystem Declarations
     public TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
     public DriveTrain driveTrain;
+
+    // MARK - Command declarations
+    public DriveTrainCommand driveTrainCommand;
 
     private CommandBase autonomousCommand;
 
@@ -82,7 +87,9 @@ public class RobotContainer {
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
-        autonomousCommand = new DriveTrainCommand(driveTrain);
+
+        driveTrainCommand = new DriveTrainCommand(driveTrain);
+        autonomousCommand = new InstantCommand(); // a do nothing command for now
 
 
         intakeMotor = new TitanSRX(0, false);
