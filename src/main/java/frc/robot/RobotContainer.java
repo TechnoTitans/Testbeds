@@ -21,6 +21,7 @@ import frc.robot.commands.ToggleGearShifter;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.sensors.QuadEncoder;
+import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
 
 /**
