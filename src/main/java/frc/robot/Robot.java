@@ -11,6 +11,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.TankDrive;
 
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
 	}
 
 	/**
@@ -52,10 +54,10 @@ public class Robot extends TimedRobot {
 		// and running subsystem periodic() methods.  This must be called from the robot's periodic
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
-		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
-		SmartDashboard.putNumber("Red value", detectedColor.red);
-		SmartDashboard.putNumber("Green value", detectedColor.green);
-		SmartDashboard.putNumber("Blue value", detectedColor.blue);
+//		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
+//		SmartDashboard.putNumber("Red value", detectedColor.red);
+//		SmartDashboard.putNumber("Green value", detectedColor.green);
+//		SmartDashboard.putNumber("Blue value", detectedColor.blue);
 	}
 
 	/**
