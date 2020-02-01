@@ -109,7 +109,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 
 	@Override
 	public double getCurrent() {
-		return super.getOutputCurrent();
+		return super.getStatorCurrent();
 	}
 
 	@Override

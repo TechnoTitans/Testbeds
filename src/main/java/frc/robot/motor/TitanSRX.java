@@ -110,7 +110,7 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
 
     @Override
     public double getCurrent() {
-        return super.getOutputCurrent();
+        return super.getStatorCurrent();
     }
 
     @Override
