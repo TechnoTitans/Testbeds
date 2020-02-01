@@ -20,8 +20,10 @@ import edu.wpi.first.wpilibj.I2C;
 public final class RobotMap {
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
+    // todo find actual values
     public static final int LEFT_SOLENOID = 1;
     public static final int RIGHT_SOLENOID = 2;
+    public static final int GEAR_SHIFT_SOLENOID = 3;
 
     public static final int WINCH_MOTOR = 8;
 
@@ -30,7 +32,7 @@ public final class RobotMap {
     public static final boolean REVERSED_LF_TALON = false, REVERSED_LB_TALON = false;
 
     // Right TalonFX
-    public static final int RIGHT_TALON_FRONT = 7, Right_Talon_BACK = 8;
+    public static final int RIGHT_TALON_FRONT = 7, RIGHT_TALON_BACK = 8;
     public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
 
     public static final int LEFT_JOYSTICK = 0;

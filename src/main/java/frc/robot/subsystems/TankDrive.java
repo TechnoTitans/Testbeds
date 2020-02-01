@@ -1,26 +1,35 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.motors.Encoder;
 import frc.robot.motors.TitanFX;
 import frc.robot.sensors.TitanGyro;
 
+@SuppressWarnings("ConstantConditions")
 public class TankDrive extends DriveTrain {
+
+
+    public static boolean SHIFT_HIGH_TORQUE = true; // todo find actual value
+    public static boolean SHIFT_LOW_TORQUE = !SHIFT_HIGH_TORQUE; // for programmers' convenience
 
     private TitanFX left;
     private TitanFX right;
     private Gyro gyro;
+    private Solenoid shifterSolenoid;
+
 
     //TankDrive setup
 
-    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX) {
-        this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(12)));
+    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Solenoid shifterSolenoid) {
+        this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(12)), shifterSolenoid);
     }
 
-    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro) {
+    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid) {
         this.left = leftTalonFX;
         this.right = rightTalonFX;
+        this.shifterSolenoid = shifterSolenoid;
     }
 
     //set the speed the motors
@@ -45,7 +54,7 @@ public class TankDrive extends DriveTrain {
 
     @Override
     public void stop() {
-
+        this.set(0);
     }
 
     //Turning in place
@@ -75,17 +84,18 @@ public class TankDrive extends DriveTrain {
 
     @Override
     public void resetEncoders() {
-
+        this.left.getEncoder().reset();
+        this.right.getEncoder().reset();
     }
 
     @Override
     public Encoder getLeftEncoder() {
-        return (Encoder) left.getEncoder();
+        return left.getEncoder();
     }
 
     @Override
     public Encoder getRightEncoder() {
-        return (Encoder) right.getEncoder();
+        return right.getEncoder();
     }
 
     @Override
@@ -120,6 +130,21 @@ public class TankDrive extends DriveTrain {
 
     public boolean hasGyro() {
         return !(gyro == null);
+    }
+
+
+    // MARK - Shifter
+    public boolean getShifterEnabled() {
+        return this.shifterSolenoid.get();
+    }
+
+    public void setShifter(boolean pistonDeployed) {
+        this.shifterSolenoid.set(pistonDeployed);
+    }
+
+    public void toggleShifter() {
+        boolean currentStatus = this.getShifterEnabled();
+        this.setShifter(!currentStatus);
     }
 
 }

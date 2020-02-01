@@ -10,6 +10,7 @@ package frc.robot;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -31,6 +32,8 @@ public class RobotContainer {
     // see
 
     // The robot's subsystems and commands are defined here...
+    private DigitalInput beltLimitSwitch;
+    private Solenoid shifterSolenoid;
 
     private TitanSRX shootMotor;
     private TitanSRX zMotor;
@@ -38,18 +41,19 @@ public class RobotContainer {
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     private TitanSRX intakeMotor;
+
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
     public static TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
-    private CommandBase autonomousCommand;
     private TitanFX leftFrontMotorFX;
     private TitanFX leftBackMotorFX;
     private TitanFX rightFrontMotorFX;
     private TitanFX rightBackMotorFX;
-    private DriveTrain driveTrain;
-    private DigitalInput beltLimitSwitch;
 
+    private DriveTrain driveTrain;
+
+    private CommandBase autonomousCommand;
 
     private OI oi;
 
@@ -73,10 +77,11 @@ public class RobotContainer {
         leftFrontMotorFX = new TitanFX(RobotMap.LEFT_TALON_FRONT, RobotMap.REVERSED_LF_TALON);
         leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
         rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
-        rightBackMotorFX = new TitanFX(RobotMap.Right_Talon_BACK, RobotMap.REVERSED_RB_TALON);
+        rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
         leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
+        shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
         autonomousCommand = new DriveTrainCommand(driveTrain);
 
 
