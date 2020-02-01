@@ -68,6 +68,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
 
+        oi = new OI();
         shootMotor = new TitanSRX(0, false);
         zMotor = new TitanSRX(0, false);
         hoodMotor = new TitanSRX(0, false);
@@ -89,7 +90,7 @@ public class RobotContainer {
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
-        driveTrainCommand = new DriveTrainCommand(driveTrain);
+        driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
 
@@ -108,7 +109,7 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
      */
     private void configureButtonBindings() {
-        oi = new OI();
+        oi.configureButtonBindings();
     }
 
 

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -24,6 +25,8 @@ public class OI {
 				   btnShoot;
 
 	public OI() { initialize();}
+
+
 
 	private static class Btn extends JoystickButton {
 		private GenericHID hid;
@@ -49,11 +52,12 @@ public class OI {
 	}
 
 	private void initialize() {
-
 		left = new Joystick(RobotMap.LEFT_JOYSTICK);
 		right = new Joystick(RobotMap.RIGHT_JOYSTICK);
 		xbox = new XboxController(RobotMap.AUX_JOYSTICK_1);
+	}
 
+	public void configureButtonBindings() {
 		// todo refactor out this old stuff
 		btnClimberExtend = new Btn(left, 4);
 		btnClimbUp = new Btn(left,11);
@@ -65,6 +69,15 @@ public class OI {
 		btnPanelSpin = new Btn(right, 10);
 		btnTarget = new Btn(right, 11);
 		btnShoot = new Btn(right, 12);
+	}
+
+	// todo verify this works
+	public double getLeft() {
+		return left.getY(Hand.kLeft);
+	}
+
+	public double getRight() {
+		return right.getY(Hand.kRight);
 	}
 
 
