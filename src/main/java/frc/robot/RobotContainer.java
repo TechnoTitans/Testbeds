@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.ToggleGearShifter;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.sensors.QuadEncoder;
@@ -53,14 +55,16 @@ public class RobotContainer {
     // MARK - Subsystem Declarations
     public TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
-    public DriveTrain driveTrain;
+    public TankDrive driveTrain;
 
     // MARK - Command declarations
     public DriveTrainCommand driveTrainCommand;
+    public ToggleGearShifter toggleGearShifterCommand;
 
     private CommandBase autonomousCommand;
 
     private OI oi;
+    private Button btnToggleShifter;
 
 
     /**
@@ -90,7 +94,10 @@ public class RobotContainer {
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
+        // MARK - command nitialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
+        toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
+
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
 
@@ -109,7 +116,11 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
      */
     private void configureButtonBindings() {
-        oi.configureButtonBindings();
+        // MARK - button definitions
+        btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
+
+        // MARK - bindings
+        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
     }
 
 
