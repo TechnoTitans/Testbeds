@@ -39,6 +39,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private DigitalInput beltLimitSwitch;
     private Solenoid shifterSolenoid;
+    private final Solenoid intakeSolenoid;
 
     private TitanSRX shootMotor;
     private TitanSRX zMotor;
@@ -83,6 +84,7 @@ public class RobotContainer {
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
         beltLimitSwitch = new DigitalInput(0);
         turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
+
         spinningMotor = new TitanSRX(0, false);
         colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -91,11 +93,14 @@ public class RobotContainer {
         leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
         rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
         rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
-        // todo set titanfx motor encoders
-        leftBackMotorFX.follow(leftFrontMotorFX);
+        leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
+
+        intakeMotor = new TitanSRX(0, false);
+        intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
+        intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
 
         // MARK - command nitialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
@@ -104,8 +109,6 @@ public class RobotContainer {
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
 
-        intakeMotor = new TitanSRX(0, false);
-        intake = new IntakeSubsystem(intakeMotor);
 
         // Configure the button bindings
         configureButtonBindings();

@@ -18,12 +18,12 @@ import edu.wpi.first.wpilibj.I2C;
  * constants are needed, to reduce verbosity.
  */
 public final class RobotMap {
-    public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
+	public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
     // todo find actual values
-    public static final int LEFT_SOLENOID = 1;
-    public static final int RIGHT_SOLENOID = 2;
+    public static final int INTAKE_SOLENOID = 1;
     public static final int GEAR_SHIFT_SOLENOID = 3;
+
 
     public static final int WINCH_MOTOR = 8;
 
