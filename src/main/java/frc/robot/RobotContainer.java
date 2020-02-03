@@ -23,6 +23,7 @@ import frc.robot.commands.ToggleGearShifter;
 import frc.robot.commands.ToggleIntake;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
+import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
@@ -43,11 +44,12 @@ public class RobotContainer {
     private final Solenoid intakeSolenoid;
 
     private TitanSRX shootMotor;
+    private TitanVictor subShootMotor;
     private TitanSRX zMotor;
     private TitanSRX hoodMotor;
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
-    private TitanSRX intakeMotor;
+    private TitanVictor intakeMotor;
 
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
@@ -81,12 +83,14 @@ public class RobotContainer {
 
         oi = new OI();
         shootMotor = new TitanSRX(0, false);
+        subShootMotor = new TitanVictor(0, false);
+        subShootMotor.follow(shootMotor);
         zMotor = new TitanSRX(0, false);
         hoodMotor = new TitanSRX(0, false);
         beltMotor = new TitanSRX(0, false);
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
         beltLimitSwitch = new DigitalInput(0);
-        turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
+        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
         spinningMotor = new TitanSRX(0, false);
         colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -100,11 +104,11 @@ public class RobotContainer {
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
-        intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
+        intakeMotor = new TitanVictor(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
 
-        // MARK - command nitialization
+        // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);

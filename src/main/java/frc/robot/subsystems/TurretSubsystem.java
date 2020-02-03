@@ -1,18 +1,12 @@
 package frc.robot.subsystems;
 
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.Encoder;
+import frc.robot.motor.TitanVictor;
 
 public class TurretSubsystem extends SubsystemBase{
 
@@ -31,14 +25,16 @@ public class TurretSubsystem extends SubsystemBase{
      * should use the {@link #getInstance()} method to get the instance.
      */
     private TitanSRX shooter, zMotor, hood, belt;
+    private TitanVictor subShoot;
     private PIDController zMotorPID, hoodPID;
     private DigitalInput beltLimitSwitch;
-    public TurretSubsystem(TitanSRX shooter, TitanSRX zMotor, TitanSRX hood, TitanSRX belt, DigitalInput beltLimitSwitch) {
+    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, TitanSRX belt, DigitalInput beltLimitSwitch) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
         //       such as SpeedControllers, Encoders, DigitalInputs, etc.
         this.shooter = shooter;
+        this.subShoot = subShoot;
         this.zMotor = zMotor;
         this.hood = hood;
         this.belt = belt;
@@ -48,6 +44,10 @@ public class TurretSubsystem extends SubsystemBase{
     }
     public void setShooter(double speed){
         shooter.set(speed);
+    }
+
+    public void setSubShoot(double speed){
+        subShoot.set(speed);
     }
 
     public void setZMotor(double speed){
