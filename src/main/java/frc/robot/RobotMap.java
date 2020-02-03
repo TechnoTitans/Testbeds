@@ -21,8 +21,8 @@ public final class RobotMap {
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
     public static final int INTAKE_MOTOR = 7; // victor
-    // todo find actual values
-    public static final int INTAKE_SOLENOID = 1;
+    public static final boolean REVERSED_INTAKE_MOTOR = false;
+    public static final int INTAKE_SOLENOID = 1; // todo find actual values for solenoids
     public static final int GEAR_SHIFT_SOLENOID = 2;
 
     public static final int HOPPER = 8; // victor
