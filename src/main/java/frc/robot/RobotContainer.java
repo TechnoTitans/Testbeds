@@ -7,16 +7,24 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveTrainCommand;
+import frc.robot.commands.IntakeTeleop;
+import frc.robot.commands.ToggleGearShifter;
+import frc.robot.commands.ToggleIntake;
 import frc.robot.motor.TitanSRX;
-import frc.robot.motors.TitanFX;
+import frc.robot.motor.TitanFX;
 import frc.robot.sensors.QuadEncoder;
+import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
 
 /**
@@ -28,9 +36,11 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
 
     // Declare the robot's components here
-    // see
 
     // The robot's subsystems and commands are defined here...
+    private DigitalInput beltLimitSwitch;
+    private Solenoid shifterSolenoid;
+    private final Solenoid intakeSolenoid;
 
     private TitanSRX shootMotor;
     private TitanSRX zMotor;
@@ -38,20 +48,30 @@ public class RobotContainer {
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     private TitanSRX intakeMotor;
+
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
-    public static TurretSubsystem turret;
-    public ControlPanelSubsystem controlPanel;
-    private CommandBase autonomousCommand;
     private TitanFX leftFrontMotorFX;
     private TitanFX leftBackMotorFX;
     private TitanFX rightFrontMotorFX;
     private TitanFX rightBackMotorFX;
-    private DriveTrain driveTrain;
-    private DigitalInput beltLimitSwitch;
 
+    // MARK - Subsystem Declarations
+    public TurretSubsystem turret;
+    public ControlPanelSubsystem controlPanel;
+    public TankDrive driveTrain;
+
+    // MARK - Command declarations
+    public DriveTrainCommand driveTrainCommand;
+    public ToggleGearShifter toggleGearShifterCommand;
+    public IntakeTeleop intakeTeleopCommand;
+
+
+    private CommandBase autonomousCommand;
 
     private OI oi;
+    private TitanButton btnToggleShifter;
+    private TitanButton btnToggleIntake;
 
 
     /**
@@ -59,6 +79,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
 
+        oi = new OI();
         shootMotor = new TitanSRX(0, false);
         zMotor = new TitanSRX(0, false);
         hoodMotor = new TitanSRX(0, false);
@@ -73,15 +94,24 @@ public class RobotContainer {
         leftFrontMotorFX = new TitanFX(RobotMap.LEFT_TALON_FRONT, RobotMap.REVERSED_LF_TALON);
         leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
         rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
-        rightBackMotorFX = new TitanFX(RobotMap.Right_Talon_BACK, RobotMap.REVERSED_RB_TALON);
-        leftBackMotorFX.follow(leftFrontMotorFX);
+        rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
+        leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX);
-        autonomousCommand = new DriveTrainCommand(driveTrain);
+        shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
+
+        intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
+        intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
+        intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
+
+        // MARK - command nitialization
+        driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
+        toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
+        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
+
+        autonomousCommand = new InstantCommand(); // a do nothing command for now
 
 
-        intakeMotor = new TitanSRX(0, false);
-        intake = new IntakeSubsystem(intakeMotor);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -95,7 +125,13 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
      */
     private void configureButtonBindings() {
-        oi = new OI();
+        // MARK - button definitions
+        btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
+//        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
+
+        // MARK - bindings
+        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+//        btnToggleIntake.whenPressed(new ToggleIntake(intake));
     }
 
 

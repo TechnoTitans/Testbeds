@@ -2,8 +2,8 @@ package frc.robot.sensors;
 
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
-import frc.robot.motor.TitanSRX;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import frc.robot.motor.Encoder;
 
 /**
  * Encoder class. Used to measure how far the robot traveled
@@ -11,11 +11,11 @@ import frc.robot.motor.TitanSRX;
 
 public class QuadEncoder implements Encoder {
 
-    private TitanSRX talonSRX;
+    private BaseMotorController talonSRX;
     public static final double PULSES_PER_ROTATION = 4096;
     private double inchesPerPulse; // configure
 
-    public QuadEncoder(TitanSRX talonSRX, double inchesPerPulse, boolean reversed) {
+    public QuadEncoder(BaseMotorController talonSRX, double inchesPerPulse, boolean reversed) {
         this.talonSRX = talonSRX;
         this.inchesPerPulse = inchesPerPulse;
         // this.talonSRX.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -74,7 +74,7 @@ public class QuadEncoder implements Encoder {
         return inchesPerPulse;
     }
 
-    public TitanSRX getTalon() {
+    public BaseMotorController getTalon() {
         return talonSRX;
     }
 }

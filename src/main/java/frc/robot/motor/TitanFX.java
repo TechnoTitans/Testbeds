@@ -1,4 +1,4 @@
-package frc.robot.motors;
+package frc.robot.motor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -109,7 +109,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 
 	@Override
 	public double getCurrent() {
-		return super.getOutputCurrent();
+		return super.getStatorCurrent();
 	}
 
 	@Override

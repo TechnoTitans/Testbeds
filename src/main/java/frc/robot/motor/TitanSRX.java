@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.sensors.Encoder;
+import frc.robot.motor.Encoder;
 
 /*
  * Motor control (talonSRX)
@@ -110,7 +110,7 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
 
     @Override
     public double getCurrent() {
-        return super.getOutputCurrent();
+        return super.getStatorCurrent();
     }
 
     @Override

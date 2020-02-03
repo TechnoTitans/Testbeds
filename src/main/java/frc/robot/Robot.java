@@ -11,7 +11,9 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.TankDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,6 +36,8 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
 	}
 
 	/**
