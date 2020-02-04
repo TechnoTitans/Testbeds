@@ -15,9 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.DriveTrainCommand;
-import frc.robot.commands.IntakeTeleop;
-import frc.robot.commands.ToggleGearShifter;
+import frc.robot.commands.*;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.QuadEncoder;
@@ -71,6 +69,8 @@ public class RobotContainer {
     private OI oi;
     private TitanButton btnToggleShifter;
     private TitanButton btnToggleIntake;
+    private TitanButton btnToggleHopperIntake;
+    private TitanButton btnToggleHopperExpel;
 
 
     /**
@@ -132,7 +132,8 @@ public class RobotContainer {
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
-        btnToggleIntake.whileHeld()
+        btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
+        btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
     }
 
