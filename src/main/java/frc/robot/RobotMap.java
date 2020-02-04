@@ -26,7 +26,7 @@ public final class RobotMap {
     public static final int INTAKE_SOLENOID = 1; // todo find actual values for solenoids
     public static final int GEAR_SHIFT_SOLENOID = 2;
 
-    public static final int HOPPER = 8; // victor
+    public static final int HOPPER_MOTOR = 8; // victor
     public static final int HOOD = 9; // victor
     public static final int FLYWHEEL1 = 10;
     public static final int FLYWHEEL2 = 11; // victor

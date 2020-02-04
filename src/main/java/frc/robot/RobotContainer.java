@@ -100,7 +100,7 @@ public class RobotContainer {
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
         intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
-        hopperMotor = new TitanSRX(RobotMap.HOPPER, RobotMap.REVERSED_HOPPER_MOTOR);
+        hopperMotor = new TitanSRX(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
         hopper = new HopperSubsystem(hopperMotor);
@@ -132,6 +132,7 @@ public class RobotContainer {
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+        btnToggleIntake.whileHeld()
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
     }
 
