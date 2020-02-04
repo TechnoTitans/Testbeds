@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -16,11 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.DriveTrainCommand;
-import frc.robot.commands.IntakeTeleop;
-import frc.robot.commands.ToggleGearShifter;
-import frc.robot.commands.ToggleIntake;
+import frc.robot.commands.*;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.sensors.QuadEncoder;
@@ -65,6 +60,7 @@ public class RobotContainer {
     public DriveTrainCommand driveTrainCommand;
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
+    public RotateTurretTeleop rotateTurretTeleop;
 
 
     private CommandBase autonomousCommand;
@@ -72,7 +68,11 @@ public class RobotContainer {
     private OI oi;
     private TitanButton btnToggleShifter;
     private TitanButton btnToggleIntake;
-
+    private TitanButton btnHoodDown;
+    private TitanButton btnHoodUp;
+    private TitanButton btnTurretLeft;
+    private TitanButton btnTurretRight;
+    private TitanButton btnShoot;
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -104,11 +104,11 @@ public class RobotContainer {
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
 
-        // MARK - command nitialization
+        // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
-
+        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxLeft, oi::getXboxRight, turret);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
 
@@ -132,6 +132,8 @@ public class RobotContainer {
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
+        btnShoot = new TitanButton(oi.getXbox(), OI.BTNNUM_SHOOT);
+
     }
 
 

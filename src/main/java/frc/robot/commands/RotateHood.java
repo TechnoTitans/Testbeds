@@ -6,11 +6,9 @@ import frc.robot.subsystems.TurretSubsystem;
 
 
 public class RotateHood extends CommandBase {
-    private double speed;
     private double angle;
     private TurretSubsystem turret;
-    public RotateHood(double speed, double angle, TurretSubsystem turret) {
-        this.speed = speed;
+    public RotateHood(double angle, TurretSubsystem turret) {
         this.angle = angle; // calculations here to convert angle into encoders
         this.turret = turret;
         addRequirements(turret);
