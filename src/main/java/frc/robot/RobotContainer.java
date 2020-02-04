@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -16,13 +15,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.commands.IntakeTeleop;
 import frc.robot.commands.ToggleGearShifter;
-import frc.robot.commands.ToggleIntake;
-import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
+import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
@@ -48,9 +45,11 @@ public class RobotContainer {
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     private TitanSRX intakeMotor;
+    private TitanSRX hopperMotor;
 
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
+	public HopperSubsystem hopper;
     private TitanFX leftFrontMotorFX;
     private TitanFX leftBackMotorFX;
     private TitanFX rightFrontMotorFX;
@@ -101,8 +100,10 @@ public class RobotContainer {
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
         intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
+        hopperMotor = new TitanSRX(RobotMap.HOPPER, RobotMap.REVERSED_HOPPER_MOTOR);
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
+        hopper = new HopperSubsystem(hopperMotor);
 
         // MARK - command nitialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
