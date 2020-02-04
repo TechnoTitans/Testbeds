@@ -61,18 +61,15 @@ public class RobotContainer {
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
     public RotateTurretTeleop rotateTurretTeleop;
-
+    public ShootTeleop shootTeleop;
 
     private CommandBase autonomousCommand;
 
     private OI oi;
     private TitanButton btnToggleShifter;
     private TitanButton btnToggleIntake;
-    private TitanButton btnHoodDown;
-    private TitanButton btnHoodUp;
-    private TitanButton btnTurretLeft;
-    private TitanButton btnTurretRight;
-    private TitanButton btnShoot;
+    private TitanButton btnIncreaseShooterSpeed;
+    private TitanButton btnDecreaseShooterSpeed;
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -111,10 +108,10 @@ public class RobotContainer {
         rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxLeft, oi::getXboxRight, turret);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
-
-
         // Configure the button bindings
         configureButtonBindings();
+
+        shootTeleop = new ShootTeleop(btnIncreaseShooterSpeed, btnDecreaseShooterSpeed, turret);
 
     }
 
@@ -132,8 +129,8 @@ public class RobotContainer {
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
-        btnShoot = new TitanButton(oi.getXbox(), OI.BTNNUM_SHOOT);
-
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
     }
 
 

@@ -8,11 +8,8 @@ public class OI {
 
 	public static final int BTNNUM_TOGGLE_SHIFTER = 4;
 	public static final int BTNNUM_TOGGLE_INTAKE = 5;
-	public static final int BTNNUM_HOOD_DOWN = 6;
-	public static final int BTNNUM_HOOD_UP = 7;
-	public static final int BTNNUM_TURRET_LEFT = 8;
-	public static final int BTNNUM_TURRET_RIGHT = 9;
-	public static final int BTNNUM_SHOOT = 10;
+	public static final int BTNNUM_INCREASE_SHOOT_SPEED = 6;
+	public static final int BTNNUM_DECREASE_SHOOT_SPEED = 7;
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;
 	private static final double percentDeadbandThreshold = 0.1;
