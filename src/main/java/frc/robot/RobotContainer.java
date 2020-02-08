@@ -77,7 +77,7 @@ public class RobotContainer {
     public RobotContainer() {
 
         oi = new OI();
-        shootMotor = new TitanSRX(0, false);
+        shootMotor = new TitanSRX(RobotMap.FLYWHEEL1, false);
         zMotor = new TitanSRX(0, false);
         hoodMotor = new TitanSRX(0, false);
         beltMotor = new TitanSRX(0, false);
