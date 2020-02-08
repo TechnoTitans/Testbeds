@@ -25,10 +25,19 @@ public class ShootTeleop extends CommandBase {
     @Override
     public void execute() {
         if (increaseSpeedButton.isPressed()){
-            speed += 0.1;
+            if (speed < 0.9){
+                speed += 0.1;
+            } else {
+                speed = 1;
+            }
         }
         if (decreaseSpeedButton.isPressed()){
-            speed -= 0.1;
+            if (speed > 0.1) {
+                speed -= 0.1;
+            }
+            else {
+                speed = 0;
+            }
         }
         turret.setShooter(speed);
     }
