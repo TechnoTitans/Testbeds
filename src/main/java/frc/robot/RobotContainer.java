@@ -109,7 +109,7 @@ public class RobotContainer {
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
-        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxLeft, oi::getXboxRight, turret);
+        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxLeft, oi::getXboxRight, turret, true);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
         // Configure the button bindings
