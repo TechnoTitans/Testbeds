@@ -41,6 +41,7 @@ public class TurretSubsystem extends SubsystemBase{
         this.beltLimitSwitch = beltLimitSwitch;
         zMotorPID = new PIDController(0, 0, 0);
         hoodPID = new PIDController(0, 0, 0);
+
     }
     public void setShooter(double speed){
         shooter.set(speed);

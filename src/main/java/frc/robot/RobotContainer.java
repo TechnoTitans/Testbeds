@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -16,11 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.DriveTrainCommand;
-import frc.robot.commands.IntakeTeleop;
-import frc.robot.commands.ToggleGearShifter;
-import frc.robot.commands.ToggleIntake;
+import frc.robot.commands.*;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanVictor;
@@ -67,14 +62,16 @@ public class RobotContainer {
     public DriveTrainCommand driveTrainCommand;
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
-
+    public RotateTurretTeleop rotateTurretTeleop;
+    public ShootTeleop shootTeleop;
 
     private CommandBase autonomousCommand;
 
     private OI oi;
     private TitanButton btnToggleShifter;
     private TitanButton btnToggleIntake;
-
+    private TitanButton btnIncreaseShooterSpeed;
+    private TitanButton btnDecreaseShooterSpeed;
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -112,13 +109,13 @@ public class RobotContainer {
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
-
+        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxLeft, oi::getXboxRight, turret);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
-
-
 
         // Configure the button bindings
         configureButtonBindings();
+
+        shootTeleop = new ShootTeleop(btnIncreaseShooterSpeed, btnDecreaseShooterSpeed, turret);
 
     }
 
@@ -136,6 +133,8 @@ public class RobotContainer {
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
     }
 
 
