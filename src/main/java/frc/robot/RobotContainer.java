@@ -82,12 +82,12 @@ public class RobotContainer {
     public RobotContainer() {
 
         oi = new OI();
-        shootMotor = new TitanSRX(0, false);
-        subShootMotor = new TitanVictor(0, false);
+        shootMotor = new TitanSRX(RobotMap.FLYWHEEL1, RobotMap.REVERSED_FLYWHEEL1);
+        subShootMotor = new TitanVictor(RobotMap.FLYWHEEL2, RobotMap.REVERSED_FLYWHEEL2);
         subShootMotor.follow(shootMotor);
-        zMotor = new TitanSRX(0, false);
-        hoodMotor = new TitanSRX(0, false);
-        beltMotor = new TitanSRX(0, false);
+        zMotor = new TitanSRX(RobotMap.TURRET_ROTATION, RobotMap.REVERSED_TURRET_ROTATION);
+        hoodMotor = new TitanSRX(RobotMap.HOOD, RobotMap.REVERSED_HOOD);
+        beltMotor = new TitanSRX(RobotMap.FEEDER, RobotMap.REVERSED_FEEDER);
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
         beltLimitSwitch = new DigitalInput(0);
         turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
