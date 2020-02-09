@@ -45,9 +45,12 @@ public class RobotContainer {
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     private TitanVictor intakeMotor;
+    private TitanSRX hopperMotor;
 
+  
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
+	public HopperSubsystem hopper;
     private TitanFX leftFrontMotorFX;
     private TitanFX leftBackMotorFX;
     private TitanFX rightFrontMotorFX;
@@ -72,6 +75,9 @@ public class RobotContainer {
     private TitanButton btnToggleIntake;
     private TitanButton btnIncreaseShooterSpeed;
     private TitanButton btnDecreaseShooterSpeed;
+    private TitanButton btnToggleHopperIntake;
+    private TitanButton btnToggleHopperExpel;
+
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -99,11 +105,13 @@ public class RobotContainer {
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
-
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);      
         intakeMotor = new TitanVictor(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
+        hopperMotor = new TitanSRX(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
+
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
+        hopper = new HopperSubsystem(hopperMotor);
 
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
@@ -132,6 +140,8 @@ public class RobotContainer {
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+        btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
+        btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
