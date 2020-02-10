@@ -28,11 +28,17 @@ public final class RobotMap {
 
     public static final int HOPPER_MOTOR = 8; // victor
     public static final int HOOD = 9; // victor
+    public static final boolean REVERSED_HOOD = false;
     public static final int FLYWHEEL1 = 10;
+    public static final boolean REVERSED_FLYWHEEL1 = false;
     public static final int FLYWHEEL2 = 11; // victor
+    public static final boolean REVERSED_FLYWHEEL2 = false;
+    public static final int TURRET_ROTATION = 12;
+    public static final boolean REVERSED_TURRET_ROTATION = false;
+    public static final int FEEDER = 13; // victor
+    public static final boolean REVERSED_FEEDER = false;
 
-
-    public static final int WINCH_MOTOR = 8;
+    public static final int WINCH_MOTOR = 0;
 
     // Left TalonFX
     public static final int LEFT_TALON_FRONT = 4, LEFT_TALON_BACK = 3;

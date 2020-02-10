@@ -10,18 +10,19 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.TitanSRX;
+import frc.robot.motor.TitanVictor;
 
 public class IntakeSubsystem extends SubsystemBase {
 	private final Solenoid piston;
 	/**
 	 * Creates a new ExampleSubsystem.
 	 */
-	private TitanSRX intakeMotor;
+	private TitanVictor intakeMotor;
 
 	private static final double EXPEL_SPEED = 1;
 	private static final double INTAKE_SPEED = -1;
 
-	public IntakeSubsystem(TitanSRX intakeMotor, Solenoid piston) {
+	public IntakeSubsystem(TitanVictor intakeMotor, Solenoid piston) {
 		this.intakeMotor = intakeMotor;
 		this.piston = piston;
 	}

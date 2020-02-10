@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
 		robotContainer = new RobotContainer();
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.shootTeleop);
 	}
 
 	/**

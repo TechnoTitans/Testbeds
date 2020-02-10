@@ -16,8 +16,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.*;
-import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
+import frc.robot.motor.TitanFX;
+import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
@@ -38,13 +39,15 @@ public class RobotContainer {
     private final Solenoid intakeSolenoid;
 
     private TitanSRX shootMotor;
+    private TitanVictor subShootMotor;
     private TitanSRX zMotor;
     private TitanSRX hoodMotor;
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
-    private TitanSRX intakeMotor;
+    private TitanVictor intakeMotor;
     private TitanSRX hopperMotor;
 
+  
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
 	public HopperSubsystem hopper;
@@ -62,13 +65,16 @@ public class RobotContainer {
     public DriveTrainCommand driveTrainCommand;
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
-
+    public RotateTurretTeleop rotateTurretTeleop;
+    public ShootTeleop shootTeleop;
 
     private CommandBase autonomousCommand;
 
     private OI oi;
     private TitanButton btnToggleShifter;
     private TitanButton btnToggleIntake;
+    private TitanButton btnIncreaseShooterSpeed;
+    private TitanButton btnDecreaseShooterSpeed;
     private TitanButton btnToggleHopperIntake;
     private TitanButton btnToggleHopperExpel;
 
@@ -79,13 +85,15 @@ public class RobotContainer {
     public RobotContainer() {
 
         oi = new OI();
-        shootMotor = new TitanSRX(0, false);
-        zMotor = new TitanSRX(0, false);
-        hoodMotor = new TitanSRX(0, false);
-        beltMotor = new TitanSRX(0, false);
+        shootMotor = new TitanSRX(RobotMap.FLYWHEEL1, RobotMap.REVERSED_FLYWHEEL1);
+        subShootMotor = new TitanVictor(RobotMap.FLYWHEEL2, RobotMap.REVERSED_FLYWHEEL2);
+        subShootMotor.follow(shootMotor);
+        zMotor = new TitanSRX(RobotMap.TURRET_ROTATION, RobotMap.REVERSED_TURRET_ROTATION);
+        hoodMotor = new TitanSRX(RobotMap.HOOD, RobotMap.REVERSED_HOOD);
+        beltMotor = new TitanSRX(RobotMap.FEEDER, RobotMap.REVERSED_FEEDER);
         zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
         beltLimitSwitch = new DigitalInput(0);
-        turret = new TurretSubsystem(shootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
+        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
         spinningMotor = new TitanSRX(0, false);
         colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
         controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -97,25 +105,25 @@ public class RobotContainer {
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
-
-        intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);      
+        intakeMotor = new TitanVictor(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
         hopperMotor = new TitanSRX(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
+
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
         hopper = new HopperSubsystem(hopperMotor);
 
-        // MARK - command nitialization
+        // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
-
+        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxRight, oi::getXboxLeft, turret, true);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
-
-
 
         // Configure the button bindings
         configureButtonBindings();
+
+        shootTeleop = new ShootTeleop(btnIncreaseShooterSpeed, btnDecreaseShooterSpeed, turret);
 
     }
 
@@ -135,6 +143,15 @@ public class RobotContainer {
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+
+        btnIncreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
+            turret.setSpeedSetpoint(turret.getSpeedSetpoint() + 0.1);
+        }, turret));
+        btnDecreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
+            turret.setSpeedSetpoint(turret.getSpeedSetpoint() - 0.1);
+        }, turret));
     }
 
 
