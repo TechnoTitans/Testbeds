@@ -47,6 +47,10 @@ public class RotateTurretTeleop extends CommandBase {
             turret.setZMotor(zFilter.getValue());
             turret.setHood(hoodFilter.getValue());
         }
+        else {
+            turret.setZMotor(zMotorInput.getAsDouble());
+            turret.setHood(hoodMotorInput.getAsDouble());
+        }
     }
 
     @Override

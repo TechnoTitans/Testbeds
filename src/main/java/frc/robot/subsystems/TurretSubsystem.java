@@ -8,7 +8,7 @@ import frc.robot.motor.TitanSRX;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanVictor;
 
-public class TurretSubsystem extends SubsystemBase{
+public class TurretSubsystem extends SubsystemBase {
 
 // Any variables/fields used in the constructor must appear before the "INSTANCE" variable
 // so that they are initialized before the constructor is called.
@@ -28,6 +28,9 @@ public class TurretSubsystem extends SubsystemBase{
     private TitanVictor subShoot;
     private PIDController zMotorPID, hoodPID;
     private DigitalInput beltLimitSwitch;
+
+    private double manualSpeedSetpoint;
+
     public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, TitanSRX belt, DigitalInput beltLimitSwitch) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
@@ -43,42 +46,61 @@ public class TurretSubsystem extends SubsystemBase{
         hoodPID = new PIDController(0, 0, 0);
 
     }
-    public void setShooter(double speed){
+
+    public void setShooter(double speed) {
         shooter.set(speed);
     }
 
-    public void setSubShoot(double speed){
+    public void setSubShoot(double speed) {
         subShoot.set(speed);
     }
 
-    public void setZMotor(double speed){
+    public void setZMotor(double speed) {
         zMotor.set(speed);
     }
 
-    public void setHood(double speed){
+    public void setHood(double speed) {
         hood.set(speed);
     }
 
-    public void setBelt(double speed){
+    public void setBelt(double speed) {
         belt.set(speed);
     }
 
-    public Encoder getZMotorEncoder(){
+    public Encoder getZMotorEncoder() {
         return zMotor.getEncoder();
     }
-    public Encoder getHoodEncoder(){
+
+    public Encoder getHoodEncoder() {
         return hood.getEncoder();
     }
-    public PIDController getZMotorPID(){
+
+    public PIDController getZMotorPID() {
         return zMotorPID;
     }
-    public PIDController getHoodPID(){
+
+    public PIDController getHoodPID() {
         return hoodPID;
     }
-    public DigitalInput getBeltLimitSwitch(){
+
+    public DigitalInput getBeltLimitSwitch() {
         return beltLimitSwitch;
     }
 
+    public void setSpeedSetpoint(double speed) {
+        if (speed >= 1) {
+            speed = 1;
+        } else if (speed <= -1) {
+            speed = -1;
+        }
+        manualSpeedSetpoint = speed;
+
+
+    }
+
+    public double getSpeedSetpoint() {
+        return manualSpeedSetpoint;
+    }
 
     /**
      * Returns the Singleton instance of this TurretSubsystem. This static method

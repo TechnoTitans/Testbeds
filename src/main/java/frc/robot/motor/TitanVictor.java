@@ -67,7 +67,7 @@ public class TitanVictor extends com.ctre.phoenix.motorcontrol.can.VictorSPX imp
 
     @Override
     public boolean hasEncoder() {
-        return false;
+        return !(this.encoder == null);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class TitanVictor extends com.ctre.phoenix.motorcontrol.can.VictorSPX imp
 
     @Override
     public double getCurrent() {
-        return 0;
+        return -999;
     }
     // Apparently getStatorCurrent() only works for Talons or something, idk how to fix this
 

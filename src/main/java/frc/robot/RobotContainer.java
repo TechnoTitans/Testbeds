@@ -117,7 +117,7 @@ public class RobotContainer {
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
-        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxLeft, oi::getXboxRight, turret, true);
+        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxRight, oi::getXboxLeft, turret, true);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
         // Configure the button bindings
@@ -145,6 +145,13 @@ public class RobotContainer {
 //        btnToggleIntake.whenPressed(new ToggleIntake(intake));
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+
+        btnIncreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
+            turret.setSpeedSetpoint(turret.getSpeedSetpoint() + 0.1);
+        }, turret));
+        btnDecreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
+            turret.setSpeedSetpoint(turret.getSpeedSetpoint() - 0.1);
+        }, turret));
     }
 
 

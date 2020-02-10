@@ -39,7 +39,7 @@ public class OI {
 	}
 
 	public double getXboxRight() {
-		return xbox.getY(Hand.kRight);
+		return xbox.getX(Hand.kRight);
 	}
 
 	public XboxController getXbox() {

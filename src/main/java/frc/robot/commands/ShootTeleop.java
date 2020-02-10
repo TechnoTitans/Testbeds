@@ -24,22 +24,25 @@ public class ShootTeleop extends CommandBase {
 
     @Override
     public void execute() {
-        if (increaseSpeedButton.isPressed()){
-            if (speed < 0.9){
-                speed += 0.1;
-            } else {
-                speed = 1;
-            }
-        }
-        if (decreaseSpeedButton.isPressed()){
-            if (speed > 0.1) {
-                speed -= 0.1;
-            }
-            else {
-                speed = 0;
-            }
-        }
-        turret.setShooter(speed);
+//        if (increaseSpeedButton.isPressed()){
+//            if (speed < 0.9){
+//                speed += 0.1;
+//            } else {
+//                speed = 1;
+//            }
+//        }
+//        if (decreaseSpeedButton.isPressed()){
+//            if (speed > 0.1) {
+//                speed -= 0.1;
+//            }
+//            else {
+//                speed = 0;
+//            }
+//        }
+//        turret.setShooter(speed);
+        turret.setShooter(turret.getSpeedSetpoint());
+
+
     }
 
     @Override
