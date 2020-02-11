@@ -113,6 +113,8 @@ public class RobotContainer {
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
         hopper = new HopperSubsystem(hopperMotor);
 
+        shootMotor.setupCurrentLimiting();
+        
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
