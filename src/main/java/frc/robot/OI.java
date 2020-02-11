@@ -42,6 +42,10 @@ public class OI {
 		return xbox.getX(Hand.kRight);
 	}
 
+	public double getXboxLeftTrigger() {
+		return xbox.getTriggerAxis(Hand.kLeft);
+	}
+
 	public XboxController getXbox() {
 		return xbox;
 	}

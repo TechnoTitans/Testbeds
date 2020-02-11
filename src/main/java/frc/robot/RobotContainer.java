@@ -116,7 +116,7 @@ public class RobotContainer {
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
-        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
+        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftTrigger , intake);
         rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxRight, oi::getXboxLeft, turret, true);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
