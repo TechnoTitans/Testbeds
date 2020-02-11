@@ -44,7 +44,7 @@ public class RobotContainer {
     private TitanSRX hoodMotor;
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
-    private TitanVictor intakeMotor;
+    private TitanSRX intakeMotor;
     private TitanSRX hopperMotor;
 
   
@@ -106,7 +106,7 @@ public class RobotContainer {
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);      
-        intakeMotor = new TitanVictor(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
+        intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
         hopperMotor = new TitanSRX(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
 
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
@@ -114,6 +114,7 @@ public class RobotContainer {
         hopper = new HopperSubsystem(hopperMotor);
 
         shootMotor.setupCurrentLimiting();
+        intakeMotor.setupCurrentLimiting();
 
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
