@@ -114,7 +114,7 @@ public class RobotContainer {
         hopper = new HopperSubsystem(hopperMotor);
 
         shootMotor.setupCurrentLimiting();
-        
+
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
@@ -138,13 +138,13 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
-//        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
+        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
-//        btnToggleIntake.whenPressed(new ToggleIntake(intake));
+        btnToggleIntake.whenPressed(new ToggleIntake(intake));
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
 
