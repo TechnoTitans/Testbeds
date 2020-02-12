@@ -45,7 +45,7 @@ public class RobotContainer {
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     private TitanVictor intakeMotor;
-    private TitanSRX hopperMotor;
+    private TitanVictor hopperMotor;
 
   
     private ColorSensorV3 colorSensor;
@@ -105,12 +105,13 @@ public class RobotContainer {
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);      
-        intakeMotor = new TitanVictor(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
-        hopperMotor = new TitanSRX(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
+        intakeMotor = new TitanVictor(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
         intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
+
+        hopperMotor = new TitanVictor(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
         hopper = new HopperSubsystem(hopperMotor);
 
         // MARK - command initialization
@@ -122,8 +123,8 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        shootTeleop = new ShootTeleop(turret);
 
-        shootTeleop = new ShootTeleop(btnIncreaseShooterSpeed, btnDecreaseShooterSpeed, turret);
 
     }
 
@@ -136,15 +137,16 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
-//        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
+        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
-//        btnToggleIntake.whenPressed(new ToggleIntake(intake));
-        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
-        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+        btnToggleIntake.whenPressed(new ToggleIntake(intake));
+
 
         btnIncreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
             turret.setSpeedSetpoint(turret.getSpeedSetpoint() + 0.1);

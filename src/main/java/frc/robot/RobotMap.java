@@ -20,13 +20,24 @@ import edu.wpi.first.wpilibj.I2C;
 public final class RobotMap {
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
+
+    // PCM Numbers
+    public static final int GEAR_SHIFT_SOLENOID = 0;
+    public static final int INTAKE_SOLENOID = 1;
+    public static final int FALCON_COOLING_PORT = 2;
+
+    //  Can Motor IDS
+
+    public static final int LEFT_TALON_FRONT = 4, LEFT_TALON_BACK = 3;
+    public static final boolean REVERSED_LF_TALON = true, REVERSED_LB_TALON = true;
+
+    public static final int RIGHT_TALON_FRONT = 5, RIGHT_TALON_BACK = 6;
+    public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
+
     public static final int INTAKE_MOTOR = 7; // victor
     public static final boolean REVERSED_INTAKE_MOTOR = false;
-    public static final boolean REVERSED_HOPPER_MOTOR = false;
-    public static final int INTAKE_SOLENOID = 1; // todo find actual values for solenoids
-    public static final int GEAR_SHIFT_SOLENOID = 2;
-
     public static final int HOPPER_MOTOR = 8; // victor
+    public static final boolean REVERSED_HOPPER_MOTOR = false;
     public static final int HOOD = 9; // victor
     public static final boolean REVERSED_HOOD = false;
     public static final int FLYWHEEL1 = 10;
@@ -40,14 +51,8 @@ public final class RobotMap {
 
     public static final int WINCH_MOTOR = 0;
 
-    // Left TalonFX
-    public static final int LEFT_TALON_FRONT = 4, LEFT_TALON_BACK = 3;
-    public static final boolean REVERSED_LF_TALON = true, REVERSED_LB_TALON = true;
 
-    // Right TalonFX
-    public static final int RIGHT_TALON_FRONT = 5, RIGHT_TALON_BACK = 6;
-    public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
-
+    // Joysticks
     public static final int LEFT_JOYSTICK = 0;
     public static final int RIGHT_JOYSTICK = 1;
     public static final int AUX_JOYSTICK_1 = 2;
