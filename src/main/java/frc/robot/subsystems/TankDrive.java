@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanFX;
 
@@ -145,7 +146,7 @@ public class TankDrive extends DriveTrain {
     public void toggleShifter() {
         boolean currentStatus = this.getShifterEnabled();
         this.setShifter(!currentStatus);
-        this.setShifter(true);
+//        this.setShifter(true);
     }
 
 

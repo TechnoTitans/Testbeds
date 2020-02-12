@@ -30,13 +30,14 @@ public class RobotContainer {
     private final Compressor compressor;
     private final TitanVictor feederMotor;
     private final FeederSubsystem feeder;
+    public final Solenoid titanFXCoolingPiston;
 
     // Declare the robot's components here
 
     // The robot's subsystems and commands are defined here...
     private DigitalInput beltLimitSwitch;
-    private Solenoid shifterSolenoid;
-    private final Solenoid intakeSolenoid;
+    public Solenoid shifterSolenoid;
+    public final Solenoid intakeSolenoid;
 
     private TitanSRX shootMotor;
     private TitanVictor subShootMotor;
@@ -86,7 +87,7 @@ public class RobotContainer {
     public RobotContainer() {
 
         oi = new OI();
-        compressor = new Compressor(2);
+        compressor = new Compressor(RobotMap.COMPRESSOR_ID);
 
         shootMotor = new TitanSRX(RobotMap.FLYWHEEL1, RobotMap.REVERSED_FLYWHEEL1);
         subShootMotor = new TitanVictor(RobotMap.FLYWHEEL2, RobotMap.REVERSED_FLYWHEEL2);
@@ -107,11 +108,11 @@ public class RobotContainer {
         rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
-        shifterSolenoid = new Solenoid(RobotMap.GEAR_SHIFT_SOLENOID);
+        shifterSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
         intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
-        intakeSolenoid = new Solenoid(RobotMap.INTAKE_SOLENOID);
+        intakeSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.INTAKE_SOLENOID);
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
 
         hopperMotor = new TitanVictor(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
@@ -119,6 +120,8 @@ public class RobotContainer {
 
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
+
+        titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
 
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);

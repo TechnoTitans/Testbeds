@@ -39,6 +39,8 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.shootTeleop);
+//		robotContainer.driveTrain.setShifter(true);
+
 	}
 
 	/**
@@ -56,6 +58,12 @@ public class Robot extends TimedRobot {
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
 
+		SmartDashboard.putData(robotContainer.shifterSolenoid);
+		SmartDashboard.putData(robotContainer.intakeSolenoid);
+		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
+//		robotContainer.shifterSolenoid.set(true);
+//		robotContainer.intakeSolenoid.set(true);
+//		robotContainer.titanFXCoolingPiston.set(true);
 		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeft());
 		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeft());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
