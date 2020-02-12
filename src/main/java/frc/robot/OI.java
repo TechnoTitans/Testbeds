@@ -35,7 +35,7 @@ public class OI {
 	}
 
 	public double getXboxLeft() {
-		return xbox.getY(Hand.kLeft);
+		return -xbox.getY(Hand.kLeft);
 	}
 
 	public double getXboxRight() {
