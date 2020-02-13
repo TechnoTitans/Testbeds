@@ -26,19 +26,23 @@ public class OI {
 
 
 	// todo verify this works
-	public double getLeft() {
+	public double getLeftJoyY() {
 		return leftJoystick.getY();
 	}
 
-	public double getRight() {
+	public double getRightJoyY() {
 		return rightJoystick.getY();
 	}
 
-	public double getXboxLeft() {
+	public double getXboxLeftY() {
 		return -xbox.getY(Hand.kLeft);
 	}
 
-	public double getXboxRight() {
+	public double getXboxRightY() {
+		return xbox.getY(Hand.kRight);
+	}
+
+	public double getXboxRightX() {
 		return xbox.getX(Hand.kRight);
 	}
 

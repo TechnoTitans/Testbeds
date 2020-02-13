@@ -27,10 +27,15 @@ import frc.robot.subsystems.*;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
     private final Compressor compressor;
     private final TitanVictor feederMotor;
     private final FeederSubsystem feeder;
     public final Solenoid titanFXCoolingPiston;
+
+    public final QuadEncoder zMotorEncoder;
+    public final QuadEncoder hoodMotorEncoder;
+    public final QuadEncoder shootMotorEncoder;
 
     // Declare the robot's components here
 
@@ -52,10 +57,10 @@ public class RobotContainer {
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
 	public HopperSubsystem hopper;
-    private TitanFX leftFrontMotorFX;
-    private TitanFX leftBackMotorFX;
-    private TitanFX rightFrontMotorFX;
-    private TitanFX rightBackMotorFX;
+    public TitanFX leftFrontMotorFX;
+    public TitanFX leftBackMotorFX;
+    public TitanFX rightFrontMotorFX;
+    public TitanFX rightBackMotorFX;
 
     // MARK - Subsystem Declarations
     public TurretSubsystem turret;
@@ -66,8 +71,7 @@ public class RobotContainer {
     public DriveTrainCommand driveTrainCommand;
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
-    public RotateTurretTeleop rotateTurretTeleop;
-    public ShootTeleop shootTeleop;
+    public TurretTeleop turretTeleop;
 
     private CommandBase autonomousCommand;
 
@@ -95,7 +99,16 @@ public class RobotContainer {
         zMotor = new TitanSRX(RobotMap.TURRET_ROTATION, RobotMap.REVERSED_TURRET_ROTATION);
         hoodMotor = new TitanSRX(RobotMap.HOOD, RobotMap.REVERSED_HOOD);
         beltMotor = new TitanSRX(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
-        zMotor.setEncoder(new QuadEncoder(zMotor, 0, false));
+
+        zMotorEncoder = new QuadEncoder(zMotor, 0, false);
+        zMotor.setEncoder(zMotorEncoder);
+
+        hoodMotorEncoder = new QuadEncoder(hoodMotor, 0, false);
+        hoodMotor.setEncoder(hoodMotorEncoder);
+
+        shootMotorEncoder = new QuadEncoder(shootMotor, 0, false); // todo rename shootmotor to flywheel motor
+        shootMotor.setEncoder(shootMotorEncoder);
+
         beltLimitSwitch = new DigitalInput(0);
         turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
         spinningMotor = new TitanSRX(0, false);
@@ -124,15 +137,14 @@ public class RobotContainer {
         titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
 
         // MARK - command initialization
-        driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
+        driveTrainCommand = new DriveTrainCommand(oi::getLeftJoyY, oi::getRightJoyY, driveTrain, true);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
-        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeft , intake);
-        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxRight, oi::getXboxLeft, turret, true);
+        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake);
+        turretTeleop = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
         // Configure the button bindings
         configureButtonBindings();
-        shootTeleop = new ShootTeleop(turret);
 
     }
 
@@ -145,9 +157,9 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
-        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
         btnToggleHopperIntake = new TitanButton(oi.leftJoystick, 6);
         btnToggleHopperExpel = new TitanButton(oi.leftJoystick, 7);
+        btnToggleIntake = new TitanButton(oi.getXbox(), 1);
         btnFeederExpel = new TitanButton(oi.getXbox(), 3);
 
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
@@ -155,9 +167,9 @@ public class RobotContainer {
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+        btnToggleIntake.whenPressed(new ToggleIntake(intake));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
-        btnToggleIntake.whenPressed(new ToggleIntake(intake));
 
         btnFeederExpel.whileHeld(new FeedBall(feeder));
 
