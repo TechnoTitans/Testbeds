@@ -61,9 +61,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(robotContainer.shifterSolenoid);
 		SmartDashboard.putData(robotContainer.intakeSolenoid);
 		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
-//		robotContainer.shifterSolenoid.set(true);
-//		robotContainer.intakeSolenoid.set(true);
-//		robotContainer.titanFXCoolingPiston.set(true);
 		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeft());
 		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeft());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
