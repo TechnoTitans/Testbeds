@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanFX;
@@ -19,7 +20,7 @@ public class TankDrive extends DriveTrain {
     private Gyro gyro;
     private Solenoid shifterSolenoid;
 
-
+    private PIDController drivePID;
     //TankDrive setup
 
     public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Solenoid shifterSolenoid) {
@@ -31,6 +32,11 @@ public class TankDrive extends DriveTrain {
         this.right = rightTalonFX;
         this.gyro = gyro;
         this.shifterSolenoid = shifterSolenoid;
+        this.drivePID = new PIDController(0, 0,0);
+    }
+
+    public PIDController getPID(){
+        return drivePID;
     }
 
     //set the speed the motors
