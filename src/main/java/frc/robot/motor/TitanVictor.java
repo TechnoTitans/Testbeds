@@ -3,16 +3,11 @@ package frc.robot.motor;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.motor.Encoder;
 
-/*
- * Motor control (talonSRX)
- */
-public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX implements Motor {
+public class TitanVictor extends com.ctre.phoenix.motorcontrol.can.VictorSPX implements Motor{
 
     private Encoder encoder;
     private static final int TIMEOUT_MS = 30;
@@ -21,50 +16,41 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
     public static final int CURRENT_LIMIT_THRESHOLD = 41;
     public static final int LIMIT_TIMEOUT = 200; //ms
 
-    private TitanSRX brownoutFollower = null;
+    private TitanVictor brownoutFollower = null;
     private boolean brownout = false;
-
-    /**
-     * Constructor for a TalonSRX motor
-     *
-     * @param channel
-     *            The port where the TalonSRX is plugged in.
-     * @param reversed
-     *            If the TalonSRX should invert the signal.
-     */
-    public TitanSRX(int channel, boolean reversed) {
-        super(channel);
-        super.setInverted(reversed);
-    }
 
     /**
      * Constructor
      *
-     * @param channel
-     *            The port where the TalonSRX is plugged in.
-     * @param reversed
-     *            If the TalonSRX should invert the signal.
-     * @param encoder
-     *            Encoder to attach to this TalonSRX.
+     *
      */
-    public TitanSRX(int channel, boolean reversed, Encoder encoder) {
+    public TitanVictor(int channel, boolean reversed) {
         super(channel);
         super.setInverted(reversed);
-
-        this.encoder = encoder;
     }
 
-    /**
-     * Set the speed of the TalonSRX.
-     *
-     * @param speed
-     *            -- Speed from 0 to 1 (or negative for backwards)
-     */
     @Override
     public void set(double speed) {
         if (speed > 1) speed = 1;
         if (speed < -1) speed = -1;
         super.set(ControlMode.PercentOutput, speed);
+    }
+
+    @Override
+    public double getPercentSpeed() {
+        return super.getMotorOutputPercent();
+    }
+
+    @Override
+    public double getSpeed() {
+        if (!hasEncoder())
+            return 0;
+        return encoder.getSpeed();
+    }
+
+    @Override
+    public void stop() {
+        set(0);
     }
 
     @Override
@@ -81,7 +67,7 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
 
     @Override
     public boolean hasEncoder() {
-        return !(encoder == null);
+        return !(this.encoder == null);
     }
 
     @Override
@@ -104,47 +90,13 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
     }
 
     @Override
-    public double getPercentSpeed() {
-        return super.getMotorOutputPercent();
-    }
-
-    @Override
     public double getCurrent() {
-        return super.getStatorCurrent();
+        return -999;
     }
-
-    @Override
-    public double getSpeed() {
-        if (!hasEncoder())
-            return 0;
-        return encoder.getSpeed();
-    }
+    // Apparently getStatorCurrent() only works for Talons or something, idk how to fix this
 
     public double getError() {
         return super.getClosedLoopError(0);
-    }
-
-    @Override
-    public void stop() {
-        set(0);
-    }
-
-    public void follow(TitanSRX other) {
-        other.brownoutFollower = this;
-        this.set(ControlMode.Follower, other.getChannel());
-    }
-
-
-    public void setupCurrentLimiting() {
-
-        this.configContinuousCurrentLimit(CURRENT_LIMIT, 0);
-        this.configPeakCurrentLimit(CURRENT_LIMIT_THRESHOLD, 0);
-        this.configPeakCurrentDuration(LIMIT_TIMEOUT, 0);
-        this.enableCurrentLimit(true);
-    }
-
-    public void disableCurrentLimiting() {
-        this.enableCurrentLimit(false);
     }
 
     public void enableBrownoutProtection() {
@@ -178,13 +130,16 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
         configPeakOutputForward(1, TIMEOUT_MS);
         configPeakOutputReverse(-1, TIMEOUT_MS);
 
-        // MARK - PIDF stuff
+        // MARK - PID stuff
         selectProfileSlot(profileSlot, pidSlot);
         config_kF(profileSlot, F, TIMEOUT_MS);
         config_kP(profileSlot, P, TIMEOUT_MS);
         config_kI(profileSlot, I, TIMEOUT_MS);
         config_kD(profileSlot, D, TIMEOUT_MS);
         config_IntegralZone(profileSlot, iZone, TIMEOUT_MS);
+    }
+
+    private void setStatusFramePeriod(StatusFrameEnhanced status_10_motionMagic, int i, int timeoutMs) {
     }
 
     public void postEstimatedKf(String name) {

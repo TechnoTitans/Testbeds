@@ -1,30 +1,30 @@
 package frc.robot.motor;
 
-import frc.robot.sensors.Encoder;
+import frc.robot.motor.Encoder;
 
 public interface Motor {
 
-    void set(double speed);
+	void set(double speed);
 
-    double getPercentSpeed();
+	double getPercentSpeed();
 
-    double getSpeed();
+	double getSpeed();
 
-    void stop();
+	void stop();
 
-    void brake();
+	void brake();
 
-    void coast();
+	void coast();
 
-    boolean hasEncoder();
+	boolean hasEncoder();
 
-    Encoder getEncoder();
+	Encoder getEncoder();
 
-    // public void setBrakeMode(boolean enable);
+	// public void setBrakeMode(boolean enable);
 
-    int getChannel();
+	int getChannel();
 
-    boolean isReversed();
+	boolean isReversed();
 
-    double getCurrent();
+	double getCurrent();
 }

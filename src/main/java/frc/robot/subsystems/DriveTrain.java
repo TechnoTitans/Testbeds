@@ -4,8 +4,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.motors.Encoder;
-import frc.robot.motors.TitanFX;
+import frc.robot.motor.Encoder;
+import frc.robot.motor.TitanFX;
 
 public abstract class DriveTrain extends SubsystemBase {
 

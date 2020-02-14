@@ -8,13 +8,11 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class RotateTurret extends CommandBase {
     private double angle;
-    private double speed;
     private TurretSubsystem turret;
-    public RotateTurret(double angle, double speed, TurretSubsystem turret) {
+    public RotateTurret(double angle, TurretSubsystem turret) {
         addRequirements(turret);
         this.turret = turret;
         this.angle = angle; //calculations here to convert angle into encoder distance
-        this.speed = speed;
     }
 
     @Override

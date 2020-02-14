@@ -7,29 +7,35 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PWMTalonFX;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.TitanSRX;
+import frc.robot.motor.TitanVictor;
+import frc.robot.sensors.TitanButton;
 
 public class IntakeSubsystem extends SubsystemBase {
+	private final Solenoid piston;
 	/**
 	 * Creates a new ExampleSubsystem.
 	 */
 	private TitanSRX intakeMotor;
 
-	private static final double ExpelSpeed = 1;
-	private static final double IntakeSpeed = -1;
+	private static final double EXPEL_SPEED = 1;
+	private static final double INTAKE_SPEED = -1;
 
-	public IntakeSubsystem(TitanSRX intakeMotor) {
+	public IntakeSubsystem(TitanSRX intakeMotor, Solenoid piston) {
 		this.intakeMotor = intakeMotor;
+		this.piston = piston;
 	}
 
+	public void stop() { intakeMotor.set(0); }
+
 	public void expel() {
-		intakeMotor.set(ExpelSpeed);
+		intakeMotor.set(EXPEL_SPEED);
 	}
 
 	public void intake() {
-		intakeMotor.set(IntakeSpeed);
+		intakeMotor.set(INTAKE_SPEED);
 	}
 
 	public void setSpeed(double speed) {
@@ -42,5 +48,9 @@ public class IntakeSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 
+	}
+
+	public void togglePiston() {
+		this.piston.set(!this.piston.get());
 	}
 }
