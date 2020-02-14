@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanFX;
-import frc.robot.sensors.TitanGyro;
 
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends DriveTrain {
@@ -152,7 +152,9 @@ public class TankDrive extends DriveTrain {
     public void toggleShifter() {
         boolean currentStatus = this.getShifterEnabled();
         this.setShifter(!currentStatus);
+//        this.setShifter(true);
     }
+
 
 }
 
