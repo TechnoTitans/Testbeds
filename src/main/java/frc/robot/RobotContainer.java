@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.DriveTrainCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motors.TitanFX;
@@ -119,14 +120,21 @@ public class RobotContainer {
 
         TrajectoryConfig config = new TrajectoryConfig(0, 0).setKinematics(kinematics);
         Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
-                new Pose2d(0, 0, new Rotation2d(0)),
+                new Pose2d(0, 0, new Rotation2d(0)), //start
                 List.of(
                         new Translation2d(0, 0),
                         new Translation2d(0, 0)
                 ),
-                new Pose2d(0, 0, new Rotation2d(0)),
+                new Pose2d(0, 0, new Rotation2d(0)), //end
                 config
         );
+
+        RamseteCommand ramseteCommand = new RamseteCommand(
+                autoTrajectory,
+                driveTrain::getPose,
+
+
+        )
 
         return autonomousCommand;
     }
