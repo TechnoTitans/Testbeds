@@ -7,13 +7,10 @@
 
 package frc.robot;
 
-import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.TankDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +24,15 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer robotContainer;
 
+	// todo move to better place
+	// todo calc more accurate values
+	public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
+	public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772) / 45; // (pulses per degree)
+	public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40) / 1; // (pulses per rev)
+	public static final double DRIVETRAIN_PULSES_PER_INCH = 82763 / 100; // pulse per in
+
+	// todo reverse talonfx encoders by wrapping around
+
 	/**
 	 * This method is run when the robot is first started up and should be used for any
 	 * initialization code.
@@ -36,9 +42,16 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
+
+		robotContainer.hoodMotorEncoder.reset();
+		robotContainer.shootMotorEncoder.reset();
+		robotContainer.zMotorEncoder.reset();
+
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
-		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.shootTeleop);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleop);
+//		robotContainer.driveTrain.setShifter(true);
+
 	}
 
 	/**
@@ -55,11 +68,24 @@ public class Robot extends TimedRobot {
 		// and running subsystem periodic() methods.  This must be called from the robot's periodic
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
-		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
-		SmartDashboard.putNumber("Red value", detectedColor.red);
-		SmartDashboard.putNumber("Green value", detectedColor.green);
-		SmartDashboard.putNumber("Blue value", detectedColor.blue);
-		SmartDashboard.putBoolean("Compressor value", robotContainer.compressor.getPressureSwitchValue());
+
+		// todo make everything private that is publicly used here
+		SmartDashboard.putNumber("Flywheel Motor Encoder", robotContainer.shootMotorEncoder.getRawPosition());
+		SmartDashboard.putNumber("zMotor Motor Encoder", robotContainer.zMotorEncoder.getRawPosition());
+		SmartDashboard.putNumber("hoodMotor Motor Encoder", robotContainer.hoodMotorEncoder.getRawPosition());
+		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
+		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
+
+		SmartDashboard.putData(robotContainer.shifterSolenoid);
+		SmartDashboard.putData(robotContainer.intakeSolenoid);
+		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
+		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
+		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
+//		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
+//		SmartDashboard.putNumber("Red value", detectedColor.red);
+//		SmartDashboard.putNumber("Green value", detectedColor.green);
+//		SmartDashboard.putNumber("Blue value", detectedColor.blue);
+
 	}
 
 	/**
