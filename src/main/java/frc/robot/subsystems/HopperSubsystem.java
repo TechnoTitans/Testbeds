@@ -2,15 +2,16 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.TitanSRX;
+import frc.robot.motor.TitanVictor;
 
 public class HopperSubsystem extends SubsystemBase {
 
-    private TitanSRX hopperMotor;
+    private TitanVictor hopperMotor;
 
-    private static final double INTAKE_SPEED = 1;
-    private static final double EXPEL_SPEED = -1;
+    private static final double INTAKE_SPEED = .25;
+    private static final double EXPEL_SPEED = -.25;
 
-    public HopperSubsystem(TitanSRX hopperMotor) {
+    public HopperSubsystem(TitanVictor hopperMotor) {
         this.hopperMotor = hopperMotor;
     }
     
