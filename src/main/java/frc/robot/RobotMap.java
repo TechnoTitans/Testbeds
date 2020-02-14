@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.I2C;
 public final class RobotMap {
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
-    public static final int INTAKE_MOTOR = 7; // victor
+    public static final int INTAKE_MOTOR = 7; // talon
     public static final boolean REVERSED_INTAKE_MOTOR = false;
     public static final boolean REVERSED_HOPPER_MOTOR = false;
     public static final int INTAKE_SOLENOID = 1; // todo find actual values for solenoids

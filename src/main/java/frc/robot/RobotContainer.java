@@ -22,6 +22,7 @@ import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Compressor;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -37,6 +38,7 @@ public class RobotContainer {
     private DigitalInput beltLimitSwitch;
     private Solenoid shifterSolenoid;
     private final Solenoid intakeSolenoid;
+    public Compressor compressor;
 
     private TitanSRX shootMotor;
     private TitanVictor subShootMotor;
@@ -113,14 +115,22 @@ public class RobotContainer {
         intake = new IntakeSubsystem(intakeMotor, intakeSolenoid);
         hopper = new HopperSubsystem(hopperMotor);
 
-        shootMotor.setupCurrentLimiting();
-        intakeMotor.setupCurrentLimiting();
+        compressor = new Compressor(2);
+
+        shootMotor.setupCurrentLimiting(10, 10, 200);
+        intakeMotor.setupCurrentLimiting(10, 10, 200);
+        leftFrontMotorFX.setupCurrentLimiting(35, 35, 200);
+        leftBackMotorFX.setupCurrentLimiting(35, 35, 200);
+        rightFrontMotorFX.setupCurrentLimiting(35, 35, 200);
+        rightBackMotorFX.setupCurrentLimiting(35, 35, 200);
+
 
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeft, oi::getRight, driveTrain, false);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
-        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftTrigger , intake);
-        rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxRight, oi::getXboxLeft, turret, true);
+        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftTrigger, intake);
+        // intakeTe
+        // rotateTurretTeleop = new RotateTurretTeleop(oi::getXboxRight, oi::getXboxLeft, turret, true);
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
         // Configure the button bindings
