@@ -175,10 +175,10 @@ public class RobotContainer {
 
         shootMotor.setupCurrentLimiting(5, 0, 0);
         intakeMotor.setupCurrentLimiting(5, 0, 0);
-        leftFrontMotorFX.setupCurrentLimiting(10, 0, 0);
-        leftBackMotorFX.setupCurrentLimiting(10, 0, 0);
-        rightFrontMotorFX.setupCurrentLimiting(10, 0, 0);
-        rightBackMotorFX.setupCurrentLimiting(10, 0, 0);
+        leftFrontMotorFX.setupCurrentLimiting(5, 6, 50);
+        leftBackMotorFX.setupCurrentLimiting(5, 6, 50);
+        rightFrontMotorFX.setupCurrentLimiting(5, 6, 50);
+        rightBackMotorFX.setupCurrentLimiting(5, 6, 50);
         hoodMotor.setupCurrentLimiting(4,0,0);
         zMotor.setupCurrentLimiting(3,4,100);
 
