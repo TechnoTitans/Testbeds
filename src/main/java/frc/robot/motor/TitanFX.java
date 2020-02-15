@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
  * Motor control (talonFX)
  * TitanFX is our enhanced version of the regular TalonFX code
  */
+// todo implement speedcontroller
 public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
 
 	private Encoder encoder;
@@ -66,7 +67,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 		if (speed < -1) speed = -1;
 		super.set(ControlMode.PercentOutput, speed);
 	}
-	
+
 	@Override
 	public void brake() {
 		this.set(0);

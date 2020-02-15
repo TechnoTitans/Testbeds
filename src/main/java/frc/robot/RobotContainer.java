@@ -252,36 +252,37 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-                new SimpleMotorFeedforward(kS, kV, kA),
-                kinematics,
-                MAX_VOLTAGE
-        );
-        TrajectoryConfig config = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION).setKinematics(kinematics);
-        Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
-                new Pose2d(0, 0, new Rotation2d(0)), //start
-                List.of(
-                        new Translation2d(1, 1),
-                        new Translation2d(2, 2)
-                ),
-                new Pose2d(3, 3, new Rotation2d(0)), //end
-                config
-        );
+//        DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+//                new SimpleMotorFeedforward(kS, kV, kA),
+//                kinematics,
+//                MAX_VOLTAGE
+//        );
+//        TrajectoryConfig config = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION).setKinematics(kinematics);
+//        Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
+//                new Pose2d(0, 0, new Rotation2d(0)), //start
+//                List.of(
+//                        new Translation2d(1, 1),
+//                        new Translation2d(2, 2)
+//                ),
+//                new Pose2d(3, 3, new Rotation2d(0)), //end
+//                config
+//        );
+//
+//        RamseteCommand ramseteCommand = new RamseteCommand(
+//                autoTrajectory,
+//                driveTrain::getPose,
+//                new RamseteController(RAMSETE_B, RAMSETE_ZETA),
+//                new SimpleMotorFeedforward(kS, kV, kA),
+//                kinematics,
+//                driveTrain::getWheelSpeeds,
+//                new PIDController(0, 0, 0),
+//                new PIDController(0, 0, 0),
+//                driveTrain::tankDriveVolts,
+//                driveTrain
+//        );
 
-        RamseteCommand ramseteCommand = new RamseteCommand(
-                autoTrajectory,
-                driveTrain::getPose,
-                new RamseteController(RAMSETE_B, RAMSETE_ZETA),
-                new SimpleMotorFeedforward(kS, kV, kA),
-                kinematics,
-                driveTrain::getWheelSpeeds,
-                new PIDController(0, 0, 0),
-                new PIDController(0, 0, 0),
-                driveTrain::tankDriveVolts,
-                driveTrain
-        );
-
-        return ramseteCommand.andThen(autonomousCommand);
+//        return ramseteCommand.andThen(autonomousCommand);
+        return autonomousCommand;
     }
 }
 

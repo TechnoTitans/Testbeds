@@ -47,7 +47,7 @@ public abstract class DriveTrain extends SubsystemBase {
 	
 	public abstract void disableBrownoutProtection();
 
-	public abstract Pose2d getPose();
+//	public abstract Pose2d getPose();
 
 
 }

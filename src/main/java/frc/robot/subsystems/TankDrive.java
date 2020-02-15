@@ -23,9 +23,9 @@ import frc.robot.motor.TitanFX;
 
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends DriveTrain {
-    private final SpeedController leftSpeedController;
-    private final SpeedController rightSpeedController;
-    private final DifferentialDrive drive;
+//    private final SpeedController leftSpeedController;
+//    private final SpeedController rightSpeedController;
+//    private final DifferentialDrive drive;
 
 
     public static boolean SHIFT_HIGH_TORQUE = true; // todo find actual value
@@ -54,44 +54,44 @@ public class TankDrive extends DriveTrain {
         this.gyro = gyro;
         this.shifterSolenoid = shifterSolenoid;
         this.drivePID = new PIDController(0, 0,0);
-        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
-        this.leftSpeedController = (SpeedController) leftTalonFX;
-        this.rightSpeedController = (SpeedController) rightTalonFX;
-        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
+//        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
+//        this.leftSpeedController = (SpeedController) leftTalonFX;
+//        this.rightSpeedController = (SpeedController) rightTalonFX;
+//        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
         resetEncoders();
 
     }
 
     //Odometry stuff
 
-    public Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(getHeading());
-    }
-
-    public Pose2d getPose(){
-        return odometry.getPoseMeters();
-    }
-
-    public void periodic(){
-        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
-    }
-
-    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
-    }
-    public void resetOdometry(Pose2d pose){
-        resetEncoders();
-        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-    }
-
-    public void tankDriveVolts(double leftVolts, double rightVolts){
-        leftSpeedController.setVoltage(leftVolts);
-        rightSpeedController.setVoltage(rightVolts);
-    }
-
-    public void setMaxOutput(double maxOutput){
-        drive.setMaxOutput(maxOutput);
-    }
+//    public Rotation2d getAngle(){
+//        return Rotation2d.fromDegrees(getHeading());
+//    }
+//
+//    public Pose2d getPose(){
+//        return odometry.getPoseMeters();
+//    }
+//
+//    public void periodic(){
+//        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
+//    }
+//
+//    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+//        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
+//    }
+//    public void resetOdometry(Pose2d pose){
+//        resetEncoders();
+//        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+//    }
+//
+//    public void tankDriveVolts(double leftVolts, double rightVolts){
+//        leftSpeedController.setVoltage(leftVolts);
+//        rightSpeedController.setVoltage(rightVolts);
+//    }
+//
+//    public void setMaxOutput(double maxOutput){
+//        drive.setMaxOutput(maxOutput);
+//    }
 
 //set the speed the motors
 
