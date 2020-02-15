@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -97,6 +98,13 @@ public class Robot extends TimedRobot {
 		// drivetrain
 		SmartDashboard.putNumber("Falcon Right Front Current", robotContainer.rightFrontMotorFX.getCurrent());
 		SmartDashboard.putNumber("Falcon Left Front Current", robotContainer.leftFrontMotorFX.getCurrent());
+
+		TalonSRXConfiguration zMotorConfig = new TalonSRXConfiguration();
+		robotContainer.zMotor.getAllConfigs(zMotorConfig, 0);
+
+		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
+		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
+		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
 
 
 	}
