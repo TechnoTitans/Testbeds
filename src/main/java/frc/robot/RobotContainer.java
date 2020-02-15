@@ -149,9 +149,14 @@ public class RobotContainer {
         rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
 
         leftFrontMotorEncoder = new QuadEncoder(leftFrontMotorFX, 0, true);
+        leftFrontMotorFX.setEncoder(leftFrontMotorEncoder);
         rightFrontMotorEncoder = new QuadEncoder(rightFrontMotorFX, 0, true);
+        rightFrontMotorFX.setEncoder(rightFrontMotorEncoder);
         rightBackMotorEncoder = new QuadEncoder(rightBackMotorFX, 0, true);
+        rightBackMotorFX.setEncoder(rightBackMotorEncoder);
         leftBackMotorEncoder = new QuadEncoder(leftBackMotorFX, 0, true);
+        leftBackMotorFX.setEncoder(leftBackMotorEncoder);
+
 
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
