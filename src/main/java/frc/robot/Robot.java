@@ -79,12 +79,24 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(robotContainer.shifterSolenoid);
 		SmartDashboard.putData(robotContainer.intakeSolenoid);
 		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
+		
 		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
 		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
 //		SmartDashboard.putNumber("Red value", detectedColor.red);
 //		SmartDashboard.putNumber("Green value", detectedColor.green);
 //		SmartDashboard.putNumber("Blue value", detectedColor.blue);
+
+
+
+		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
+		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
+		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
+
+		// drivetrain
+		SmartDashboard.putNumber("Falcon Right Front Current", robotContainer.rightFrontMotorFX.getCurrent());
+		SmartDashboard.putNumber("Falcon Left Front Current", robotContainer.leftFrontMotorFX.getCurrent());
+
 
 	}
 
