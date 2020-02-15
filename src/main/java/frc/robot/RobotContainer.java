@@ -98,15 +98,16 @@ public class RobotContainer {
     private TitanButton btnToggleHopperIntake;
     private TitanButton btnToggleHopperExpel;
     private TitanButton btnFeederExpel;
-    // change later
-    private final double KS = 0;
-    private final double KV = 0;
-    private final double KA = 0;
-    private final double MAX_VOLTAGE = 0;
-    private final double MAX_VELOCITY = 0;
-    private final double MAX_ACCELERATION = 0;
+    // todo find actual values
+    private final double kS = 0; //volts
+    private final double kV = 0; //volt-seconds/meter
+    private final double kA = 0; // volt-seconds squared/meter
+    private final double MAX_VOLTAGE = 0; // volts
+    private final double MAX_VELOCITY = 0; //m/s
+    private final double MAX_ACCELERATION = 0; //m/s^2
     private final double RAMSETE_B = 2;
     private final double RAMSETE_ZETA = 0.7;
+    private final double DRIVE_WIDTH = 0.5; //meters
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
      */
@@ -144,7 +145,7 @@ public class RobotContainer {
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
 
-        kinematics = new DifferentialDriveKinematics(0);
+        kinematics = new DifferentialDriveKinematics(DRIVE_WIDTH);
 
         shifterSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
@@ -231,7 +232,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-                new SimpleMotorFeedforward(KS, KV, KA),
+                new SimpleMotorFeedforward(kS, kV, kA),
                 kinematics,
                 MAX_VOLTAGE
         );
@@ -239,10 +240,10 @@ public class RobotContainer {
         Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
                 new Pose2d(0, 0, new Rotation2d(0)), //start
                 List.of(
-                        new Translation2d(0, 0),
-                        new Translation2d(0, 0)
+                        new Translation2d(1, 1),
+                        new Translation2d(2, 2)
                 ),
-                new Pose2d(0, 0, new Rotation2d(0)), //end
+                new Pose2d(3, 3, new Rotation2d(0)), //end
                 config
         );
 
@@ -250,7 +251,7 @@ public class RobotContainer {
                 autoTrajectory,
                 driveTrain::getPose,
                 new RamseteController(RAMSETE_B, RAMSETE_ZETA),
-                new SimpleMotorFeedforward(KS, KV, KA),
+                new SimpleMotorFeedforward(kS, kV, kA),
                 kinematics,
                 driveTrain::getWheelSpeeds,
                 new PIDController(0, 0, 0),

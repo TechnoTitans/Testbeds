@@ -17,7 +17,7 @@ public class Vision {
         int c =  0;
         for (int i = 0; i < 40; i += 8){
             data[c] = ByteBuffer.wrap(Arrays.copyOfRange(visionData.read(40), i, i + 7)).getDouble();
-            c ++;
+            c++;
         }
         return data;
     }
