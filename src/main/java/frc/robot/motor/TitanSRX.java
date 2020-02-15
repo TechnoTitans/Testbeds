@@ -17,9 +17,7 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
     private Encoder encoder;
     private static final int TIMEOUT_MS = 30;
     Gyro gyro;
-    public static final int CURRENT_LIMIT = 41;
-    public static final int CURRENT_LIMIT_THRESHOLD = 41;
-    public static final int LIMIT_TIMEOUT = 200; //ms
+    
 
     private TitanSRX brownoutFollower = null;
     private boolean brownout = false;
@@ -135,13 +133,14 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
     }
 
 
-    public void setupCurrentLimiting() {
+    public void setupCurrentLimiting(int currentLimit, int currentLimitThreshold, int limitTimeout) {
 
-        this.configContinuousCurrentLimit(CURRENT_LIMIT, 0);
-        this.configPeakCurrentLimit(CURRENT_LIMIT_THRESHOLD, 0);
-        this.configPeakCurrentDuration(LIMIT_TIMEOUT, 0);
+        this.configContinuousCurrentLimit(currentLimit, 0);
+        this.configPeakCurrentLimit(currentLimitThreshold, 0);
+        this.configPeakCurrentDuration(limitTimeout, 0);
         this.enableCurrentLimit(true);
     }
+    
 
     public void disableCurrentLimiting() {
         this.enableCurrentLimit(false);
