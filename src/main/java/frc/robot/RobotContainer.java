@@ -259,7 +259,7 @@ public class RobotContainer {
                 driveTrain
         );
 
-        return autonomousCommand;
+        return ramseteCommand.andThen(autonomousCommand);
     }
 }
 
