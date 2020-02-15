@@ -64,9 +64,9 @@ public class RobotContainer {
     private TitanVictor subShootMotor;
     public TitanSRX zMotor;
     public TitanSRX hoodMotor;
-    private TitanSRX beltMotor;
+    public TitanSRX beltMotor;
     private TitanSRX spinningMotor;
-    private TitanSRX intakeMotor;
+    public TitanSRX intakeMotor;
     private TitanVictor hopperMotor;
 
 
@@ -170,12 +170,15 @@ public class RobotContainer {
         hopper = new HopperSubsystem(hopperMotor);
 
 
-        shootMotor.setupCurrentLimiting(10, 10, 200);
-        intakeMotor.setupCurrentLimiting(10, 10, 200);
-        leftFrontMotorFX.setupCurrentLimiting(35, 35, 200);
-        leftBackMotorFX.setupCurrentLimiting(35, 35, 200);
-        rightFrontMotorFX.setupCurrentLimiting(35, 35, 200);
-        rightBackMotorFX.setupCurrentLimiting(35, 35, 200);
+        shootMotor.setupCurrentLimiting(5, 0, 0);
+        intakeMotor.setupCurrentLimiting(5, 0, 0);
+        leftFrontMotorFX.setupCurrentLimiting(10, 0, 0);
+        leftBackMotorFX.setupCurrentLimiting(10, 0, 0);
+        rightFrontMotorFX.setupCurrentLimiting(10, 0, 0);
+        rightBackMotorFX.setupCurrentLimiting(10, 0, 0);
+        hoodMotor.setupCurrentLimiting(4,0,0);
+        zMotor.setupCurrentLimiting(3,0,0);
+        beltMotor.setupCurrentLimiting(10,0,0);
 
 
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);

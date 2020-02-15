@@ -92,6 +92,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
 		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
 		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
+		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
+		SmartDashboard.putNumber("Turret belt current", robotContainer.beltMotor.getCurrent());
 
 		// drivetrain
 		SmartDashboard.putNumber("Falcon Right Front Current", robotContainer.rightFrontMotorFX.getCurrent());
