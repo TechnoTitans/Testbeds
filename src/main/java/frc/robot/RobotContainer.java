@@ -219,21 +219,21 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
 
-        TrajectoryConfig config = new TrajectoryConfig(0, 0).setKinematics(kinematics);
-        Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
-                new Pose2d(0, 0, new Rotation2d(0)), //start
-                List.of(
-                        new Translation2d(0, 0),
-                        new Translation2d(0, 0)
-                ),
-                new Pose2d(0, 0, new Rotation2d(0)), //end
-                config
-        );
-
-        RamseteCommand ramseteCommand = new RamseteCommand(
-                autoTrajectory,
-                driveTrain::getPose,
-        )
+//        TrajectoryConfig config = new TrajectoryConfig(0, 0).setKinematics(kinematics);
+//        Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
+//                new Pose2d(0, 0, new Rotation2d(0)), //start
+//                List.of(
+//                        new Translation2d(0, 0),
+//                        new Translation2d(0, 0)
+//                ),
+//                new Pose2d(0, 0, new Rotation2d(0)), //end
+//                config
+//        );
+//
+//        RamseteCommand ramseteCommand = new RamseteCommand(
+//                autoTrajectory,
+//                driveTrain::getPose,
+//        )
 
         return autonomousCommand;
     }
