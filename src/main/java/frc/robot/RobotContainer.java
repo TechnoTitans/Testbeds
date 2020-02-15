@@ -28,6 +28,7 @@ import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Compressor;
 
 import java.util.List;
 
@@ -158,8 +159,13 @@ public class RobotContainer {
         hopper = new HopperSubsystem(hopperMotor);
 
 
-        shootMotor.setupCurrentLimiting();
-        intakeMotor.setupCurrentLimiting();
+        shootMotor.setupCurrentLimiting(10, 10, 200);
+        intakeMotor.setupCurrentLimiting(10, 10, 200);
+        leftFrontMotorFX.setupCurrentLimiting(35, 35, 200);
+        leftBackMotorFX.setupCurrentLimiting(35, 35, 200);
+        rightFrontMotorFX.setupCurrentLimiting(35, 35, 200);
+        rightBackMotorFX.setupCurrentLimiting(35, 35, 200);
+
 
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
@@ -170,8 +176,10 @@ public class RobotContainer {
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeftJoyY, oi::getRightJoyY, driveTrain, true);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
+
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake);
         turretTeleop = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
+
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
         // Configure the button bindings

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 /*
  * Motor control (talonFX)
@@ -136,15 +137,11 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	}
 
 
-	public void setupCurrentLimiting() {
-		// FIXME: 1/15/20 Actual Current Limiting
-
-		System.err.println("HEY, IMPLMENT THIS!!!");
-//		this.configContinuousCurrentLimit(CURRENT_LIMIT, 0);
-//		this.configPeakCurrentLimit(CURRENT_LIMIT_THRESHOLD, 0);
-//		this.configPeakCurrentDuration(LIMIT_TIMEOUT, 0);
-//		this.enableCurrentLimit(true);
-	}
+	 public void setupCurrentLimiting(int currentLimit, int currentLimitThreshold, int limitTimeout) {
+		SupplyCurrentLimitConfiguration currentLimitor = new SupplyCurrentLimitConfiguration(true, 
+			currentLimit, currentLimitThreshold, limitTimeout);
+		this.configSupplyCurrentLimit(currentLimitor);
+    }
 
 	public void disableCurrentLimiting() {
 //	    this.enableCurrentLimit(false);

@@ -85,6 +85,7 @@ public class Robot extends TimedRobot {
 //		SmartDashboard.putNumber("Red value", detectedColor.red);
 //		SmartDashboard.putNumber("Green value", detectedColor.green);
 //		SmartDashboard.putNumber("Blue value", detectedColor.blue);
+
 	}
 
 	/**
