@@ -9,16 +9,28 @@ package frc.robot;
 
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.*;
+import edu.wpi.first.wpilibj.kinematics.*;
+import edu.wpi.first.wpilibj.trajectory.*;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.*;
+
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Compressor;
+
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -57,6 +69,7 @@ public class RobotContainer {
     private TitanSRX intakeMotor;
     private TitanVictor hopperMotor;
 
+
   
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
@@ -69,6 +82,9 @@ public class RobotContainer {
     // MARK - Subsystem Declarations
     public TurretSubsystem turret;
     public ControlPanelSubsystem controlPanel;
+
+    private DifferentialDriveKinematics kinematics;
+
     public TankDrive driveTrain;
 
     // MARK - Command declarations
@@ -87,8 +103,16 @@ public class RobotContainer {
     private TitanButton btnToggleHopperIntake;
     private TitanButton btnToggleHopperExpel;
     private TitanButton btnFeederExpel;
-
-
+    // todo find actual values
+    private final double kS = 0; //volts
+    private final double kV = 0; //volt-seconds/meter
+    private final double kA = 0; // volt-seconds squared/meter
+    private final double MAX_VOLTAGE = 0; // volts
+    private final double MAX_VELOCITY = 0; //m/s
+    private final double MAX_ACCELERATION = 0; //m/s^2
+    private final double RAMSETE_B = 2;
+    private final double RAMSETE_ZETA = 0.7;
+    private final double DRIVE_WIDTH = 0.5; //meters
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
      */
@@ -131,8 +155,12 @@ public class RobotContainer {
 
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
+
+        kinematics = new DifferentialDriveKinematics(DRIVE_WIDTH);
+
         shifterSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
+
 
         intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
         intakeSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.INTAKE_SOLENOID);
@@ -141,16 +169,28 @@ public class RobotContainer {
         hopperMotor = new TitanVictor(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
         hopper = new HopperSubsystem(hopperMotor);
 
+
+        shootMotor.setupCurrentLimiting(10, 10, 200);
+        intakeMotor.setupCurrentLimiting(10, 10, 200);
+        leftFrontMotorFX.setupCurrentLimiting(35, 35, 200);
+        leftBackMotorFX.setupCurrentLimiting(35, 35, 200);
+        rightFrontMotorFX.setupCurrentLimiting(35, 35, 200);
+        rightBackMotorFX.setupCurrentLimiting(35, 35, 200);
+
+
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
 
         titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
 
+
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeftJoyY, oi::getRightJoyY, driveTrain, true);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
+
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake);
         turretTeleop = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
+
         autonomousCommand = new InstantCommand(); // a do nothing command for now
 
         // Configure the button bindings
@@ -167,6 +207,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
+//         btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
+//         btnToggleHopperIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_INTAKE);
+//         btnToggleHopperExpel = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_EXPEL);
+//         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
+//         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+//
         btnToggleHopperIntake = new TitanButton(oi.leftJoystick, 6);
         btnToggleHopperExpel = new TitanButton(oi.leftJoystick, 7);
         btnToggleIntake = new TitanButton(oi.getXbox(), 1);
@@ -174,6 +220,7 @@ public class RobotContainer {
 
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
@@ -202,7 +249,36 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return autonomousCommand;
+        DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+                new SimpleMotorFeedforward(kS, kV, kA),
+                kinematics,
+                MAX_VOLTAGE
+        );
+        TrajectoryConfig config = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION).setKinematics(kinematics);
+        Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
+                new Pose2d(0, 0, new Rotation2d(0)), //start
+                List.of(
+                        new Translation2d(1, 1),
+                        new Translation2d(2, 2)
+                ),
+                new Pose2d(3, 3, new Rotation2d(0)), //end
+                config
+        );
+
+        RamseteCommand ramseteCommand = new RamseteCommand(
+                autoTrajectory,
+                driveTrain::getPose,
+                new RamseteController(RAMSETE_B, RAMSETE_ZETA),
+                new SimpleMotorFeedforward(kS, kV, kA),
+                kinematics,
+                driveTrain::getWheelSpeeds,
+                new PIDController(0, 0, 0),
+                new PIDController(0, 0, 0),
+                driveTrain::tankDriveVolts,
+                driveTrain
+        );
+
+        return ramseteCommand.andThen(autonomousCommand);
     }
 }
 

@@ -37,7 +37,9 @@ public final class RobotMap {
     public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
 
     public static final int INTAKE_MOTOR = 7; // victor
+
     public static final boolean REVERSED_INTAKE_MOTOR = false;
+
     public static final int HOPPER_MOTOR = 8; // victor
     public static final boolean REVERSED_HOPPER_MOTOR = false;
     public static final int HOOD = 9; // victor
@@ -52,7 +54,6 @@ public final class RobotMap {
     public static final boolean REVERSED_FEEDER = false;
 
     public static final int WINCH_MOTOR = 0;
-
 
     // Joysticks
     public static final int LEFT_JOYSTICK = 0;

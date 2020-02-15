@@ -10,6 +10,8 @@ public class OI {
 	public static final int BTNNUM_TOGGLE_INTAKE = 5;
 	public static final int BTNNUM_INCREASE_SHOOT_SPEED = 6;
 	public static final int BTNNUM_DECREASE_SHOOT_SPEED = 5;
+	public static final int BTNNUM_TOGGLE_HOPPER_INTAKE = 2;
+	public static final int BTNNUM_TOGGLE_HOPPER_EXPEL = 3;
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;
 	private static final double percentDeadbandThreshold = 0.1;
@@ -44,6 +46,10 @@ public class OI {
 
 	public double getXboxRightX() {
 		return xbox.getX(Hand.kRight);
+	}
+
+	public double getXboxLeftTrigger() {
+		return xbox.getTriggerAxis(Hand.kLeft);
 	}
 
 	public XboxController getXbox() {

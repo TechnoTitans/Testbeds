@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
+import frc.robot.sensors.TitanButton;
 
 public class IntakeSubsystem extends SubsystemBase {
 	private final Solenoid piston;
