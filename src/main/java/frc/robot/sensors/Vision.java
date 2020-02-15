@@ -32,7 +32,7 @@ public class Vision {
 
     public double getDistance(){
         return getData()[2];
-    }
+    } // feet
 
     public double getCenterX(){
         return getData()[0];

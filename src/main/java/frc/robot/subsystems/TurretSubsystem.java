@@ -87,6 +87,10 @@ public class TurretSubsystem extends SubsystemBase {
         return beltLimitSwitch;
     }
 
+    public TitanSRX getShooter(){
+        return shooter;
+    }
+
     public void setSpeedSetpoint(double speed) {
         if (speed >= 1) {
             speed = 1;
@@ -94,8 +98,6 @@ public class TurretSubsystem extends SubsystemBase {
             speed = -1;
         }
         manualSpeedSetpoint = speed;
-
-
     }
 
     public double getSpeedSetpoint() {
