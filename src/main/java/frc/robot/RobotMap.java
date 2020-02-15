@@ -55,7 +55,6 @@ public final class RobotMap {
 
     public static final int WINCH_MOTOR = 0;
 
-
     // Joysticks
     public static final int LEFT_JOYSTICK = 0;
     public static final int RIGHT_JOYSTICK = 1;

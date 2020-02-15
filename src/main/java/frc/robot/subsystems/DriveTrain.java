@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.Encoder;
@@ -45,6 +46,8 @@ public abstract class DriveTrain extends SubsystemBase {
 	public abstract void enableBrownoutProtection();
 	
 	public abstract void disableBrownoutProtection();
+
+	public abstract Pose2d getPose();
 
 
 }

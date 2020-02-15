@@ -1,15 +1,31 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.sensors.TitanGyro;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanFX;
 
+
+
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends DriveTrain {
+    private final SpeedController leftSpeedController;
+    private final SpeedController rightSpeedController;
+    private final DifferentialDrive drive;
 
 
     public static boolean SHIFT_HIGH_TORQUE = true; // todo find actual value
@@ -19,6 +35,11 @@ public class TankDrive extends DriveTrain {
     private TitanFX right;
     private Gyro gyro;
     private Solenoid shifterSolenoid;
+
+
+    private DifferentialDriveOdometry odometry;
+
+    //TankDrive setup
 
     private PIDController drivePID;
     //TankDrive setup
@@ -33,13 +54,50 @@ public class TankDrive extends DriveTrain {
         this.gyro = gyro;
         this.shifterSolenoid = shifterSolenoid;
         this.drivePID = new PIDController(0, 0,0);
+        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
+        this.leftSpeedController = (SpeedController) leftTalonFX;
+        this.rightSpeedController = (SpeedController) rightTalonFX;
+        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
+        resetEncoders();
+
     }
+
+    //Odometry stuff
+
+    public Rotation2d getAngle(){
+        return Rotation2d.fromDegrees(getHeading());
+    }
+
+    public Pose2d getPose(){
+        return odometry.getPoseMeters();
+    }
+
+    public void periodic(){
+        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
+    }
+    public void resetOdometry(Pose2d pose){
+        resetEncoders();
+        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+    }
+
+    public void tankDriveVolts(double leftVolts, double rightVolts){
+        leftSpeedController.setVoltage(leftVolts);
+        rightSpeedController.setVoltage(rightVolts);
+    }
+
+    public void setMaxOutput(double maxOutput){
+        drive.setMaxOutput(maxOutput);
+    }
+
+//set the speed the motors
 
     public PIDController getPID(){
         return drivePID;
     }
-
-    //set the speed the motors
 
     public void set(double speed) {
         left.set(speed);
@@ -131,6 +189,11 @@ public class TankDrive extends DriveTrain {
     public double[] getSpeed() {
         return new double[] { left.getSpeed(), right.getSpeed() };
     }
+
+    public double getHeading() {
+        return Math.IEEEremainder(gyro.getAngle(), 360); //assuming gyro is not reversed
+    }
+
     public Gyro getGyro() {
         return gyro;
     }
@@ -154,7 +217,6 @@ public class TankDrive extends DriveTrain {
         this.setShifter(!currentStatus);
 //        this.setShifter(true);
     }
-
 
 }
 
