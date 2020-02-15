@@ -218,6 +218,5 @@ public class TankDrive extends DriveTrain {
 //        this.setShifter(true);
     }
 
-
 }
 

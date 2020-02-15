@@ -9,9 +9,13 @@ package frc.robot;
 
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.*;
 import edu.wpi.first.wpilibj.kinematics.*;
 import edu.wpi.first.wpilibj.trajectory.*;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -94,8 +98,15 @@ public class RobotContainer {
     private TitanButton btnToggleHopperIntake;
     private TitanButton btnToggleHopperExpel;
     private TitanButton btnFeederExpel;
-
-
+    // change later
+    private final double KS = 0;
+    private final double KV = 0;
+    private final double KA = 0;
+    private final double MAX_VOLTAGE = 0;
+    private final double MAX_VELOCITY = 0;
+    private final double MAX_ACCELERATION = 0;
+    private final double RAMSETE_B = 2;
+    private final double RAMSETE_ZETA = 0.7;
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
      */
@@ -134,6 +145,7 @@ public class RobotContainer {
         rightBackMotorFX.follow(rightFrontMotorFX);
 
         kinematics = new DifferentialDriveKinematics(0);
+
         shifterSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.GEAR_SHIFT_SOLENOID);
         driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
 
@@ -218,8 +230,12 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-
-        TrajectoryConfig config = new TrajectoryConfig(0, 0).setKinematics(kinematics);
+        DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+                new SimpleMotorFeedforward(KS, KV, KA),
+                kinematics,
+                MAX_VOLTAGE
+        );
+        TrajectoryConfig config = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION).setKinematics(kinematics);
         Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
                 new Pose2d(0, 0, new Rotation2d(0)), //start
                 List.of(
@@ -233,7 +249,15 @@ public class RobotContainer {
         RamseteCommand ramseteCommand = new RamseteCommand(
                 autoTrajectory,
                 driveTrain::getPose,
-        )
+                new RamseteController(RAMSETE_B, RAMSETE_ZETA),
+                new SimpleMotorFeedforward(KS, KV, KA),
+                kinematics,
+                driveTrain::getWheelSpeeds,
+                new PIDController(0, 0, 0),
+                new PIDController(0, 0, 0),
+                driveTrain::tankDriveVolts,
+                driveTrain
+        );
 
         return autonomousCommand;
     }
