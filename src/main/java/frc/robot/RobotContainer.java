@@ -36,6 +36,10 @@ public class RobotContainer {
     public final QuadEncoder zMotorEncoder;
     public final QuadEncoder hoodMotorEncoder;
     public final QuadEncoder shootMotorEncoder;
+    public final QuadEncoder leftFrontMotorEncoder;
+    public final QuadEncoder rightFrontMotorEncoder;
+    public final QuadEncoder rightBackMotorEncoder;
+    public final QuadEncoder leftBackMotorEncoder;
 
     // Declare the robot's components here
 
@@ -44,10 +48,10 @@ public class RobotContainer {
     public Solenoid shifterSolenoid;
     public final Solenoid intakeSolenoid;
 
-    private TitanSRX shootMotor;
+    public TitanSRX shootMotor;
     private TitanVictor subShootMotor;
-    private TitanSRX zMotor;
-    private TitanSRX hoodMotor;
+    public TitanSRX zMotor;
+    public TitanSRX hoodMotor;
     private TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     private TitanSRX intakeMotor;
@@ -119,6 +123,12 @@ public class RobotContainer {
         leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
         rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
         rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
+
+        leftFrontMotorEncoder = new QuadEncoder(leftFrontMotorFX, 0, true);
+        rightFrontMotorEncoder = new QuadEncoder(rightFrontMotorFX, 0, true);
+        rightBackMotorEncoder = new QuadEncoder(rightBackMotorFX, 0, true);
+        leftBackMotorEncoder = new QuadEncoder(leftBackMotorFX, 0, true);
+
         leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
         rightBackMotorFX.follow(rightFrontMotorFX);
         shifterSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.GEAR_SHIFT_SOLENOID);
