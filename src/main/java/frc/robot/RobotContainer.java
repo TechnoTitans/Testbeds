@@ -64,7 +64,6 @@ public class RobotContainer {
     private TitanVictor subShootMotor;
     public TitanSRX zMotor;
     public TitanSRX hoodMotor;
-    public TitanSRX beltMotor;
     private TitanSRX spinningMotor;
     public TitanSRX intakeMotor;
     private TitanVictor hopperMotor;
@@ -126,7 +125,6 @@ public class RobotContainer {
         subShootMotor.follow(shootMotor);
         zMotor = new TitanSRX(RobotMap.TURRET_ROTATION, RobotMap.REVERSED_TURRET_ROTATION);
         hoodMotor = new TitanSRX(RobotMap.HOOD, RobotMap.REVERSED_HOOD);
-        beltMotor = new TitanSRX(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
 
         zMotorEncoder = new QuadEncoder(zMotor, 0, false);
         zMotor.setEncoder(zMotorEncoder);
@@ -138,7 +136,7 @@ public class RobotContainer {
         shootMotor.setEncoder(shootMotorEncoder);
 
         beltLimitSwitch = new DigitalInput(0);
-        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltMotor, beltLimitSwitch);
+        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltLimitSwitch);
         spinningMotor = new TitanSRX(0, false);
 //        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
 //        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -183,7 +181,6 @@ public class RobotContainer {
         rightBackMotorFX.setupCurrentLimiting(10, 0, 0);
         hoodMotor.setupCurrentLimiting(4,0,0);
         zMotor.setupCurrentLimiting(3,0,0);
-        beltMotor.setupCurrentLimiting(10,0,0);
 
 
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
