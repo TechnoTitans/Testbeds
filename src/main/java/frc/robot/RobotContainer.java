@@ -180,7 +180,7 @@ public class RobotContainer {
         rightFrontMotorFX.setupCurrentLimiting(10, 0, 0);
         rightBackMotorFX.setupCurrentLimiting(10, 0, 0);
         hoodMotor.setupCurrentLimiting(4,0,0);
-        zMotor.setupCurrentLimiting(3,0,0);
+        zMotor.setupCurrentLimiting(3,4,100);
 
 
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
