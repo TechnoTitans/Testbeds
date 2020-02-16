@@ -172,8 +172,26 @@ public class RobotContainer {
         hopperMotor = new TitanVictor(RobotMap.HOPPER_MOTOR, RobotMap.REVERSED_HOPPER_MOTOR);
         hopper = new HopperSubsystem(hopperMotor);
 
+        feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
+        feeder = new FeederSubsystem(feederMotor);
 
-        shootMotor.setupCurrentLimiting(5, 0, 0);
+        titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
+
+
+        // MARK - Talon/Victor Setup and Configuration
+
+        // WE MUST EXPLICITLY RESET THE SETTINGS ON EACH BECAUSE THEY PERSIST BY DEFAULT
+        // todo do this for the rest of the motors.
+        shootMotor.configFactoryDefault();
+        intakeMotor.configFactoryDefault();
+        leftFrontMotorFX.configFactoryDefault();
+        leftBackMotorFX.configFactoryDefault();
+        rightFrontMotorFX.configFactoryDefault();
+        rightBackMotorFX.configFactoryDefault();
+        hoodMotor.configFactoryDefault();
+        zMotor.configFactoryDefault();
+
+        //        shootMotor.setupCurrentLimiting(5, 0, 0);
         intakeMotor.setupCurrentLimiting(5, 0, 0);
         leftFrontMotorFX.setupCurrentLimiting(5, 6, 50);
         leftBackMotorFX.setupCurrentLimiting(5, 6, 50);
@@ -181,13 +199,6 @@ public class RobotContainer {
         rightBackMotorFX.setupCurrentLimiting(5, 6, 50);
         hoodMotor.setupCurrentLimiting(4,0,0);
         zMotor.setupCurrentLimiting(3,4,100);
-
-
-        feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
-        feeder = new FeederSubsystem(feederMotor);
-
-        titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
-
 
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeftJoyY, oi::getRightJoyY, driveTrain, true);
