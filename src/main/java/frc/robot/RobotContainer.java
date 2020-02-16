@@ -247,10 +247,10 @@ public class RobotContainer {
         btnFeederExpel.whileHeld(new FeedBall(feeder));
 
         btnIncreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
-            turret.setSpeedSetpoint(turret.getSpeedSetpoint() + 0.1);
+            turret.setSpeedSetpoint(turret.getSpeedSetpoint() + 0.05);
         }, turret));
         btnDecreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
-            turret.setSpeedSetpoint(turret.getSpeedSetpoint() - 0.1);
+            turret.setSpeedSetpoint(turret.getSpeedSetpoint() - 0.05);
         }, turret));
 
 
