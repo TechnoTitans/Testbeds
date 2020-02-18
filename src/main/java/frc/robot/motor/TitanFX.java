@@ -1,17 +1,14 @@
 package frc.robot.motor;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 /*
  * Motor control (talonFX)
  * TitanFX is our enhanced version of the regular TalonFX code
  */
+// todo implement speedcontroller
 public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
 
 	private Encoder encoder;
@@ -66,7 +63,7 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 		if (speed < -1) speed = -1;
 		super.set(ControlMode.PercentOutput, speed);
 	}
-	
+
 	@Override
 	public void brake() {
 		this.set(0);
@@ -138,9 +135,12 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 
 
 	 public void setupCurrentLimiting(int currentLimit, int currentLimitThreshold, int limitTimeout) {
-		SupplyCurrentLimitConfiguration currentLimitor = new SupplyCurrentLimitConfiguration(true, 
+		SupplyCurrentLimitConfiguration currentLimitor = new SupplyCurrentLimitConfiguration(true,
 			currentLimit, currentLimitThreshold, limitTimeout);
 		this.configSupplyCurrentLimit(currentLimitor);
+		this.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, currentLimit, currentLimitThreshold, limitTimeout));
+		// todo change above maybe idk
+
     }
 
 	public void disableCurrentLimiting() {

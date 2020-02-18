@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,10 +27,6 @@ public class Robot extends TimedRobot {
 
 	// todo move to better place
 	// todo calc more accurate values
-	public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
-	public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772) / 45; // (pulses per degree)
-	public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40) / 1; // (pulses per rev)
-	public static final double DRIVETRAIN_PULSES_PER_INCH = 82763 / 100; // pulse per in
 
 	// todo reverse talonfx encoders by wrapping around
 
@@ -92,10 +89,18 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
 		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
 		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
+		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
 
 		// drivetrain
 		SmartDashboard.putNumber("Falcon Right Front Current", robotContainer.rightFrontMotorFX.getCurrent());
 		SmartDashboard.putNumber("Falcon Left Front Current", robotContainer.leftFrontMotorFX.getCurrent());
+
+		TalonSRXConfiguration zMotorConfig = new TalonSRXConfiguration();
+		robotContainer.zMotor.getAllConfigs(zMotorConfig, 0);
+
+		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
+		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
+		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
 
 
 	}

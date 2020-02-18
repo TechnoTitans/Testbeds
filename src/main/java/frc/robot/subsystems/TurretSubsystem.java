@@ -8,10 +8,14 @@ import frc.robot.motor.TitanSRX;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanVictor;
 
+@SuppressWarnings("JavadocReference")
 public class TurretSubsystem extends SubsystemBase {
 
-// Any variables/fields used in the constructor must appear before the "INSTANCE" variable
-// so that they are initialized before the constructor is called.
+
+    public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
+    public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772f) / 45; // (pulses per degree)
+    public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
+
 
     /**
      * The Singleton instance of this TurretSubsystem. External classes should
@@ -24,14 +28,14 @@ public class TurretSubsystem extends SubsystemBase {
      * This constructor is private since this class is a Singleton. External classes
      * should use the {@link #getInstance()} method to get the instance.
      */
-    private TitanSRX shooter, zMotor, hood, belt;
+    private TitanSRX shooter, zMotor, hood;
     private TitanVictor subShoot;
     private PIDController zMotorPID, hoodPID;
     private DigitalInput beltLimitSwitch;
 
     private double manualSpeedSetpoint;
 
-    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, TitanSRX belt, DigitalInput beltLimitSwitch) {
+    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, DigitalInput beltLimitSwitch) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
@@ -40,7 +44,6 @@ public class TurretSubsystem extends SubsystemBase {
         this.subShoot = subShoot;
         this.zMotor = zMotor;
         this.hood = hood;
-        this.belt = belt;
         this.beltLimitSwitch = beltLimitSwitch;
         zMotorPID = new PIDController(0, 0, 0);
         hoodPID = new PIDController(0, 0, 0);
@@ -61,10 +64,6 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void setHood(double speed) {
         hood.set(speed);
-    }
-
-    public void setBelt(double speed) {
-        belt.set(speed);
     }
 
     public Encoder getZMotorEncoder() {
