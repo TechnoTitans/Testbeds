@@ -23,6 +23,9 @@ import frc.robot.motor.TitanFX;
 
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends DriveTrain {
+
+    public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // pulse per inch
+
 //    private final SpeedController leftSpeedController;
 //    private final SpeedController rightSpeedController;
 //    private final DifferentialDrive drive;

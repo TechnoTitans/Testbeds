@@ -11,8 +11,11 @@ import frc.robot.motor.TitanVictor;
 @SuppressWarnings("JavadocReference")
 public class TurretSubsystem extends SubsystemBase {
 
-// Any variables/fields used in the constructor must appear before the "INSTANCE" variable
-// so that they are initialized before the constructor is called.
+
+    public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
+    public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772f) / 45; // (pulses per degree)
+    public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
+
 
     /**
      * The Singleton instance of this TurretSubsystem. External classes should

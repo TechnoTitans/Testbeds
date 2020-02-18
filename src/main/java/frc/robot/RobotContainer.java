@@ -9,17 +9,10 @@ package frc.robot;
 
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.*;
 import edu.wpi.first.wpilibj.kinematics.*;
-import edu.wpi.first.wpilibj.trajectory.*;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.*;
 
 import frc.robot.motor.TitanSRX;
@@ -29,8 +22,6 @@ import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Compressor;
-
-import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -146,13 +137,13 @@ public class RobotContainer {
         rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
         rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
 
-        leftFrontMotorEncoder = new QuadEncoder(leftFrontMotorFX, 0, true);
+        leftFrontMotorEncoder = new QuadEncoder(leftFrontMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
         leftFrontMotorFX.setEncoder(leftFrontMotorEncoder);
-        rightFrontMotorEncoder = new QuadEncoder(rightFrontMotorFX, 0, true);
+        rightFrontMotorEncoder = new QuadEncoder(rightFrontMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
         rightFrontMotorFX.setEncoder(rightFrontMotorEncoder);
-        rightBackMotorEncoder = new QuadEncoder(rightBackMotorFX, 0, true);
+        rightBackMotorEncoder = new QuadEncoder(rightBackMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
         rightBackMotorFX.setEncoder(rightBackMotorEncoder);
-        leftBackMotorEncoder = new QuadEncoder(leftBackMotorFX, 0, true);
+        leftBackMotorEncoder = new QuadEncoder(leftBackMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
         leftBackMotorFX.setEncoder(leftBackMotorEncoder);
 
 

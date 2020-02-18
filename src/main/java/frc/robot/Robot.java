@@ -27,10 +27,6 @@ public class Robot extends TimedRobot {
 
 	// todo move to better place
 	// todo calc more accurate values
-	public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
-	public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772) / 45; // (pulses per degree)
-	public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40) / 1; // (pulses per rev)
-	public static final double DRIVETRAIN_PULSES_PER_INCH = 82763 / 100; // pulse per in
 
 	// todo reverse talonfx encoders by wrapping around
 
