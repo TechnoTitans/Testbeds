@@ -182,7 +182,8 @@ public class RobotContainer {
         hoodMotor.configFactoryDefault();
         zMotor.configFactoryDefault();
 
-        //        shootMotor.setupCurrentLimiting(5, 0, 0);
+        /*
+        shootMotor.setupCurrentLimiting(5, 0, 0);
         intakeMotor.setupCurrentLimiting(5, 0, 0);
         leftFrontMotorFX.setupCurrentLimiting(5, 6, 50);
         leftBackMotorFX.setupCurrentLimiting(5, 6, 50);
@@ -190,6 +191,7 @@ public class RobotContainer {
         rightBackMotorFX.setupCurrentLimiting(5, 6, 50);
         hoodMotor.setupCurrentLimiting(4,0,0);
         zMotor.setupCurrentLimiting(3,4,100);
+        */
 
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeftJoyY, oi::getRightJoyY, driveTrain, true);
@@ -214,12 +216,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
-//         btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
-//         btnToggleHopperIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_INTAKE);
-//         btnToggleHopperExpel = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_EXPEL);
-//         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
-//         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
-//
+        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
+        btnToggleHopperIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_INTAKE);
+        btnToggleHopperExpel = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_EXPEL);
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+
         btnToggleHopperIntake = new TitanButton(oi.leftJoystick, 6);
         btnToggleHopperExpel = new TitanButton(oi.leftJoystick, 7);
         btnToggleIntake = new TitanButton(oi.getXbox(), 1);
