@@ -27,7 +27,7 @@ public class TurretAutonomous extends CommandBase {
 
     @Override
     public void execute() {
-        xAngle = vision.getAngleX(); //calculations here to convert from angles to encoder
+        xAngle = vision.getAngleX(); //todo calculations here to convert from angles to encoder
         yAngle = vision.getAngleY(); //decide if angle should be the lower angle or larger, then convert from angle to encoder
         distance = vision.getDistance(); // units in feet
         //Decide shooter speed here

@@ -1,6 +1,7 @@
 package frc.robot.motor;
 
 import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * TitanFX is our enhanced version of the regular TalonFX code
  */
 // todo implement speedcontroller
-public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
+public class TitanFX extends WPI_TalonFX implements Motor {
 
 	private Encoder encoder;
 	private static final int TIMEOUT_MS = 30;

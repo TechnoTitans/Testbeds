@@ -9,7 +9,7 @@ public class RotateHood extends CommandBase {
     private double angle;
     private TurretSubsystem turret;
     public RotateHood(double angle, TurretSubsystem turret) {
-        this.angle = angle; // calculations here to convert angle into encoders
+        this.angle = angle; // todo calculations here to convert angle into encoders
         this.turret = turret;
         addRequirements(turret);
     }

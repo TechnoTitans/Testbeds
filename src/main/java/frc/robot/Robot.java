@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.RotateHood;
+import frc.robot.commands.RotateTurret;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,6 +45,10 @@ public class Robot extends TimedRobot {
 		robotContainer.hoodMotorEncoder.reset();
 		robotContainer.shootMotorEncoder.reset();
 		robotContainer.zMotorEncoder.reset();
+		double turretAngle = 0; //todo get actual angles for both
+		double hoodAngle = 0;
+//		CommandScheduler.getInstance().schedule(new RotateTurret(turretAngle, robotContainer.turret));
+//		CommandScheduler.getInstance().schedule(new RotateHood(hoodAngle, robotContainer.turret));
 
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
@@ -101,6 +107,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
 		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
 		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
+
+
+		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
+		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600 / 4096);
+		SmartDashboard.putNumber("closed loop error ", robotContainer.shootMotor.getClosedLoopError());
 
 
 	}
