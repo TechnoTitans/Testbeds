@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.I2C;
  * constants are needed, to reduce verbosity.
  */
 public final class RobotMap {
+
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
 
@@ -54,6 +55,15 @@ public final class RobotMap {
     public static final boolean REVERSED_FEEDER = false;
 
     public static final int WINCH_MOTOR = 0;
+
+    // LimitSwitch
+    public static final int LEFT_TURRET_LS = 0;
+    public static final boolean LEFT_TURRET_LS_INVERTED = false;
+
+    public static final int RIGHT_TURRET_LS = 1;
+    public static final boolean RIGHT_TURRET_LS_INVERTED = false;
+
+
 
     // Joysticks
     public static final int LEFT_JOYSTICK = 0;

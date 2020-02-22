@@ -48,7 +48,7 @@ public class TankDrive extends DriveTrain {
     //TankDrive setup
 
     public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Solenoid shifterSolenoid) {
-        this(leftTalonFX, rightTalonFX, null, shifterSolenoid);
+        this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(0)), shifterSolenoid);
     }
 
     public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid) {

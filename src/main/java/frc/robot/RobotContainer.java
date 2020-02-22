@@ -18,6 +18,7 @@ import frc.robot.commands.*;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanVictor;
+import frc.robot.sensors.LimitSwitch;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
@@ -46,8 +47,6 @@ public class RobotContainer {
 
     // Declare the robot's components here
 
-    // The robot's subsystems and commands are defined here...
-    private DigitalInput beltLimitSwitch;
     public Solenoid shifterSolenoid;
     public final Solenoid intakeSolenoid;
 
@@ -59,8 +58,10 @@ public class RobotContainer {
     public TitanSRX intakeMotor;
     private TitanVictor hopperMotor;
 
+    private final LimitSwitch leftTurretLS;
+    private final LimitSwitch rightTurretLS;
 
-  
+
     private ColorSensorV3 colorSensor;
 	public IntakeSubsystem intake;
 	public HopperSubsystem hopper;
@@ -85,6 +86,7 @@ public class RobotContainer {
 
     private CommandBase autonomousCommand;
 
+    // MARK - Operator Interface + Buttons
     public OI oi;
     private TitanButton btnToggleShifter;
     private TitanButton btnToggleIntake;
@@ -126,8 +128,9 @@ public class RobotContainer {
         shootMotorEncoder = new QuadEncoder(shootMotor, 0, false); // todo rename shootmotor to flywheel motor
         shootMotor.setEncoder(shootMotorEncoder);
 
-        beltLimitSwitch = new DigitalInput(0);
-        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, beltLimitSwitch);
+        leftTurretLS = new LimitSwitch(RobotMap.LEFT_TURRET_LS, RobotMap.LEFT_TURRET_LS_INVERTED);
+        rightTurretLS = new LimitSwitch(RobotMap.RIGHT_TURRET_LS, RobotMap.RIGHT_TURRET_LS_INVERTED);
+        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, leftTurretLS, rightTurretLS);
         spinningMotor = new TitanSRX(0, false);
 //        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
 //        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
