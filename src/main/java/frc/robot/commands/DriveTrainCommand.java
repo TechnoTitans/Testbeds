@@ -34,8 +34,8 @@ public class DriveTrainCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        leftFilter = new Filter(0.1); // todo adjust sensitivity
-        rightFilter = new Filter(0.1); // todo adjust sensitivity
+        leftFilter = new Filter(0.5); // todo adjust sensitivity
+        rightFilter = new Filter(0.5); // todo adjust sensitivity
     }
 
     @Override
@@ -44,7 +44,7 @@ public class DriveTrainCommand extends CommandBase {
         if (filterEnabled) {
             leftFilter.update(leftInput.getAsDouble());
             rightFilter.update(rightInput.getAsDouble());
-            driveTrain.set(rightFilter.getValue(), leftFilter.getValue());
+            driveTrain.set(leftFilter.getValue(), rightFilter.getValue());
         } else {
             driveTrain.set(leftInput.getAsDouble(), rightInput.getAsDouble());
         }

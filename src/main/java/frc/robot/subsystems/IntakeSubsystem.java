@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.TitanButton;
@@ -20,8 +21,8 @@ public class IntakeSubsystem extends SubsystemBase {
 	 */
 	private TitanSRX intakeMotor;
 
-	private static final double EXPEL_SPEED = 1;
-	private static final double INTAKE_SPEED = -1;
+	private static final double EXPEL_SPEED = -.7;
+	private static final double INTAKE_SPEED = .5;
 
 	public IntakeSubsystem(TitanSRX intakeMotor, Solenoid piston) {
 		this.intakeMotor = intakeMotor;
@@ -39,6 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
 	}
 
 	public void setSpeed(double speed) {
+		speed = MathUtil.clamp(speed, EXPEL_SPEED, INTAKE_SPEED);
 		intakeMotor.set(speed);
 	}
 

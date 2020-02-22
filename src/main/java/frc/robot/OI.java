@@ -29,11 +29,11 @@ public class OI {
 
 	// todo verify this works
 	public double getLeftJoyY() {
-		return leftJoystick.getY();
+		return deadband(leftJoystick.getY(), 0.1); // todo more readble
 	}
 
 	public double getRightJoyY() {
-		return rightJoystick.getY();
+		return deadband(rightJoystick.getY(), 0.1);
 	}
 
 	public double getXboxLeftY() {
@@ -55,5 +55,19 @@ public class OI {
 	public XboxController getXbox() {
 		return xbox;
 	}
+
+	public double deadband(double value, double deadband) {
+		if (-deadband <= value && value <= deadband) {
+			value = 0;
+		} else if (value > deadband){
+			value -= deadband;
+			value *= (1 + deadband);
+		} else if (value < -deadband){
+			value += deadband;
+			value *= (1 + deadband);
+		}
+		return value;
+	}
+
 
 }

@@ -49,6 +49,8 @@ public class RobotContainer {
 
     public Solenoid shifterSolenoid;
     public final Solenoid intakeSolenoid;
+    private final Solenoid climbMechPiston;
+    private final Solenoid colorMechPiston;
 
     public TitanSRX shootMotor;
     private TitanVictor subShootMotor;
@@ -171,6 +173,9 @@ public class RobotContainer {
 
         titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
 
+        // todo move and put into actual subsystem
+        climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
+        colorMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.COLOR_MECH_PISTON);
 
         // MARK - Talon/Victor Setup and Configuration
 
@@ -218,18 +223,15 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // MARK - button definitions
-        btnToggleShifter = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_SHIFTER);
-        btnToggleIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_INTAKE);
-        btnToggleHopperIntake = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_INTAKE);
-        btnToggleHopperExpel = new TitanButton(oi.leftJoystick, OI.BTNNUM_TOGGLE_HOPPER_EXPEL);
-        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
-        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+        btnToggleShifter = new TitanButton(oi.leftJoystick, 4);
+        TitanButton btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
 
-        btnToggleHopperIntake = new TitanButton(oi.leftJoystick, 6);
-        btnToggleHopperExpel = new TitanButton(oi.leftJoystick, 7);
+        TitanButton btnToggleClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
+        btnToggleHopperIntake = new TitanButton(oi.rightJoystick, 3);
+        btnToggleHopperExpel = new TitanButton(oi.rightJoystick, 2);
+
         btnToggleIntake = new TitanButton(oi.getXbox(), 1);
         btnFeederExpel = new TitanButton(oi.getXbox(), 3);
-
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
 
@@ -248,6 +250,15 @@ public class RobotContainer {
         btnDecreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
             turret.setSpeedSetpoint(turret.getSpeedSetpoint() - 0.05);
         }, turret));
+
+
+        btnToggleColorMechPiston.whenPressed(() -> {
+            colorMechPiston.set(!colorMechPiston.get());
+        });
+        btnToggleClimbMechPiston.whenPressed(() -> {
+            climbMechPiston.set(!climbMechPiston.get());
+        });
+
 
 
 

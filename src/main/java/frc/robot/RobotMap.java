@@ -26,16 +26,19 @@ public final class RobotMap {
     public static final int GEAR_SHIFT_SOLENOID = 0;
     public static final int INTAKE_SOLENOID = 1;
     public static final int FALCON_COOLING_PORT = 2;
+    public static final int CLIMB_MECH_PISTON = 3;
+    public static final int COLOR_MECH_PISTON = 4;
+
 
     //  Can IDS
 
     public static final int COMPRESSOR_ID = 2;
 
     public static final int LEFT_TALON_FRONT = 5, LEFT_TALON_BACK = 6;
-    public static final boolean REVERSED_LF_TALON = false, REVERSED_LB_TALON = false;
+    public static final boolean REVERSED_LF_TALON = true, REVERSED_LB_TALON = true;
 
     public static final int RIGHT_TALON_FRONT = 3, RIGHT_TALON_BACK = 4;
-    public static final boolean REVERSED_RF_TALON = true, REVERSED_RB_TALON = true;
+    public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
 
     public static final int INTAKE_MOTOR = 7; // victor
 
@@ -60,10 +63,10 @@ public final class RobotMap {
 
     // LimitSwitch
     public static final int LEFT_TURRET_LS = 0;
-    public static final boolean LEFT_TURRET_LS_INVERTED = false;
+    public static final boolean LEFT_TURRET_LS_INVERTED = true;
 
     public static final int RIGHT_TURRET_LS = 1;
-    public static final boolean RIGHT_TURRET_LS_INVERTED = false;
+    public static final boolean RIGHT_TURRET_LS_INVERTED = true;
 
 
 

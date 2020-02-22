@@ -68,11 +68,6 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setShooter(double speed) {
-        if (leftTurretLS.isPressed()) {
-            speed = MathUtil.clamp(speed, 0, 1); // assuming +1 is right direction
-        } else if (rightTurretLS.isPressed()) {
-            speed = MathUtil.clamp(speed, 0, -1); // assuming -1 is leftwards
-        }
         shooter.set(speed);
     }
 
@@ -84,6 +79,11 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setZMotor(double speed) {
+        if (leftTurretLS.isPressed()) {
+            speed = MathUtil.clamp(speed, 0, 1); // assuming +1 is right direction
+        } else if (rightTurretLS.isPressed()) {
+            speed = MathUtil.clamp(speed, -1, 0); // assuming -1 is leftwards
+        }
         zMotor.set(speed);
     }
 
