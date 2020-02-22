@@ -7,12 +7,19 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.controller.*;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.geometry.*;
 import edu.wpi.first.wpilibj.kinematics.*;
+import edu.wpi.first.wpilibj.trajectory.*;
+import edu.wpi.first.wpilibj.trajectory.constraint.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.*;
 
 import frc.robot.motor.TitanSRX;
@@ -23,6 +30,8 @@ import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Compressor;
+
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -152,7 +161,7 @@ public class RobotContainer {
         leftBackMotorFX.setEncoder(leftBackMotorEncoder);
 
 
-        leftBackMotorFX.follow(leftFrontMotorFX); // todo set titanfx motor encoders
+        leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
 
         kinematics = new DifferentialDriveKinematics(DRIVE_WIDTH);
@@ -189,6 +198,21 @@ public class RobotContainer {
         rightBackMotorFX.configFactoryDefault();
         hoodMotor.configFactoryDefault();
         zMotor.configFactoryDefault();
+
+        shootMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+                PIDConstants.kPIDLoopIdx,
+                PIDConstants.kTimeoutMs);
+        /* Config the peak and nominal outputs */
+        shootMotor.configNominalOutputForward(0, PIDConstants.kTimeoutMs);
+        shootMotor.configNominalOutputReverse(0, PIDConstants.kTimeoutMs);
+        shootMotor.configPeakOutputForward(1, PIDConstants.kTimeoutMs);
+        shootMotor.configPeakOutputReverse(-1, PIDConstants.kTimeoutMs);
+
+        /* Config the Velocity closed loop gains in slot0 */
+        shootMotor.config_kF(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kF, PIDConstants.kTimeoutMs);
+        shootMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kP, PIDConstants.kTimeoutMs);
+        shootMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kI, PIDConstants.kTimeoutMs);
+        shootMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kD, PIDConstants.kTimeoutMs);
 
         /*
         shootMotor.setupCurrentLimiting(5, 0, 0);
@@ -245,10 +269,12 @@ public class RobotContainer {
         btnFeederExpel.whileHeld(new FeedBall(feeder));
 
         btnIncreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
-            turret.setSpeedSetpoint(turret.getSpeedSetpoint() + 0.05);
+            turret.increaseRPMSetpoint();
+            turret.setShooterVelocityRPM(turret.getRPMSetpoint());
         }, turret));
         btnDecreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
-            turret.setSpeedSetpoint(turret.getSpeedSetpoint() - 0.05);
+            turret.decreaseRPMSetpoint();
+            turret.setShooterVelocityRPM(turret.getRPMSetpoint());
         }, turret));
 
 
@@ -300,7 +326,7 @@ public class RobotContainer {
 //                driveTrain::tankDriveVolts,
 //                driveTrain
 //        );
-
+//
 //        return ramseteCommand.andThen(autonomousCommand);
         return autonomousCommand;
     }

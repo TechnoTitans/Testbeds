@@ -26,9 +26,9 @@ public class TankDrive extends DriveTrain {
 
     public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // pulse per inch
 
-//    private final SpeedController leftSpeedController;
-//    private final SpeedController rightSpeedController;
-//    private final DifferentialDrive drive;
+    private final SpeedController leftSpeedController;
+    private final SpeedController rightSpeedController;
+    private final DifferentialDrive drive;
 
 
     public static boolean SHIFT_HIGH_TORQUE = true; // todo find actual value
@@ -58,11 +58,10 @@ public class TankDrive extends DriveTrain {
         this.shifterSolenoid = shifterSolenoid;
         this.drivePID = new PIDController(0, 0,0);
 //        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
-//        this.leftSpeedController = (SpeedController) leftTalonFX;
-//        this.rightSpeedController = (SpeedController) rightTalonFX;
-//        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
+        this.leftSpeedController = leftTalonFX;
+        this.rightSpeedController = rightTalonFX;
+        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
         resetEncoders();
-
     }
 
     //Odometry stuff
@@ -70,31 +69,31 @@ public class TankDrive extends DriveTrain {
 //    public Rotation2d getAngle(){
 //        return Rotation2d.fromDegrees(getHeading());
 //    }
-//
-//    public Pose2d getPose(){
-//        return odometry.getPoseMeters();
-//    }
-//
+
+    public Pose2d getPose(){
+        return odometry.getPoseMeters();
+    }
+
 //    public void periodic(){
 //        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
 //    }
-//
-//    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-//        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
-//    }
-//    public void resetOdometry(Pose2d pose){
-//        resetEncoders();
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
+    }
+    public void resetOdometry(Pose2d pose){
+        resetEncoders();
 //        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-//    }
-//
-//    public void tankDriveVolts(double leftVolts, double rightVolts){
-//        leftSpeedController.setVoltage(leftVolts);
-//        rightSpeedController.setVoltage(rightVolts);
-//    }
-//
-//    public void setMaxOutput(double maxOutput){
-//        drive.setMaxOutput(maxOutput);
-//    }
+    }
+
+    public void tankDriveVolts(double leftVolts, double rightVolts){
+        leftSpeedController.setVoltage(leftVolts);
+        rightSpeedController.setVoltage(rightVolts);
+    }
+
+    public void setMaxOutput(double maxOutput){
+        drive.setMaxOutput(maxOutput);
+    }
 
 //set the speed the motors
 
@@ -193,9 +192,9 @@ public class TankDrive extends DriveTrain {
         return new double[] { left.getSpeed(), right.getSpeed() };
     }
 
-    public double getHeading() {
-        return Math.IEEEremainder(gyro.getAngle(), 360); //assuming gyro is not reversed
-    }
+//    public double getHeading() {
+//        return Math.IEEEremainder(gyro.getAngle(), 360); //assuming gyro is not reversed
+//    }
 
     public Gyro getGyro() {
         return gyro;

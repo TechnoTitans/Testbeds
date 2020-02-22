@@ -21,7 +21,7 @@ public class Vision {
         }
         return data;
     }
-
+    //todo set default values
     public double getAngleX(){
         return getData()[3];
     }
