@@ -270,11 +270,9 @@ public class RobotContainer {
 
         btnIncreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
             turret.increaseRPMSetpoint();
-            turret.setShooterVelocityRPM(turret.getRPMSetpoint());
         }, turret));
         btnDecreaseShooterSpeed.whenPressed(new InstantCommand(() -> {
             turret.decreaseRPMSetpoint();
-            turret.setShooterVelocityRPM(turret.getRPMSetpoint());
         }, turret));
 
 

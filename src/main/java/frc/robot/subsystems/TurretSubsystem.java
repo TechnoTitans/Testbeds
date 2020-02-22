@@ -20,11 +20,11 @@ public class TurretSubsystem extends SubsystemBase {
     public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
     public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772f) / 45; // (pulses per degree)
     public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
+    public static final double MAX_RPM = 7400; //18730 max rpm / 2.5 gear reduction ratio
+    public static final double RPM_INCREMENT = 0.1 * TurretSubsystem.MAX_RPM;
+
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
-
-    private final double MAX_RPM = 7400; //18730 max rpm / 2.5 gear reduction ratio
-    private final double RPM_INCREMENT = 0.1 * this.MAX_RPM;
     /**
      * The Singleton instance of this TurretSubsystem. External classes should
      * use the {@link #getInstance()} method to get the instance.
@@ -38,7 +38,6 @@ public class TurretSubsystem extends SubsystemBase {
      */
     private TitanSRX shooter, zMotor, hood;
     private TitanVictor subShoot;
-    private PIDController zMotorPID, hoodPID; // todo remove
 
     private double manualPercentOutputSetpoint;
     private double rpmSetpoint;
@@ -53,9 +52,6 @@ public class TurretSubsystem extends SubsystemBase {
         this.hood = hood;
         this.leftTurretLS = leftTurretLS;
         this.rightTurretLS  = rightTurretLS;
-        zMotorPID = new PIDController(0, 0, 0);
-        hoodPID = new PIDController(0, 0, 0);
-        shooterPID = new PIDController(0, 0, 0);
     }
 
     @Override
@@ -77,7 +73,7 @@ public class TurretSubsystem extends SubsystemBase {
         subShoot.set(speed);
     }
 
-    public void setShooterVelocityRPM (double rpm){
+    public void setShooterVelocityRPM(double rpm){
         shooter.setVelocityRPM(rpm);
     }
 
@@ -102,13 +98,6 @@ public class TurretSubsystem extends SubsystemBase {
         return hood.getEncoder();
     }
 
-    public PIDController getZMotorPID() {
-        return zMotorPID;
-    }
-
-    public PIDController getHoodPID() {
-        return hoodPID;
-    }
 
     public TitanSRX getShooter(){
         return shooter;
@@ -128,7 +117,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void setRPMSetpoint(double rpm) {
         this.rpmSetpoint = rpm;
-        shooterPID.setSetpoint(getRPMSetpoint());
+        this.setShooterVelocityRPM(rpm);
     }
 
     public double getRPMSetpoint(){
@@ -141,10 +130,12 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void increaseRPMSetpoint() {
         this.rpmSetpoint += this.RPM_INCREMENT;
+        this.setRPMSetpoint(this.rpmSetpoint);
     }
 
     public void decreaseRPMSetpoint() {
         this.rpmSetpoint -= this.RPM_INCREMENT;
+        this.setRPMSetpoint(this.rpmSetpoint);
     }
 
     /**
