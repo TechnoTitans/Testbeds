@@ -131,7 +131,7 @@ public class RobotContainer {
         leftTurretLS = new LimitSwitch(RobotMap.LEFT_TURRET_LS, RobotMap.LEFT_TURRET_LS_INVERTED);
         rightTurretLS = new LimitSwitch(RobotMap.RIGHT_TURRET_LS, RobotMap.RIGHT_TURRET_LS_INVERTED);
         turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, leftTurretLS, rightTurretLS);
-        spinningMotor = new TitanSRX(0, false);
+        spinningMotor = new TitanSRX(RobotMap.COLOR_WHEEL_MOTOR, RobotMap.REVERSED_COLOR_WHEEL);
 //        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
 //        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
 
