@@ -36,7 +36,7 @@ public class TurretTeleop extends CommandBase {
 
     @Override
     public void initialize() {
-        hoodFilter = new Filter(0.1);
+        hoodFilter = new Filter(0.7);
         zFilter = new Filter(0.7);
     }
 
