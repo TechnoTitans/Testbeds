@@ -112,6 +112,13 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
 		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600 / 4096);
 		SmartDashboard.putNumber("closed loop error ", robotContainer.shootMotor.getClosedLoopError());
+		SmartDashboard.putNumber("Left Front Falcon Temperature (C)", robotContainer.leftFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Left Back Falcon Temperature (C)", robotContainer.leftBackMotorFX.getTemperature());
+		SmartDashboard.putNumber("Right Front Falcon Temperature (C)", robotContainer.rightFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Right Back Falcon Temperature (C)", robotContainer.rightBackMotorFX.getTemperature());
+		SmartDashboard.putNumber("Average Motor Temp", (robotContainer.leftFrontMotorFX.getTemperature() + robotContainer.rightFrontMotorFX.getTemperature()) / 2.0);
+		SmartDashboard.putBoolean("Cooling on", robotContainer.titanFXCoolingPiston.get());
+
 
 
 	}

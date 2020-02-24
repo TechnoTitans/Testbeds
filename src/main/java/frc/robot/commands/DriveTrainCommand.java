@@ -2,9 +2,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.motor.Filter;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.TankDrive;
 
 import java.util.function.DoubleSupplier;
 
@@ -18,7 +21,7 @@ public class DriveTrainCommand extends CommandBase {
     private Filter leftFilter, rightFilter;
 
     private boolean filterEnabled;
-
+    Timer coolingTimer = new Timer();
     public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, DriveTrain driveTrain) {
         // enable filtering by default
         this(leftInput, rightInput, driveTrain, true);
@@ -47,6 +50,17 @@ public class DriveTrainCommand extends CommandBase {
             driveTrain.set(leftFilter.getValue(), rightFilter.getValue());
         } else {
             driveTrain.set(leftInput.getAsDouble(), rightInput.getAsDouble());
+        }
+        SmartDashboard.putBoolean("Compressor value", driveTrain.getPressureSwitchValue());
+        double avgTemp = (driveTrain.getLeft().getTemperature() + driveTrain.getRight().getTemperature()) / 2.0;
+        if (avgTemp > TankDrive.MAX_MOTOR_TEMP && driveTrain.getPressureSwitchValue()) {
+            driveTrain.setCooling(true);
+            coolingTimer.start();
+        }
+        if (coolingTimer.get() > 3) {
+            driveTrain.setCooling(false);
+            coolingTimer.reset();
+            coolingTimer.stop();
         }
     }
 

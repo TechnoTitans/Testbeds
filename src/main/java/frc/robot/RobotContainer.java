@@ -106,6 +106,7 @@ public class RobotContainer {
     private TitanButton btnToggleHopperIntake;
     private TitanButton btnToggleHopperExpel;
     private TitanButton btnFeederExpel;
+    private TitanButton btnToggleSolenoid;
     // todo find actual values
     private final double kS = 0; //volts
     private final double kV = 0; //volt-seconds/meter
@@ -116,6 +117,7 @@ public class RobotContainer {
     private final double RAMSETE_B = 2;
     private final double RAMSETE_ZETA = 0.7;
     private final double DRIVE_WIDTH = 0.5; //meters
+
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
      */
@@ -123,7 +125,6 @@ public class RobotContainer {
 
         oi = new OI();
         compressor = new Compressor(RobotMap.COMPRESSOR_ID);
-
         shootMotor = new TitanSRX(RobotMap.FLYWHEEL1, RobotMap.REVERSED_FLYWHEEL1);
         subShootMotor = new TitanVictor(RobotMap.FLYWHEEL2, RobotMap.REVERSED_FLYWHEEL2);
         subShootMotor.follow(shootMotor);
@@ -167,7 +168,9 @@ public class RobotContainer {
         kinematics = new DifferentialDriveKinematics(DRIVE_WIDTH);
 
         shifterSolenoid = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.GEAR_SHIFT_SOLENOID);
-        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid);
+        titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
+
+        driveTrain = new TankDrive(leftFrontMotorFX, rightFrontMotorFX, shifterSolenoid, titanFXCoolingPiston, compressor);
 
 
         intakeMotor = new TitanSRX(RobotMap.INTAKE_MOTOR, RobotMap.REVERSED_INTAKE_MOTOR);
@@ -180,7 +183,6 @@ public class RobotContainer {
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
 
-        titanFXCoolingPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.FALCON_COOLING_PORT);
 
         // todo move and put into actual subsystem
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
@@ -248,6 +250,14 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, 4);
+        btnToggleSolenoid = new TitanButton(oi.leftJoystick, 2);
+//        btnToggleSolenoid.whenPressed(new InstantCommand(() -> {
+//            if (titanFXCoolingPiston.get()){
+//                titanFXCoolingPiston.set(false);
+//            } else {
+//                titanFXCoolingPiston.set(true);
+//            }
+//        }, driveTrain));
         TitanButton btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
 
         TitanButton btnToggleClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
@@ -258,7 +268,6 @@ public class RobotContainer {
         btnFeederExpel = new TitanButton(oi.getXbox(), 3);
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
-
 
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));

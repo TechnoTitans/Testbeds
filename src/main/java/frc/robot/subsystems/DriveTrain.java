@@ -47,6 +47,10 @@ public abstract class DriveTrain extends SubsystemBase {
 	
 	public abstract void disableBrownoutProtection();
 
+    public abstract boolean getPressureSwitchValue();
+
+	public abstract void setCooling(boolean b);
+
 //	public abstract Pose2d getPose();
 
 

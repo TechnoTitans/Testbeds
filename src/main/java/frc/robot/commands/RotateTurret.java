@@ -17,18 +17,18 @@ public class RotateTurret extends CommandBase {
 
     @Override
     public void initialize() {
-        turret.getZMotorPID().setSetpoint(angle);
+
     }
 
     @Override
     public void execute() {
-        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
+
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return turret.getZMotorPID().atSetpoint(); // some calculations will be made here
+        return false; // some calculations will be made here
     }
 
     @Override
