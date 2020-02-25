@@ -10,6 +10,10 @@ public class LimitSwitch extends DigitalInput{
         this.inverted = inverted;
     }
 
+    /**
+     *
+     * @return whether or not the limit switch is deemed "pressed" or active, taking into account normally open/closed
+     */
     public boolean isPressed() {
         return this.get() == !inverted;
     }

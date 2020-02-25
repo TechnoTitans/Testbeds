@@ -16,18 +16,19 @@ public class RotateHood extends CommandBase {
 
     @Override
     public void initialize() {
-        turret.getHoodPID().setSetpoint(angle);
+//        turret.getHoodPID().setSetpoint(angle);
     }
 
     @Override
     public void execute() {
-        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
+//        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return turret.getHoodPID().atSetpoint();
+//        return turret.getHoodPID().atSetpoint();
+        return false;
     }
 
     @Override

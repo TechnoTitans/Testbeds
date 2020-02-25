@@ -34,11 +34,11 @@ public class TurretAutonomous extends CommandBase {
         if (distance > 10){
             shooterSpeed = 0.8;
         }
-        turret.getZMotorPID().setSetpoint(xAngle);
-        turret.getHoodPID().setSetpoint(yAngle);
-        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
-        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
-        turret.setShooter(shooterSpeed);
+//        turret.getZMotorPID().setSetpoint(xAngle);
+//        turret.getHoodPID().setSetpoint(yAngle);
+//        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
+//        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
+//        turret.setShooter(shooterSpeed);
     }
 
     @Override
