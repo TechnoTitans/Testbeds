@@ -73,18 +73,17 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().run();
 
 		// todo make everything private that is publicly used here
-		SmartDashboard.putNumber("Flywheel Motor Encoder", robotContainer.shootMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("zMotor Motor Encoder", robotContainer.zMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("hoodMotor Motor Encoder", robotContainer.hoodMotorEncoder.getRawPosition());
-		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
-		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
+//		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
+//		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
 
-		SmartDashboard.putData(robotContainer.shifterSolenoid);
-		SmartDashboard.putData(robotContainer.intakeSolenoid);
-		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
+//		SmartDashboard.putData(robotContainer.shifterSolenoid);
+//		SmartDashboard.putData(robotContainer.intakeSolenoid);
+//		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
 		
-		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
-		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
+//		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
+//		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
 //		SmartDashboard.putNumber("Red value", detectedColor.red);
 //		SmartDashboard.putNumber("Green value", detectedColor.green);
@@ -92,21 +91,28 @@ public class Robot extends TimedRobot {
 
 
 
-		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
-		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
-		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
-		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
 
 		// drivetrain
 		SmartDashboard.putNumber("Falcon Right Front Current", robotContainer.rightFrontMotorFX.getCurrent());
 		SmartDashboard.putNumber("Falcon Left Front Current", robotContainer.leftFrontMotorFX.getCurrent());
 
+		SmartDashboard.putNumber("Falcon RF Temp", robotContainer.rightFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Falcon LF Temp", robotContainer.leftFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Falcon RB Temp", robotContainer.rightBackMotorFX.getTemperature());
+		SmartDashboard.putNumber("Falcon LB Temp", robotContainer.leftBackMotorFX.getTemperature());
+
+
 		TalonSRXConfiguration zMotorConfig = new TalonSRXConfiguration();
 		robotContainer.zMotor.getAllConfigs(zMotorConfig, 0);
 
-		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
-		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
-		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
+//		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
+//		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
+//		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
+
 
 
 		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
@@ -120,6 +126,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Cooling on", robotContainer.titanFXCoolingPiston.get());
 
 
+		SmartDashboard.putNumber("Flywheel setpoint (RPM)", robotContainer.turret.getRPMSetpoint());
+		SmartDashboard.putNumber("Flywheel velocity (RPM)", robotContainer.shootMotor.getSelectedSensorVelocity() * (60 * 10) / 4096f);
+		SmartDashboard.putNumber("Flywheel Closed Loop Error", robotContainer.shootMotor.getClosedLoopError());
+
+
+		SmartDashboard.putBoolean("Bottom Hood LS", robotContainer.hoodBottomLS.isPressed());
 
 	}
 

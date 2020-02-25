@@ -39,10 +39,21 @@ public class IntakeSubsystem extends SubsystemBase {
 		intakeMotor.set(INTAKE_SPEED);
 	}
 
+	public void toggleIntakeMotors() {
+		boolean isIntaking = this.intakeMotor.get() > 0;
+		if (isIntaking) {
+			this.stop();
+		} else {
+			this.intake();
+		}
+	}
+
 	public void setSpeed(double speed) {
 		speed = MathUtil.clamp(speed, EXPEL_SPEED, INTAKE_SPEED);
 		intakeMotor.set(speed);
 	}
+
+
 
 	/**
 	 * Will be called periodically whenever the CommandScheduler runs.

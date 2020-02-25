@@ -9,29 +9,23 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.controller.*;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.geometry.*;
-import edu.wpi.first.wpilibj.kinematics.*;
-import edu.wpi.first.wpilibj.trajectory.*;
-import edu.wpi.first.wpilibj.trajectory.constraint.*;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.*;
-
-import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanFX;
+import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
+import frc.robot.sensors.DriverCamera;
 import frc.robot.sensors.LimitSwitch;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.Compressor;
-
-import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -39,12 +33,12 @@ import java.util.List;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class RobotContainer {
 
     private final Compressor compressor;
     private final TitanVictor feederMotor;
     private final FeederSubsystem feeder;
-    public final Solenoid titanFXCoolingPiston;
 
     public final QuadEncoder zMotorEncoder;
     public final QuadEncoder hoodMotorEncoder;
@@ -54,23 +48,26 @@ public class RobotContainer {
     public final QuadEncoder rightBackMotorEncoder;
     public final QuadEncoder leftBackMotorEncoder;
 
-    // Declare the robot's components here
+    // MARK - Solenoids
 
-    public Solenoid shifterSolenoid;
+    public final Solenoid shifterSolenoid;
     public final Solenoid intakeSolenoid;
     private final Solenoid climbMechPiston;
     private final Solenoid colorMechPiston;
+    public final Solenoid titanFXCoolingPiston;
 
-    public TitanSRX shootMotor;
-    private TitanVictor subShootMotor;
-    public TitanSRX zMotor;
-    public TitanSRX hoodMotor;
-    private TitanSRX spinningMotor;
-    public TitanSRX intakeMotor;
-    private TitanVictor hopperMotor;
+
+    public final TitanSRX shootMotor;
+    private final TitanVictor subShootMotor;
+    public final TitanSRX zMotor;
+    public final TitanSRX hoodMotor;
+    private final TitanSRX spinningMotor;
+    public final TitanSRX intakeMotor;
+    private final TitanVictor hopperMotor;
 
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
+    public final LimitSwitch hoodBottomLS;
 
 
     private ColorSensorV3 colorSensor;
@@ -118,6 +115,10 @@ public class RobotContainer {
     private final double RAMSETE_ZETA = 0.7;
     private final double DRIVE_WIDTH = 0.5; //meters
 
+    public static DriverCamera driverCamera;
+
+
+
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
      */
@@ -142,7 +143,8 @@ public class RobotContainer {
 
         leftTurretLS = new LimitSwitch(RobotMap.LEFT_TURRET_LS, RobotMap.LEFT_TURRET_LS_INVERTED);
         rightTurretLS = new LimitSwitch(RobotMap.RIGHT_TURRET_LS, RobotMap.RIGHT_TURRET_LS_INVERTED);
-        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, leftTurretLS, rightTurretLS);
+        hoodBottomLS = new LimitSwitch(RobotMap.HOOD_BOTTOM_LS, RobotMap.HOOD_BOTTOM_LS_INVERTED);
+        turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, leftTurretLS, rightTurretLS, hoodBottomLS);
         spinningMotor = new TitanSRX(RobotMap.COLOR_WHEEL_MOTOR, RobotMap.REVERSED_COLOR_WHEEL);
 //        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
 //        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
@@ -207,14 +209,28 @@ public class RobotContainer {
         /* Config the peak and nominal outputs */
         shootMotor.configNominalOutputForward(0, PIDConstants.kTimeoutMs);
         shootMotor.configNominalOutputReverse(0, PIDConstants.kTimeoutMs);
-        shootMotor.configPeakOutputForward(1, PIDConstants.kTimeoutMs);
-        shootMotor.configPeakOutputReverse(-1, PIDConstants.kTimeoutMs);
+        shootMotor.configPeakOutputForward(PIDConstants.Shooter_Velocity_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+        shootMotor.configPeakOutputReverse(-PIDConstants.Shooter_Velocity_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
 
         /* Config the Velocity closed loop gains in slot0 */
         shootMotor.config_kF(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kF, PIDConstants.kTimeoutMs);
         shootMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kP, PIDConstants.kTimeoutMs);
         shootMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kI, PIDConstants.kTimeoutMs);
         shootMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Shooter_Velocity_Gains.kD, PIDConstants.kTimeoutMs);
+
+        zMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+                PIDConstants.kPIDLoopIdx,
+                PIDConstants.kTimeoutMs);
+
+        zMotor.configNominalOutputForward(0, PIDConstants.kTimeoutMs);
+        zMotor.configNominalOutputReverse(0, PIDConstants.kTimeoutMs);
+        zMotor.configPeakOutputForward(PIDConstants.Turret_Position_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+        zMotor.configPeakOutputReverse(-PIDConstants.Turret_Position_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+
+        zMotor.config_kF(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kF, PIDConstants.kTimeoutMs);
+        zMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kP, PIDConstants.kTimeoutMs);
+        zMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kI, PIDConstants.kTimeoutMs);
+        zMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kD, PIDConstants.kTimeoutMs);
 
         /*
         shootMotor.setupCurrentLimiting(5, 0, 0);
@@ -238,6 +254,8 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+
+        driverCamera = new DriverCamera();
 
     }
 
@@ -272,6 +290,9 @@ public class RobotContainer {
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleIntake.whenPressed(new ToggleIntake(intake));
+//        btnToggleIntake.whenPressed(new ToggleIntake(intake).andThen(() -> {
+//            intake.toggleIntakeMotors();
+//        }, intake));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 

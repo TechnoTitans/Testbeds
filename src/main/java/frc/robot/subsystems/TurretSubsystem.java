@@ -25,23 +25,14 @@ public class TurretSubsystem extends SubsystemBase {
 
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
-    /**
-     * The Singleton instance of this TurretSubsystem. External classes should
-     * use the {@link #getInstance()} method to get the instance.
-     */
-//    private final static TurretSubsystem INSTANCE = new TurretSubsystem(shooter, zMotor);
+    private final LimitSwitch hoodBottomLS;
 
-    /**
-     * Creates a new instance of this TurretSubsystem.
-     * This constructor is private since this class is a Singleton. External classes
-     * should use the {@link #getInstance()} method to get the instance.
-     */
     private TitanSRX shooter, zMotor, hood;
     private TitanVictor subShoot;
 
     private double manualPercentOutputSetpoint;
     private double rpmSetpoint;
-    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS) {
+    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS, LimitSwitch hoodBottomLS) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
@@ -52,29 +43,26 @@ public class TurretSubsystem extends SubsystemBase {
         this.hood = hood;
         this.leftTurretLS = leftTurretLS;
         this.rightTurretLS  = rightTurretLS;
+        this.hoodBottomLS = hoodBottomLS;
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("[Turret] Left Turret LS", this.leftTurretLS.isPressed());
         SmartDashboard.putBoolean("[Turret] Right Turret LS", this.rightTurretLS.isPressed());
-        SmartDashboard.putNumber("[Turret] Asimuth Velocity", this.zMotor.getSelectedSensorVelocity());
+        SmartDashboard.putBoolean("[Turret] Hood Bottom LS", this.hoodBottomLS.isPressed());
+//        SmartDashboard.putNumber("[Turret] Azimuth Velocity", this.zMotor.getSelectedSensorVelocity());
         SmartDashboard.putNumber("[Turret] Hood Position", this.hood.getSelectedSensorPosition());
+        // very important ! this must be called in a loop or it will be be disabled automatically
     }
 
     public void setShooter(double speed) {
         shooter.set(speed);
     }
 
-    // "subshoot" motor is just a victor, but that victor is a follower so you would never
-    // set it individually
-    @Deprecated(forRemoval = true)
-    public void setSubShoot(double speed) {
-        subShoot.set(speed);
-    }
-
     public void setShooterVelocityRPM(double rpm){
-        shooter.setVelocityRPM(rpm);
+        this.rpmSetpoint = MathUtil.clamp(rpm, 0, TurretSubsystem.MAX_RPM);
+        this.shooter.setVelocityRPM(this.rpmSetpoint);
     }
 
     public void setZMotor(double speed) {
@@ -87,6 +75,9 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setHood(double speed) {
+        if (hoodBottomLS.isPressed()) {
+            speed = MathUtil.clamp(speed, 0, +1); // assuming positive values allow hood to go up
+        }
         hood.set(speed);
     }
 
@@ -97,7 +88,6 @@ public class TurretSubsystem extends SubsystemBase {
     public Encoder getHoodEncoder() {
         return hood.getEncoder();
     }
-
 
     public TitanSRX getShooter(){
         return shooter;
@@ -129,12 +119,12 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void increaseRPMSetpoint() {
-        this.rpmSetpoint += this.RPM_INCREMENT;
+        this.rpmSetpoint += TurretSubsystem.RPM_INCREMENT;
         this.setRPMSetpoint(this.rpmSetpoint);
     }
 
     public void decreaseRPMSetpoint() {
-        this.rpmSetpoint -= this.RPM_INCREMENT;
+        this.rpmSetpoint -= TurretSubsystem.RPM_INCREMENT;
         this.setRPMSetpoint(this.rpmSetpoint);
     }
 

@@ -52,8 +52,8 @@ public class TurretTeleop extends CommandBase {
             turret.setZMotor(zMotorInput.getAsDouble());
             turret.setHood(hoodMotorInput.getAsDouble());
         }
-        turret.setShooter(turret.getPercentOutputSetpoint());  // this is set by the buttonbindings
-        SmartDashboard.putNumber("Turret Shooter Speed", turret.getPercentOutputSetpoint());
+        turret.setShooterVelocityRPM(turret.getRPMSetpoint());
+//        turret.setShooter(turret.getPercentOutputSetpoint());  // this is set by the buttonbindings
     }
 
     @Override
