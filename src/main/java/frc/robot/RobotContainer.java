@@ -22,10 +22,7 @@ import frc.robot.commands.*;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
-import frc.robot.sensors.DriverCamera;
-import frc.robot.sensors.LimitSwitch;
-import frc.robot.sensors.QuadEncoder;
-import frc.robot.sensors.TitanButton;
+import frc.robot.sensors.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -48,6 +45,8 @@ public class RobotContainer {
     public final QuadEncoder rightFrontMotorEncoder;
     public final QuadEncoder rightBackMotorEncoder;
     public final QuadEncoder leftBackMotorEncoder;
+
+    public final Vision vision;
 
     // MARK - Solenoids
 
@@ -107,6 +106,7 @@ public class RobotContainer {
     private TitanButton btnToggleHopperExpel;
     private TitanButton btnFeederExpel;
     private TitanButton btnToggleSolenoid;
+    private TitanButton btnTurretAutoAim;
     // todo find actual values
     private final double kS = 0; //volts
     private final double kV = 0; //volt-seconds/meter
@@ -188,6 +188,7 @@ public class RobotContainer {
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
 
+        vision = new Vision();
 
         // todo move and put into actual subsystem
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
@@ -229,13 +230,27 @@ public class RobotContainer {
 
         zMotor.configNominalOutputForward(0, PIDConstants.kTimeoutMs);
         zMotor.configNominalOutputReverse(0, PIDConstants.kTimeoutMs);
-        zMotor.configPeakOutputForward(PIDConstants.Turret_Position_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
-        zMotor.configPeakOutputReverse(-PIDConstants.Turret_Position_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+        zMotor.configPeakOutputForward(PIDConstants.Turret_ZMotor_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+        zMotor.configPeakOutputReverse(-PIDConstants.Turret_ZMotor_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
 
-        zMotor.config_kF(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kF, PIDConstants.kTimeoutMs);
-        zMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kP, PIDConstants.kTimeoutMs);
-        zMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kI, PIDConstants.kTimeoutMs);
-        zMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_Position_Gains.kD, PIDConstants.kTimeoutMs);
+        zMotor.config_kF(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kF, PIDConstants.kTimeoutMs);
+        zMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kP, PIDConstants.kTimeoutMs);
+        zMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kI, PIDConstants.kTimeoutMs);
+        zMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kD, PIDConstants.kTimeoutMs);
+
+        hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+                PIDConstants.kPIDLoopIdx,
+                PIDConstants.kTimeoutMs);
+
+        hoodMotor.configNominalOutputForward(0, PIDConstants.kTimeoutMs);
+        hoodMotor.configNominalOutputReverse(0, PIDConstants.kTimeoutMs);
+        hoodMotor.configPeakOutputForward(PIDConstants.Turret_Hood_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+        hoodMotor.configPeakOutputReverse(-PIDConstants.Turret_Hood_Gains.kPeakOutput, PIDConstants.kTimeoutMs);
+
+        hoodMotor.config_kF(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kF, PIDConstants.kTimeoutMs);
+        hoodMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kP, PIDConstants.kTimeoutMs);
+        hoodMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kI, PIDConstants.kTimeoutMs);
+        hoodMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kD, PIDConstants.kTimeoutMs);
 
         /*
         shootMotor.setupCurrentLimiting(5, 0, 0);
@@ -291,7 +306,7 @@ public class RobotContainer {
         btnFeederExpel = new TitanButton(oi.getXbox(), 3);
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
-
+        btnTurretAutoAim = new TitanButton(oi.getXbox(), OI.BTNNUM_TURRET_AUTO_AIM);
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleIntake.whenPressed(new ToggleIntake(intake));
@@ -317,6 +332,7 @@ public class RobotContainer {
         btnToggleClimbMechPiston.whenPressed(() -> {
             climb.releaseMech();
         });
+        btnTurretAutoAim.whenPressed(new TurretAutonomous(vision, turret));
         new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new ClimbWithClimber(climb));
 
 

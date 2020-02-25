@@ -12,6 +12,7 @@ public class OI {
 	public static final int BTNNUM_DECREASE_SHOOT_SPEED = 5;
 	public static final int BTNNUM_TOGGLE_HOPPER_INTAKE = 2;
 	public static final int BTNNUM_TOGGLE_HOPPER_EXPEL = 3;
+	public static final int BTNNUM_TURRET_AUTO_AIM = 8;
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;
 	private static final double percentDeadbandThreshold = 0.1;

@@ -72,6 +72,10 @@ public class TitanSRX extends WPI_TalonSRX implements Motor {
         this.set(ControlMode.Velocity, ticksper100ms);
     }
 
+    public void setAngleTicks(double ticks) {
+        this.set(ControlMode.Position, ticks);
+    }
+
     @Override
     public void brake() {
         this.set(0);

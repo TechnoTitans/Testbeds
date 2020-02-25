@@ -128,6 +128,15 @@ public class TurretSubsystem extends SubsystemBase {
         this.setRPMSetpoint(this.rpmSetpoint);
     }
 
+    public void setTurrentAngle(double degrees) {
+        double ticks = degrees * ZMOTOR_PULSES_PER_DEGREE;
+        zMotor.setAngleTicks(ticks);
+    }
+    public void setHoodAngle(double degrees) {
+        double ticks = degrees * HOOD_PULSES_PER_DEGREE;
+        hood.setAngleTicks(ticks);
+    }
+
     /**
      * Returns the Singleton instance of this TurretSubsystem. This static method
      * should be used -- {@code TurretSubsystem.getInstance();} -- by external

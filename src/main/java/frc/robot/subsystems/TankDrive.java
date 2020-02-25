@@ -31,7 +31,7 @@ public class TankDrive extends SubsystemBase {
 
     private final SpeedController leftSpeedController;
     private final SpeedController rightSpeedController;
-    private final DifferentialDrive drive;
+//    private final DifferentialDrive drive;
 
 
     public static boolean SHIFT_HIGH_TORQUE = true; // todo find actual value
@@ -65,7 +65,7 @@ public class TankDrive extends SubsystemBase {
 //        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
         this.leftSpeedController = leftTalonFX;
         this.rightSpeedController = rightTalonFX;
-        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
+//        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
         this.coolingSolenoid = coolingSolenoid;
         this.compressor = compressor;
         resetEncoders();
@@ -77,30 +77,30 @@ public class TankDrive extends SubsystemBase {
 //        return Rotation2d.fromDegrees(getHeading());
 //    }
 
-    public Pose2d getPose(){
-        return odometry.getPoseMeters();
-    }
-
-//    public void periodic(){
-//        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
+//    public Pose2d getPose(){
+//        return odometry.getPoseMeters();
 //    }
-
-    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
-    }
-    public void resetOdometry(Pose2d pose){
-        resetEncoders();
-//        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-    }
-
-    public void tankDriveVolts(double leftVolts, double rightVolts){
-        leftSpeedController.setVoltage(leftVolts);
-        rightSpeedController.setVoltage(rightVolts);
-    }
-
-    public void setMaxOutput(double maxOutput){
-        drive.setMaxOutput(maxOutput);
-    }
+//
+////    public void periodic(){
+////        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
+////    }
+//
+//    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+//        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
+//    }
+//    public void resetOdometry(Pose2d pose){
+//        resetEncoders();
+////        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+//    }
+//
+//    public void tankDriveVolts(double leftVolts, double rightVolts){
+//        leftSpeedController.setVoltage(leftVolts);
+//        rightSpeedController.setVoltage(rightVolts);
+//    }
+//
+//    public void setMaxOutput(double maxOutput){
+//        drive.setMaxOutput(maxOutput);
+//    }
 
 //set the speed the motors
 
@@ -109,15 +109,15 @@ public class TankDrive extends SubsystemBase {
     }
 
     public void set(double speed) {
-//        left.set(speed);
-//        right.set(speed);
-        drive.tankDrive(speed, speed);
+        left.set(speed);
+        right.set(speed);
+//        drive.tankDrive(speed, speed);
     }
 
     public void set(double leftTSpeed, double rightTSpeed) {
-//        left.set(leftTSpeed);
-//        right.set(rightTSpeed);
-        drive.tankDrive(leftTSpeed, rightTSpeed);
+        left.set(leftTSpeed);
+        right.set(rightTSpeed);
+//        drive.tankDrive(leftTSpeed, rightTSpeed);
     }
 
     public void stop() {
