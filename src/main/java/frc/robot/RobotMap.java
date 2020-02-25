@@ -59,7 +59,7 @@ public final class RobotMap {
     public static final int COLOR_WHEEL_MOTOR = 14;
     public static final boolean REVERSED_COLOR_WHEEL = false;
     public static final int WINCH_MOTOR = 15;
-
+    public static final boolean WINCH_MOTOR_REVERSED = false;
     // LimitSwitch
     public static final int LEFT_TURRET_LS = 0;
     public static final boolean LEFT_TURRET_LS_INVERTED = true;

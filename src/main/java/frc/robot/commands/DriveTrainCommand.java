@@ -16,18 +16,18 @@ public class DriveTrainCommand extends CommandBase {
 
     public static final double MAX_SPEED = 1.0;
 
-    private final DriveTrain driveTrain;
+    private final TankDrive driveTrain;
     private DoubleSupplier leftInput, rightInput;
     private Filter leftFilter, rightFilter;
 
     private boolean filterEnabled;
     Timer coolingTimer = new Timer();
-    public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, DriveTrain driveTrain) {
+    public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, TankDrive driveTrain) {
         // enable filtering by default
         this(leftInput, rightInput, driveTrain, true);
     }
 
-    public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, DriveTrain driveTrain, boolean filterEnabled) {
+    public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, TankDrive driveTrain, boolean filterEnabled) {
         this.driveTrain = driveTrain;
         this.leftInput = leftInput; // adapted from the `DriveTrain` example // todo explain double supplier
         this.rightInput = rightInput;

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
@@ -64,6 +65,7 @@ public class RobotContainer {
     private final TitanSRX spinningMotor;
     public final TitanSRX intakeMotor;
     private final TitanVictor hopperMotor;
+    public final TitanSRX climbMotor;
 
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
@@ -85,6 +87,7 @@ public class RobotContainer {
     private DifferentialDriveKinematics kinematics;
 
     public TankDrive driveTrain;
+    public ClimbSubsystem climb;
 
     // MARK - Command declarations
     public DriveTrainCommand driveTrainCommand;
@@ -188,6 +191,8 @@ public class RobotContainer {
 
         // todo move and put into actual subsystem
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
+        climbMotor = new TitanSRX(RobotMap.WINCH_MOTOR, RobotMap.WINCH_MOTOR_REVERSED);
+        climb = new ClimbSubsystem(climbMotor, climbMechPiston);
         colorMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.COLOR_MECH_PISTON);
 
         // MARK - Talon/Victor Setup and Configuration
@@ -310,10 +315,9 @@ public class RobotContainer {
             colorMechPiston.set(!colorMechPiston.get());
         });
         btnToggleClimbMechPiston.whenPressed(() -> {
-            climbMechPiston.set(!climbMechPiston.get());
+            climb.releaseMech();
         });
-
-
+        new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new ClimbWithClimber(climb));
 
 
     }

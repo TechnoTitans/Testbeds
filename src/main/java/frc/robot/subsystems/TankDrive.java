@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.sensors.TitanGyro;
@@ -22,7 +23,7 @@ import frc.robot.motor.TitanFX;
 
 
 @SuppressWarnings("ConstantConditions")
-public class TankDrive extends DriveTrain {
+public class TankDrive extends SubsystemBase {
 
     public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // pulse per inch
     public static final double MAX_MOTOR_TEMP = 50;
@@ -108,24 +109,17 @@ public class TankDrive extends DriveTrain {
     }
 
     public void set(double speed) {
-        left.set(speed);
-        right.set(speed);
-    }
-
-    public void setLeft(double speed) {
-        left.set(speed);
-    }
-
-    public void setRight(double speed) {
-        right.set(speed);
+//        left.set(speed);
+//        right.set(speed);
+        drive.tankDrive(speed, speed);
     }
 
     public void set(double leftTSpeed, double rightTSpeed) {
-        left.set(leftTSpeed);
-        right.set(rightTSpeed);
+//        left.set(leftTSpeed);
+//        right.set(rightTSpeed);
+        drive.tankDrive(leftTSpeed, rightTSpeed);
     }
 
-    @Override
     public void stop() {
         this.set(0);
     }
@@ -149,51 +143,51 @@ public class TankDrive extends DriveTrain {
         right.brake();
     }
 
-    @Override
+    
     public void coast() {
         left.coast();
         right.coast();
     }
 
-    @Override
+    
     public void resetEncoders() {
         this.left.getEncoder().reset();
         this.right.getEncoder().reset();
     }
 
-    @Override
+    
     public Encoder getLeftEncoder() {
         return left.getEncoder();
     }
 
-    @Override
+    
     public Encoder getRightEncoder() {
         return right.getEncoder();
     }
 
-    @Override
+    
     public TitanFX getLeft() {
         return left;
     }
 
-    @Override
+    
     public TitanFX getRight() {
         return right;
     }
 
-    @Override
+    
     public void enableBrownoutProtection() {
         left.enableBrownoutProtection();
         right.enableBrownoutProtection();
     }
 
-    @Override
+    
     public void disableBrownoutProtection() {
         left.disableBrownoutProtection();
         right.disableBrownoutProtection();
     }
 
-    @Override
+    
     public double[] getSpeed() {
         return new double[] { left.getSpeed(), right.getSpeed() };
     }

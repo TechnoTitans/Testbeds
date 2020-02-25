@@ -21,7 +21,7 @@ public class TurretSubsystem extends SubsystemBase {
     public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772f) / 45; // (pulses per degree)
     public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
     public static final double MAX_RPM = 7400; //18730 max rpm / 2.5 gear reduction ratio
-    public static final double RPM_INCREMENT = 0.1 * TurretSubsystem.MAX_RPM;
+    public static final double RPM_INCREMENT = (1 / 20f) * TurretSubsystem.MAX_RPM;
 
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
