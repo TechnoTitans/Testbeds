@@ -1,10 +1,6 @@
 package frc.robot.subsystems;
 
 
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -24,6 +20,7 @@ public class TurretSubsystem extends SubsystemBase {
     public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
     public static final double MAX_RPM = 7400; //18730 max rpm / 2.5 gear reduction ratio
     public static final double RPM_INCREMENT = (1 / 20f) * TurretSubsystem.MAX_RPM;
+    public static final int HOOD_MIN_TICKS = -877;
 
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
@@ -36,9 +33,11 @@ public class TurretSubsystem extends SubsystemBase {
 
     private double manualPercentOutputSetpoint;
     private double rpmSetpoint;
+    private double hoodPositionSetpoint;
 
     private TurretPreset turretPreset;
 
+    private Filter hoodPositionFilterTicks;
 
     public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS, LimitSwitch hoodBottomLS) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
@@ -53,6 +52,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.rightTurretLS  = rightTurretLS;
         this.hoodBottomLS = hoodBottomLS;
         this.rpmSetpointFilter = new Filter(0.7);
+        this.hoodPositionFilterTicks = new Filter(0.7);
         this.turretPreset = TurretPreset.WALL;
     }
 
@@ -63,15 +63,24 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("[Turret] Hood Bottom LS", this.hoodBottomLS.isPressed());
         SmartDashboard.putBoolean("[Turret] Hood LS", this.hoodBottomLS.isPressed());
         SmartDashboard.putNumber("[Turret] Hood Position", this.hood.getSelectedSensorPosition());
+        SmartDashboard.putString("Current Preset", this.turretPreset.name());
 
         if (this.hoodBottomLS.isPressed()) {
             this.hood.getEncoder().reset();
         }
 
+        this.setHoodPositionSetpoint(turretPreset.desiredHoodEncoderPositionPreset);
+        this.setRPMSetpoint(turretPreset.flywheelRPMPreset);
+
     }
 
     public void setShooter(double speed) {
         shooter.set(speed);
+    }
+
+    public void setHoodPositionTicks(double ticks) {
+        this.hoodPositionSetpoint = MathUtil.clamp(ticks, HOOD_MIN_TICKS, 0);
+        this.hood.setAngleTicks(ticks);
     }
 
     public void setShooterVelocityRPM(double rpm){
@@ -125,6 +134,12 @@ public class TurretSubsystem extends SubsystemBase {
         this.setShooterVelocityRPM(this.rpmSetpoint);
     }
 
+    public void setHoodPositionSetpoint(int ticks) {
+        this.hoodPositionFilterTicks.update(ticks);
+        this.hoodPositionSetpoint = hoodPositionFilterTicks.getValue();
+        this.setHoodPositionTicks(this.hoodPositionSetpoint);
+    }
+
     public double getRPMSetpoint(){
         return rpmSetpoint;
     }
@@ -156,6 +171,9 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void scrollThruPreset() {
         // todo
+        int currentIndex = turretPreset.ordinal();
+        int desiredIndex = (currentIndex + 1) % TurretPreset.values().length;
+        turretPreset = TurretPreset.values()[desiredIndex];
     }
 
     /**

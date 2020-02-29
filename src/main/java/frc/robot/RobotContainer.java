@@ -114,9 +114,11 @@ public class RobotContainer {
     private TitanButton btnTurretManual;
     private TitanButton btnToggleColorMechPiston;
     private TitanButton btnReleaseClimbMechPiston;
+    private TitanButton btnScrollPresets;
 
     private Trigger climbPositiveTrigger;
 	private Trigger climbNegativeTrigger;
+	private Trigger scrollTurretPresetTrigger;
 
 
 	// todo find actual values
@@ -252,6 +254,11 @@ public class RobotContainer {
         zMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kI, PIDConstants.kTimeoutMs);
         zMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kD, PIDConstants.kTimeoutMs);
 
+        zMotor.configForwardSoftLimitThreshold((int) Math.round(40 * TurretSubsystem.ZMOTOR_PULSES_PER_DEGREE), 0);
+        zMotor.configReverseSoftLimitThreshold((int) Math.round(-40 * TurretSubsystem.ZMOTOR_PULSES_PER_DEGREE), 0);
+        zMotor.configForwardSoftLimitEnable(true, 0);
+        zMotor.configReverseSoftLimitEnable(true, 0);
+
         hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
                 PIDConstants.kPIDLoopIdx,
                 PIDConstants.kTimeoutMs);
@@ -308,7 +315,6 @@ public class RobotContainer {
         turretTeleopCommand = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
         turretAutoCommand = new TurretAutonomous(vision, turret);
 
-
         autonomousCommand = new DriveStraightAuto(driveTrain, 3f * 12, 0.1);
 //        autonomousCommand = new DoNothingAuto();
         // Configure the button bindings
@@ -363,6 +369,9 @@ public class RobotContainer {
 		//   _ d _
 		climbNegativeTrigger = new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.NEGATIVE));
 		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 180).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.POSITIVE));
+        scrollTurretPresetTrigger = new Trigger(() -> oi.getXboxLeftTrigger() == 1).whenActive(new InstantCommand(() -> {
+            turret.scrollThruPreset();
+        }, turret));
 
 
 //		btnTurretAutoAim.whenPressed(new InstantCommand(() -> {
