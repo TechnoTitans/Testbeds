@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
@@ -93,7 +94,9 @@ public class RobotContainer {
     public DriveTrainCommand driveTrainCommand;
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
-    public TurretTeleop turretTeleop;
+    public TurretTeleop turretTeleopCommand;
+    public TurretAutonomous turretAutoCommand;
+
 
     private CommandBase autonomousCommand;
 
@@ -108,8 +111,10 @@ public class RobotContainer {
     private TitanButton btnFeederExpel;
     private TitanButton btnToggleSolenoid;
     private TitanButton btnTurretAutoAim;
+    private TitanButton btnTurretManual;
 
-	private Trigger climbPositiveTrigger;
+    private Trigger climbPositiveTrigger;
+	private Trigger climbNegativeTrigger;
 
 
 	// todo find actual values
@@ -124,7 +129,6 @@ public class RobotContainer {
     private final double DRIVE_WIDTH = 0.5; //meters
 
     public static DriverCamera driverCamera;
-
 
 
     /**
@@ -193,8 +197,8 @@ public class RobotContainer {
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
 
-        vision = null; // this is bad. only for testing. don't do this.!!!
-//        vision = new Vision();
+//        vision = null; // this is bad. only for testing. don't do this.!!!
+        vision = new Vision();
 
         // todo move and put into actual subsystem
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
@@ -276,7 +280,9 @@ public class RobotContainer {
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
 
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake);
-        turretTeleop = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
+        turretTeleopCommand = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
+        turretAutoCommand = new TurretAutonomous(vision, turret);
+
 
         autonomousCommand = new DriveStraightAuto(driveTrain, 5 * 12, 0.3);
 
@@ -315,7 +321,9 @@ public class RobotContainer {
         btnFeederExpel = new TitanButton(oi.getXbox(), 3);
         btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.XBOX_BUMPER_RIGHT);
         btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.XBOX_BUMPER_LEFT);
-        btnTurretAutoAim = new TitanButton(oi.getXbox(), OI.BTNNUM_TURRET_AUTO_AIM);
+        btnTurretAutoAim = new TitanButton(oi.getXbox(), OI.XBOX_BTN_START);
+        btnTurretManual = new TitanButton(oi.getXbox(), OI.XBOX_BTN_SELECT);
+
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleIntake.whenPressed(new ToggleIntake(intake));
@@ -347,12 +355,19 @@ public class RobotContainer {
         //   _ a _
 		//   b _ c
 		//   _ d _
-		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.POSITIVE));
-		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 180).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.NEGATIVE));
+		climbNegativeTrigger = new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.NEGATIVE));
+		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 180).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.POSITIVE));
 
 
-		btnTurretAutoAim.whenPressed(new TurretAutonomous(vision, turret));
+		btnTurretAutoAim.whenPressed(new InstantCommand(() -> {
+            CommandScheduler.getInstance().cancel(turretTeleopCommand);
+            CommandScheduler.getInstance().schedule(turretAutoCommand);
+        }));
 
+        btnTurretManual.whenPressed(new InstantCommand(() -> {
+            CommandScheduler.getInstance().cancel(turretAutoCommand);
+            CommandScheduler.getInstance().schedule(turretTeleopCommand);
+        }));
 
     }
 

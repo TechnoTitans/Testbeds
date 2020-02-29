@@ -15,8 +15,11 @@ public class Vision {
     public double[] getData(){
         double[] data = new double[5];
         int c =  0;
+
+        byte[] visionDataBytes = visionData.read(40);
+
         for (int i = 0; i < 40; i += 8){
-            data[c] = ByteBuffer.wrap(Arrays.copyOfRange(visionData.read(40), i, i + 7)).getDouble();
+            data[c] = ByteBuffer.wrap(Arrays.copyOfRange(visionDataBytes, i, i + 7)).getDouble();
             c++;
         }
         return data;

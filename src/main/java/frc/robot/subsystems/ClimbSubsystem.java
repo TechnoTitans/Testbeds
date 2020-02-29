@@ -13,7 +13,7 @@ public class ClimbSubsystem implements Subsystem {
 
     public static final int TELEOP_DURATION = ((2 * 60) + 15); // (s) teleop period is 2m15s
 //    public static final double TIME_TO_ENDGAME = TELEOP_DURATION - 35; // seconds
-    public static final double TIME_TO_ENDGAME = 0; // seconds
+    public static final double TIME_TO_ENDGAME = 10; // seconds
     public static final double WINCH_SPEED = 1.0;
 
     private TitanSRX motor;
@@ -39,8 +39,8 @@ public class ClimbSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("[Climb] Avengers Endgame Timer", endgameTimer.get());
-        SmartDashboard.putBoolean("[Climb] has mech released", hasReleasedMech);
+//        SmartDashboard.putNumber("[Climb] Avengers Endgame Timer", endgameTimer.get());
+//        SmartDashboard.putBoolean("[Climb] has mech released", hasReleasedMech);
     }
 
     public void resetEndgameTimer() {
@@ -48,9 +48,12 @@ public class ClimbSubsystem implements Subsystem {
     }
 
     public boolean areWeInTheEndGame() {
-        return endgameTimer.get() >= TIME_TO_ENDGAME;
+        return endgameTimer.hasElapsed(TIME_TO_ENDGAME);
     }
 
+    public double getEndgameTime() {
+        return endgameTimer.get();
+    }
 
     public void stopMotor() {
         motor.set(0);
@@ -77,6 +80,10 @@ public class ClimbSubsystem implements Subsystem {
             climbSolenoid.set(true);
             this.hasReleasedMech = true;
         }
+    }
+
+    public boolean hasReleasedMech() {
+        return hasReleasedMech;
     }
 
 

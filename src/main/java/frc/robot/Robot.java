@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.RotateHood;
-import frc.robot.commands.RotateTurret;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,7 +52,7 @@ public class Robot extends TimedRobot {
 
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
-		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleop);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleopCommand);
 //		robotContainer.driveTrain.setShifter(true);
 
 	}
@@ -118,7 +116,7 @@ public class Robot extends TimedRobot {
 
 
 		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
-		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600 / 4096);
+		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600f / 4096);
 		SmartDashboard.putNumber("closed loop error ", robotContainer.shootMotor.getClosedLoopError());
 		SmartDashboard.putNumber("Left Front Falcon Temperature (C)", robotContainer.leftFrontMotorFX.getTemperature());
 		SmartDashboard.putNumber("Left Back Falcon Temperature (C)", robotContainer.leftBackMotorFX.getTemperature());
@@ -134,6 +132,16 @@ public class Robot extends TimedRobot {
 
 
 		SmartDashboard.putBoolean("Bottom Hood LS", robotContainer.hoodBottomLS.isPressed());
+
+		SmartDashboard.putBoolean("Has Released Mech", robotContainer.climb.hasReleasedMech());
+		SmartDashboard.putNumber("Game Time", robotContainer.climb.getEndgameTime());
+
+		SmartDashboard.putNumber("Vision y-angle (degrees)", robotContainer.vision.getAngleY());
+		SmartDashboard.putNumber("Vision x-angle (degrees)", robotContainer.vision.getAngleX());
+		SmartDashboard.putNumber("Vision distance (feet)", robotContainer.vision.getDistance());
+		SmartDashboard.putNumber("Vision Center x", robotContainer.vision.getCenterX());
+		SmartDashboard.putNumber("Vision Center y", robotContainer.vision.getCenterY());
+
 
 	}
 

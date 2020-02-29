@@ -8,9 +8,11 @@ import frc.robot.subsystems.TurretSubsystem;
 
 
 public class TurretAutonomous extends CommandBase {
+
     private double shooterSpeed;
     private Vision vision;
     private TurretSubsystem turret;
+
     public TurretAutonomous(Vision vision, TurretSubsystem turret) {
         this.turret = turret;
         this.vision = vision;

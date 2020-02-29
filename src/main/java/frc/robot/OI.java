@@ -8,7 +8,8 @@ public class OI {
 
 	public static final int XBOX_BUMPER_RIGHT = 6;
 	public static final int XBOX_BUMPER_LEFT = 5;
-	public static final int BTNNUM_TURRET_AUTO_AIM = 8;
+	public static final int XBOX_BTN_SELECT = 7;
+	public static final int XBOX_BTN_START = 8;
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;
 	private static final double percentDeadbandThreshold = 0.1;
