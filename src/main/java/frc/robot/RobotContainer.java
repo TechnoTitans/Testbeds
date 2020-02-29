@@ -193,7 +193,8 @@ public class RobotContainer {
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
 
-        vision = new Vision();
+        vision = null; // this is bad. only for testing. don't do this.!!!
+//        vision = new Vision();
 
         // todo move and put into actual subsystem
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);

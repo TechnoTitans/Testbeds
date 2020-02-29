@@ -25,6 +25,7 @@ public class MoveWinchMotor extends CommandBase {
 
         this.climb = climbSubsystem;
         this.desiredMotorDirection = motorDirection;
+        addRequirements(climbSubsystem);
     }
 
     @Override
