@@ -16,9 +16,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
+import frc.robot.commands.auto.DriveStraightAuto;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
@@ -92,7 +94,9 @@ public class RobotContainer {
     public DriveTrainCommand driveTrainCommand;
     public ToggleGearShifter toggleGearShifterCommand;
     public IntakeTeleop intakeTeleopCommand;
-    public TurretTeleop turretTeleop;
+    public TurretTeleop turretTeleopCommand;
+    public TurretAutonomous turretAutoCommand;
+
 
     private CommandBase autonomousCommand;
 
@@ -107,7 +111,15 @@ public class RobotContainer {
     private TitanButton btnFeederExpel;
     private TitanButton btnToggleSolenoid;
     private TitanButton btnTurretAutoAim;
-    // todo find actual values
+    private TitanButton btnTurretManual;
+    private TitanButton btnToggleColorMechPiston;
+    private TitanButton btnReleaseClimbMechPiston;
+
+    private Trigger climbPositiveTrigger;
+	private Trigger climbNegativeTrigger;
+
+
+	// todo find actual values
     private final double kS = 0; //volts
     private final double kV = 0; //volt-seconds/meter
     private final double kA = 0; // volt-seconds squared/meter
@@ -119,7 +131,6 @@ public class RobotContainer {
     private final double DRIVE_WIDTH = 0.5; //meters
 
     public static DriverCamera driverCamera;
-
 
 
     /**
@@ -157,18 +168,19 @@ public class RobotContainer {
         rightFrontMotorFX = new TitanFX(RobotMap.RIGHT_TALON_FRONT, RobotMap.REVERSED_RF_TALON);
         rightBackMotorFX = new TitanFX(RobotMap.RIGHT_TALON_BACK, RobotMap.REVERSED_RB_TALON);
 
-        leftFrontMotorEncoder = new QuadEncoder(leftFrontMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
+        leftFrontMotorEncoder = new QuadEncoder(leftFrontMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, false);
         leftFrontMotorFX.setEncoder(leftFrontMotorEncoder);
-        rightFrontMotorEncoder = new QuadEncoder(rightFrontMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
+        rightFrontMotorEncoder = new QuadEncoder(rightFrontMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, false);
         rightFrontMotorFX.setEncoder(rightFrontMotorEncoder);
-        rightBackMotorEncoder = new QuadEncoder(rightBackMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
+        rightBackMotorEncoder = new QuadEncoder(rightBackMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, false);
         rightBackMotorFX.setEncoder(rightBackMotorEncoder);
-        leftBackMotorEncoder = new QuadEncoder(leftBackMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true);
+        leftBackMotorEncoder = new QuadEncoder(leftBackMotorFX, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, false);
         leftBackMotorFX.setEncoder(leftBackMotorEncoder);
 
 
         leftBackMotorFX.follow(leftFrontMotorFX);
         rightBackMotorFX.follow(rightFrontMotorFX);
+
 
         kinematics = new DifferentialDriveKinematics(DRIVE_WIDTH);
 
@@ -188,12 +200,14 @@ public class RobotContainer {
         feederMotor = new TitanVictor(RobotMap.FEEDER_MOTOR, RobotMap.REVERSED_FEEDER);
         feeder = new FeederSubsystem(feederMotor);
 
+//        vision = null; // this is bad. only for testing. don't do this.!!!
         vision = new Vision();
 
         // todo move and put into actual subsystem
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
         climbMotor = new TitanSRX(RobotMap.WINCH_MOTOR, RobotMap.WINCH_MOTOR_REVERSED);
         climb = new ClimbSubsystem(climbMotor, climbMechPiston);
+
         colorMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.COLOR_MECH_PISTON);
 
         // MARK - Talon/Victor Setup and Configuration
@@ -263,19 +277,46 @@ public class RobotContainer {
         zMotor.setupCurrentLimiting(3,4,100);
         */
 
+        // MARK - Button Definitions
+        btnToggleShifter = new TitanButton(oi.leftJoystick, 4);
+        btnToggleSolenoid = new TitanButton(oi.leftJoystick, 2);
+
+//        btnToggleSolenoid.whenPressed(new InstantCommand(() -> {
+//            if (titanFXCoolingPiston.get()){
+//                titanFXCoolingPiston.set(false);
+//            } else {
+//                titanFXCoolingPiston.set(true);
+//            }
+//        }, driveTrain));
+        btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
+        btnReleaseClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
+        btnToggleHopperIntake = new TitanButton(oi.rightJoystick, 3);
+        btnToggleHopperExpel = new TitanButton(oi.rightJoystick, 2);
+
+        btnToggleIntake = new TitanButton(oi.getXbox(), 1);
+        btnFeederExpel = new TitanButton(oi.getXbox(), 3);
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.XBOX_BUMPER_RIGHT);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.XBOX_BUMPER_LEFT);
+        btnTurretAutoAim = new TitanButton(oi.getXbox(), OI.XBOX_BTN_START);
+        btnTurretManual = new TitanButton(oi.getXbox(), OI.XBOX_BTN_SELECT);
+
         // MARK - command initialization
         driveTrainCommand = new DriveTrainCommand(oi::getLeftJoyY, oi::getRightJoyY, driveTrain, true);
         toggleGearShifterCommand = new ToggleGearShifter(driveTrain);
 
-        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake);
-        turretTeleop = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
+        intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake, btnToggleIntake);
+        turretTeleopCommand = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
+        turretAutoCommand = new TurretAutonomous(vision, turret);
 
-        autonomousCommand = new InstantCommand(); // a do nothing command for now
 
+        autonomousCommand = new DriveStraightAuto(driveTrain, 3f * 12, 0.1);
+//        autonomousCommand = new DoNothingAuto();
         // Configure the button bindings
         configureButtonBindings();
 
         driverCamera = new DriverCamera();
+
+        CommandScheduler.getInstance().registerSubsystem(climb);
 
     }
 
@@ -286,33 +327,10 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
      */
     private void configureButtonBindings() {
-        // MARK - button definitions
-        btnToggleShifter = new TitanButton(oi.leftJoystick, 4);
-        btnToggleSolenoid = new TitanButton(oi.leftJoystick, 2);
-//        btnToggleSolenoid.whenPressed(new InstantCommand(() -> {
-//            if (titanFXCoolingPiston.get()){
-//                titanFXCoolingPiston.set(false);
-//            } else {
-//                titanFXCoolingPiston.set(true);
-//            }
-//        }, driveTrain));
-        TitanButton btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
 
-        TitanButton btnToggleClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
-        btnToggleHopperIntake = new TitanButton(oi.rightJoystick, 3);
-        btnToggleHopperExpel = new TitanButton(oi.rightJoystick, 2);
-
-        btnToggleIntake = new TitanButton(oi.getXbox(), 1);
-        btnFeederExpel = new TitanButton(oi.getXbox(), 3);
-        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
-        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
-        btnTurretAutoAim = new TitanButton(oi.getXbox(), OI.BTNNUM_TURRET_AUTO_AIM);
         // MARK - bindings
-        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
-        btnToggleIntake.whenPressed(new ToggleIntake(intake));
-//        btnToggleIntake.whenPressed(new ToggleIntake(intake).andThen(() -> {
-//            intake.toggleIntakeMotors();
-//        }, intake));
+
+//        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 
@@ -329,12 +347,28 @@ public class RobotContainer {
         btnToggleColorMechPiston.whenPressed(() -> {
             colorMechPiston.set(!colorMechPiston.get());
         });
-        btnToggleClimbMechPiston.whenPressed(() -> {
+
+        btnReleaseClimbMechPiston.whenPressed(() -> {
             climb.releaseMech();
         });
-        btnTurretAutoAim.whenPressed(new TurretAutonomous(vision, turret));
-        new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new ClimbWithClimber(climb));
+        // pov (d-pad):
+		// a: 0deg, b: -90deg, c: 90deg, d: 180
+        //   _ a _
+		//   b _ c
+		//   _ d _
+		climbNegativeTrigger = new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.NEGATIVE));
+		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 180).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.POSITIVE));
 
+
+//		btnTurretAutoAim.whenPressed(new InstantCommand(() -> {
+//            CommandScheduler.getInstance().cancel(turretTeleopCommand);
+//            CommandScheduler.getInstance().schedule(turretAutoCommand);
+//        }));
+
+        btnTurretManual.whenPressed(new InstantCommand(() -> {
+            CommandScheduler.getInstance().cancel(turretAutoCommand);
+            CommandScheduler.getInstance().schedule(turretTeleopCommand);
+        }));
 
     }
 

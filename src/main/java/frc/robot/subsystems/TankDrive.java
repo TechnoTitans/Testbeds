@@ -25,7 +25,7 @@ import frc.robot.motor.TitanFX;
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends SubsystemBase {
 
-    public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // pulse per inch
+    public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // inches per pulse
     public static final double MAX_MOTOR_TEMP = 50;
 
 

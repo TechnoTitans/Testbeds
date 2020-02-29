@@ -22,6 +22,9 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	private TitanFX brownoutFollower = null;
 	private boolean brownout = false;
 
+	public static final double DEFAULT_FILTER_VALUE = 1.0; // is like identity function rn
+	private Filter percentOutputFilter;
+
 	/**
 	 * Constructor for a TalonFX motor
 	 *
@@ -33,6 +36,8 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	public TitanFX(int channel, boolean reversed) {
 		super(channel);
 		super.setInverted(reversed);
+		this.percentOutputFilter = new Filter(DEFAULT_FILTER_VALUE); // maybe constructorize later
+		this.percentOutputFilter.setValue(0);
 	}
 
 	/**
@@ -48,7 +53,6 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	public TitanFX(int channel, boolean reversed, Encoder encoder) {
 		super(channel);
 		super.setInverted(reversed);
-
 		this.encoder = encoder;
 	}
 
@@ -62,7 +66,8 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	public void set(double speed) {
 		if (speed > 1) speed = 1;
 		if (speed < -1) speed = -1;
-		super.set(ControlMode.PercentOutput, speed);
+		this.percentOutputFilter.update(speed);
+		super.set(ControlMode.PercentOutput, this.percentOutputFilter.getValue());
 	}
 
 	@Override

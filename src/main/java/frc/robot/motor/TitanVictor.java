@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TitanVictor extends WPI_VictorSPX implements Motor{
 
+    private static final double DEFUALT_PERCENT_FILTER = 1.0;
+    private Filter percentOutputFilter;
+
     private Encoder encoder;
     private static final int TIMEOUT_MS = 30;
     Gyro gyro;
@@ -28,13 +31,15 @@ public class TitanVictor extends WPI_VictorSPX implements Motor{
     public TitanVictor(int channel, boolean reversed) {
         super(channel);
         super.setInverted(reversed);
+        percentOutputFilter = new Filter(DEFUALT_PERCENT_FILTER);
     }
 
     @Override
     public void set(double speed) {
         if (speed > 1) speed = 1;
         if (speed < -1) speed = -1;
-        super.set(ControlMode.PercentOutput, speed);
+        percentOutputFilter.update(speed);
+        super.set(ControlMode.PercentOutput, percentOutputFilter.getValue());
     }
 
     @Override

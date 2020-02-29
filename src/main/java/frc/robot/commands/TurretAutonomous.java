@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.Vision;
 import frc.robot.subsystems.TurretSubsystem;
@@ -8,9 +7,11 @@ import frc.robot.subsystems.TurretSubsystem;
 
 
 public class TurretAutonomous extends CommandBase {
+
     private double shooterSpeed;
     private Vision vision;
     private TurretSubsystem turret;
+
     public TurretAutonomous(Vision vision, TurretSubsystem turret) {
         this.turret = turret;
         this.vision = vision;
@@ -26,7 +27,7 @@ public class TurretAutonomous extends CommandBase {
     public void execute() {
         double xAngle = vision.getAngleX();
         double yAngle = vision.getAngleY();
-        double distance = vision.getDistance(); // units in feet
+        double distance = vision.getVisionDistance(); // units in feet
         double desiredHoodAngle = 0; //todo find out turret angles based on vision
         double desiredTurretAngle = 0;
         //Decide shooter speed here

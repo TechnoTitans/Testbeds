@@ -6,13 +6,10 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class OI {
 
-	public static final int BTNNUM_TOGGLE_SHIFTER = 4;
-	public static final int BTNNUM_TOGGLE_INTAKE = 5;
-	public static final int BTNNUM_INCREASE_SHOOT_SPEED = 6;
-	public static final int BTNNUM_DECREASE_SHOOT_SPEED = 5;
-	public static final int BTNNUM_TOGGLE_HOPPER_INTAKE = 2;
-	public static final int BTNNUM_TOGGLE_HOPPER_EXPEL = 3;
-	public static final int BTNNUM_TURRET_AUTO_AIM = 8;
+	public static final int XBOX_BUMPER_RIGHT = 6;
+	public static final int XBOX_BUMPER_LEFT = 5;
+	public static final int XBOX_BTN_SELECT = 7;
+	public static final int XBOX_BTN_START = 8;
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;
 	private static final double percentDeadbandThreshold = 0.1;
@@ -30,11 +27,11 @@ public class OI {
 
 	// todo verify this works
 	public double getLeftJoyY() {
-		return deadband(leftJoystick.getY(), 0.1); // todo more readble
+		return deadband(-leftJoystick.getY(), 0.1); // todo more readble
 	}
 
 	public double getRightJoyY() {
-		return deadband(rightJoystick.getY(), 0.1);
+		return deadband(-rightJoystick.getY(), 0.1);
 	}
 
 	public double getXboxLeftY() {
@@ -71,4 +68,7 @@ public class OI {
 	}
 
 
+	public double getLeftJoyZ() {
+		return leftJoystick.getZ();
+	}
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.motor.Filter;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanVictor;
@@ -30,8 +31,13 @@ public class TurretSubsystem extends SubsystemBase {
     private TitanSRX shooter, zMotor, hood;
     private TitanVictor subShoot;
 
+    private Filter rpmSetpointFilter;
+
     private double manualPercentOutputSetpoint;
     private double rpmSetpoint;
+
+
+
     public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS, LimitSwitch hoodBottomLS) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
@@ -44,6 +50,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.leftTurretLS = leftTurretLS;
         this.rightTurretLS  = rightTurretLS;
         this.hoodBottomLS = hoodBottomLS;
+        this.rpmSetpointFilter = new Filter(0.7);
     }
 
     @Override
@@ -106,8 +113,9 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setRPMSetpoint(double rpm) {
-        this.rpmSetpoint = rpm;
-        this.setShooterVelocityRPM(rpm);
+        this.rpmSetpointFilter.update(rpm);
+        this.rpmSetpoint = rpmSetpointFilter.getValue();
+        this.setShooterVelocityRPM(this.rpmSetpoint);
     }
 
     public double getRPMSetpoint(){

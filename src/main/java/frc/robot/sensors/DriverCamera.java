@@ -33,7 +33,7 @@ public class DriverCamera {
         cam1.setResolution(320 / 2, 240 / 2);
 
         cvSink = CameraServer.getInstance().getVideo();
-        outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
+//        outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
 
         source = new Mat();
         output = new Mat();

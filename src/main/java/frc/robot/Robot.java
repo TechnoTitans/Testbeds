@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.RotateHood;
-import frc.robot.commands.RotateTurret;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,6 +43,8 @@ public class Robot extends TimedRobot {
 		robotContainer.hoodMotorEncoder.reset();
 		robotContainer.shootMotorEncoder.reset();
 		robotContainer.zMotorEncoder.reset();
+		robotContainer.driveTrain.resetEncoders();
+
 		double turretAngle = 0; //todo get actual angles for both
 		double hoodAngle = 0;
 //		CommandScheduler.getInstance().schedule(new RotateTurret(turretAngle, robotContainer.turret));
@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
 
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
-		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleop);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleopCommand);
 //		robotContainer.driveTrain.setShifter(true);
 
 	}
@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
 
 
 		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
-		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600 / 4096);
+		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600f / 4096);
 		SmartDashboard.putNumber("closed loop error ", robotContainer.shootMotor.getClosedLoopError());
 		SmartDashboard.putNumber("Left Front Falcon Temperature (C)", robotContainer.leftFrontMotorFX.getTemperature());
 		SmartDashboard.putNumber("Left Back Falcon Temperature (C)", robotContainer.leftBackMotorFX.getTemperature());
@@ -132,6 +132,19 @@ public class Robot extends TimedRobot {
 
 
 		SmartDashboard.putBoolean("Bottom Hood LS", robotContainer.hoodBottomLS.isPressed());
+
+		SmartDashboard.putBoolean("Has Released Mech", robotContainer.climb.hasReleasedMech());
+		SmartDashboard.putNumber("Game Time", robotContainer.climb.getEndgameTime());
+
+		robotContainer.vision.getData();
+
+
+//		SmartDashboard.putNumber("Vision y-angle (degrees)", robotContainer.vision.getAngleY());
+//		SmartDashboard.putNumber("Vision x-angle (degrees)", robotContainer.vision.getAngleX());
+//		SmartDashboard.putNumber("Vision distance (in)", robotContainer.vision.getDistance());
+//		SmartDashboard.putNumber("Vision Center x", robotContainer.vision.getCenterX());
+//		SmartDashboard.putNumber("Vision Center y", robotContainer.vision.getCenterY());
+
 
 	}
 
@@ -172,9 +185,12 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
+
+		robotContainer.climb.init();
 	}
 
 	/**
@@ -182,6 +198,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+//		double leftJoyZ = robotContainer.oi.getLeftJoyZ();
+//		double flywheelP = (leftJoyZ + 1.0) / 2;
+//		robotContainer.shootMotor.config_kP(PIDConstants.kSlotIdx, flywheelP, PIDConstants.kTimeoutMs);
+//		SmartDashboard.putNumber("Flywheel P", flywheelP);
 	}
 
 	@Override
@@ -195,5 +215,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+
 	}
 }
