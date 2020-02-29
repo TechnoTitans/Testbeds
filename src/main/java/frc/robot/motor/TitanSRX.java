@@ -16,6 +16,7 @@ import frc.robot.motor.Encoder;
  */
 public class TitanSRX extends WPI_TalonSRX implements Motor {
 
+    private static final double DEFAULT_PERCENT_FILTER = 1.0;
     private Encoder encoder;
     private static final int TIMEOUT_MS = 30;
     Gyro gyro;
@@ -23,6 +24,9 @@ public class TitanSRX extends WPI_TalonSRX implements Motor {
 
     private TitanSRX brownoutFollower = null;
     private boolean brownout = false;
+
+    // todo deduplicate
+    private Filter percentOutputFilter;
 
     /**
      * Constructor for a TalonSRX motor
@@ -35,6 +39,7 @@ public class TitanSRX extends WPI_TalonSRX implements Motor {
     public TitanSRX(int channel, boolean reversed) {
         super(channel);
         super.setInverted(reversed);
+        percentOutputFilter = new Filter(DEFAULT_PERCENT_FILTER);
     }
 
     /**
@@ -64,7 +69,8 @@ public class TitanSRX extends WPI_TalonSRX implements Motor {
     public void set(double speed) {
         if (speed > 1) speed = 1;
         if (speed < -1) speed = -1;
-        super.set(ControlMode.PercentOutput, speed);
+        percentOutputFilter.update(speed);
+        super.set(ControlMode.PercentOutput, percentOutputFilter.getValue());
     }
 
     public void setVelocityRPM(double rpm){
