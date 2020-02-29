@@ -317,6 +317,11 @@ public class RobotContainer {
         driverCamera = new DriverCamera();
 
         CommandScheduler.getInstance().registerSubsystem(climb);
+        CommandScheduler.getInstance().registerSubsystem(turret);
+        CommandScheduler.getInstance().registerSubsystem(driveTrain);
+        CommandScheduler.getInstance().registerSubsystem(controlPanel);
+        CommandScheduler.getInstance().registerSubsystem(feeder);
+        CommandScheduler.getInstance().registerSubsystem(intake);
 
     }
 

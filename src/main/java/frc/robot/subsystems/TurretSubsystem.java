@@ -13,6 +13,7 @@ import frc.robot.motor.TitanSRX;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.LimitSwitch;
+import frc.robot.utils.TurretPreset;
 
 @SuppressWarnings("JavadocReference")
 public class TurretSubsystem extends SubsystemBase {
@@ -36,6 +37,7 @@ public class TurretSubsystem extends SubsystemBase {
     private double manualPercentOutputSetpoint;
     private double rpmSetpoint;
 
+    private TurretPreset turretPreset;
 
 
     public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS, LimitSwitch hoodBottomLS) {
@@ -51,6 +53,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.rightTurretLS  = rightTurretLS;
         this.hoodBottomLS = hoodBottomLS;
         this.rpmSetpointFilter = new Filter(0.7);
+        this.turretPreset = TurretPreset.WALL;
     }
 
     @Override
@@ -58,9 +61,13 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("[Turret] Left Turret LS", this.leftTurretLS.isPressed());
         SmartDashboard.putBoolean("[Turret] Right Turret LS", this.rightTurretLS.isPressed());
         SmartDashboard.putBoolean("[Turret] Hood Bottom LS", this.hoodBottomLS.isPressed());
-//        SmartDashboard.putNumber("[Turret] Azimuth Velocity", this.zMotor.getSelectedSensorVelocity());
+        SmartDashboard.putBoolean("[Turret] Hood LS", this.hoodBottomLS.isPressed());
         SmartDashboard.putNumber("[Turret] Hood Position", this.hood.getSelectedSensorPosition());
-        // very important ! this must be called in a loop or it will be be disabled automatically
+
+        if (this.hoodBottomLS.isPressed()) {
+            this.hood.getEncoder().reset();
+        }
+
     }
 
     public void setShooter(double speed) {
@@ -136,13 +143,19 @@ public class TurretSubsystem extends SubsystemBase {
         this.setRPMSetpoint(this.rpmSetpoint);
     }
 
-    public void setTurrentAngle(double degrees) {
+    public void setTurretAngle(double degrees) {
         double ticks = degrees * ZMOTOR_PULSES_PER_DEGREE;
         zMotor.setAngleTicks(ticks);
     }
     public void setHoodAngle(double degrees) {
         double ticks = degrees * HOOD_PULSES_PER_DEGREE;
         hood.setAngleTicks(ticks);
+    }
+
+    
+
+    public void scrollThruPreset() {
+        // todo
     }
 
     /**
