@@ -35,10 +35,10 @@ public final class RobotMap {
     public static final int COMPRESSOR_ID = 2;
 
     public static final int LEFT_TALON_FRONT = 5, LEFT_TALON_BACK = 6;
-    public static final boolean REVERSED_LF_TALON = true, REVERSED_LB_TALON = true;
+    public static final boolean REVERSED_LF_TALON = false, REVERSED_LB_TALON = false;
 
     public static final int RIGHT_TALON_FRONT = 3, RIGHT_TALON_BACK = 4;
-    public static final boolean REVERSED_RF_TALON = false, REVERSED_RB_TALON = false;
+    public static final boolean REVERSED_RF_TALON = true, REVERSED_RB_TALON = true;
 
     public static final int INTAKE_MOTOR = 7; // victor
 
