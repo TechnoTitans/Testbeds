@@ -24,9 +24,9 @@ public class QuadEncoder implements Encoder {
     }
 
     /**
-     * The total distance that the motor has traveled
+     * The total distance that the motor has traveled (in inches)
      *
-     * @return total distance
+     * @return the total distance in inches
      */
     @Override
     public double getDistance() {

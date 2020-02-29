@@ -8,8 +8,8 @@ public class OI {
 
 	public static final int BTNNUM_TOGGLE_SHIFTER = 4;
 	public static final int BTNNUM_TOGGLE_INTAKE = 5;
-	public static final int BTNNUM_INCREASE_SHOOT_SPEED = 6;
-	public static final int BTNNUM_DECREASE_SHOOT_SPEED = 5;
+	public static final int XBOX_BUMPER_RIGHT = 6;
+	public static final int XBOX_BUMPER_LEFT = 5;
 	public static final int BTNNUM_TOGGLE_HOPPER_INTAKE = 2;
 	public static final int BTNNUM_TOGGLE_HOPPER_EXPEL = 3;
 	public static final int BTNNUM_TURRET_AUTO_AIM = 8;

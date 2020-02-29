@@ -45,6 +45,8 @@ public class Robot extends TimedRobot {
 		robotContainer.hoodMotorEncoder.reset();
 		robotContainer.shootMotorEncoder.reset();
 		robotContainer.zMotorEncoder.reset();
+		robotContainer.driveTrain.resetEncoders();
+
 		double turretAngle = 0; //todo get actual angles for both
 		double hoodAngle = 0;
 //		CommandScheduler.getInstance().schedule(new RotateTurret(turretAngle, robotContainer.turret));

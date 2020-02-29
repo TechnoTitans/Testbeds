@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
+import frc.robot.commands.auto.DriveStraightAuto;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
@@ -107,7 +108,11 @@ public class RobotContainer {
     private TitanButton btnFeederExpel;
     private TitanButton btnToggleSolenoid;
     private TitanButton btnTurretAutoAim;
-    // todo find actual values
+
+	private Trigger climbPositiveTrigger;
+
+
+	// todo find actual values
     private final double kS = 0; //volts
     private final double kV = 0; //volt-seconds/meter
     private final double kA = 0; // volt-seconds squared/meter
@@ -194,6 +199,8 @@ public class RobotContainer {
         climbMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.CLIMB_MECH_PISTON);
         climbMotor = new TitanSRX(RobotMap.WINCH_MOTOR, RobotMap.WINCH_MOTOR_REVERSED);
         climb = new ClimbSubsystem(climbMotor, climbMechPiston);
+        climb.init();
+
         colorMechPiston = new Solenoid(RobotMap.COMPRESSOR_ID, RobotMap.COLOR_MECH_PISTON);
 
         // MARK - Talon/Victor Setup and Configuration
@@ -270,7 +277,7 @@ public class RobotContainer {
         intakeTeleopCommand = new IntakeTeleop(oi::getXboxLeftY, intake);
         turretTeleop = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
 
-        autonomousCommand = new InstantCommand(); // a do nothing command for now
+        autonomousCommand = new DriveStraightAuto(driveTrain, 5 * 12, 0.3);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -289,6 +296,7 @@ public class RobotContainer {
         // MARK - button definitions
         btnToggleShifter = new TitanButton(oi.leftJoystick, 4);
         btnToggleSolenoid = new TitanButton(oi.leftJoystick, 2);
+
 //        btnToggleSolenoid.whenPressed(new InstantCommand(() -> {
 //            if (titanFXCoolingPiston.get()){
 //                titanFXCoolingPiston.set(false);
@@ -298,14 +306,14 @@ public class RobotContainer {
 //        }, driveTrain));
         TitanButton btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
 
-        TitanButton btnToggleClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
+        TitanButton btnReleaseClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
         btnToggleHopperIntake = new TitanButton(oi.rightJoystick, 3);
         btnToggleHopperExpel = new TitanButton(oi.rightJoystick, 2);
 
         btnToggleIntake = new TitanButton(oi.getXbox(), 1);
         btnFeederExpel = new TitanButton(oi.getXbox(), 3);
-        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_INCREASE_SHOOT_SPEED);
-        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.BTNNUM_DECREASE_SHOOT_SPEED);
+        btnIncreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.XBOX_BUMPER_RIGHT);
+        btnDecreaseShooterSpeed = new TitanButton(oi.getXbox(), OI.XBOX_BUMPER_LEFT);
         btnTurretAutoAim = new TitanButton(oi.getXbox(), OI.BTNNUM_TURRET_AUTO_AIM);
         // MARK - bindings
         btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
@@ -329,11 +337,20 @@ public class RobotContainer {
         btnToggleColorMechPiston.whenPressed(() -> {
             colorMechPiston.set(!colorMechPiston.get());
         });
-        btnToggleClimbMechPiston.whenPressed(() -> {
+
+        btnReleaseClimbMechPiston.whenPressed(() -> {
             climb.releaseMech();
         });
-        btnTurretAutoAim.whenPressed(new TurretAutonomous(vision, turret));
-        new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new ClimbWithClimber(climb));
+        // pov (d-pad):
+		// a: 0deg, b: -90deg, c: 90deg, d: 180
+        //   _ a _
+		//   b _ c
+		//   _ d _
+		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.POSITIVE));
+		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 180).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.NEGATIVE));
+
+
+		btnTurretAutoAim.whenPressed(new TurretAutonomous(vision, turret));
 
 
     }

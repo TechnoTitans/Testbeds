@@ -1,32 +1,74 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 
 
 public class ClimbSubsystem implements Subsystem {
 
-    TitanSRX motor;
-    Solenoid climbSolenoid;
+    public static final int TELEOP_DURATION = ((2 * 60) + 15); // (s) teleop period is 2m15s
+    public static final double TIME_TO_ENDGAME = TELEOP_DURATION - 35; // seconds
+    public static final double WINCH_SPEED = 1.0;
 
-    public ClimbSubsystem(TitanSRX pullUpMotor, Solenoid climbSolenoid){
+    private TitanSRX motor;
+    private Solenoid climbSolenoid;
+    private Timer endgameTimer;
+    private boolean hasReleasedMech;
+
+    public ClimbSubsystem(TitanSRX pullUpMotor, Solenoid climbSolenoid) {
         this.motor = pullUpMotor;
+        // explicitly make pullUpMotor brake mode
+        this.motor.setNeutralMode(NeutralMode.Brake);
         this.climbSolenoid = climbSolenoid;
+        endgameTimer = new Timer();
+        init();
     }
+
+    /**
+     * THIS MUST BE CALLED!!!!
+     */
+    public void init() {
+        endgameTimer.start();
+    }
+
+    public void resetEndgameTimer() {
+        endgameTimer.reset();
+    }
+
+    public boolean areWeInTheEndGame() {
+        return endgameTimer.get() >= TIME_TO_ENDGAME;
+    }
+
 
     public void stopMotor() {
         motor.set(0);
     }
 
-    public void pullUp() {
-        motor.set(1);
+    private void setMotorSafe(double speed) {
+        if (this.hasReleasedMech && areWeInTheEndGame()) {
+            motor.set(speed);
+        } else {
+            System.err.println("Tried to move motor while not in endgame or mech not released.");
+        }
+    }
+
+    public void setMotorPositive() {
+        this.setMotorSafe(+WINCH_SPEED);
+    }
+
+    public void setMotorNegative() {
+        this.setMotorSafe(-WINCH_SPEED);
     }
 
     public void releaseMech() {
-        climbSolenoid.set(true);
+        if (areWeInTheEndGame()) {
+            climbSolenoid.set(true);
+            this.hasReleasedMech = true;
+        }
     }
 
 
