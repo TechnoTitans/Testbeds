@@ -136,6 +136,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Has Released Mech", robotContainer.climb.hasReleasedMech());
 		SmartDashboard.putNumber("Game Time", robotContainer.climb.getEndgameTime());
 
+		robotContainer.vision.getData();
+
+
 //		SmartDashboard.putNumber("Vision y-angle (degrees)", robotContainer.vision.getAngleY());
 //		SmartDashboard.putNumber("Vision x-angle (degrees)", robotContainer.vision.getAngleX());
 //		SmartDashboard.putNumber("Vision distance (in)", robotContainer.vision.getDistance());
@@ -182,9 +185,12 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
+
+		robotContainer.climb.init();
 	}
 
 	/**
