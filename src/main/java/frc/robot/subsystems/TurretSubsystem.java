@@ -53,7 +53,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.hoodBottomLS = hoodBottomLS;
         this.rpmSetpointFilter = new Filter(0.7);
         this.hoodPositionFilterTicks = new Filter(0.7);
-        this.turretPreset = TurretPreset.WALL;
+        this.turretPreset = TurretPreset.OFF;
     }
 
     @Override
