@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.motor.Encoder;
@@ -13,8 +14,9 @@ import frc.robot.motor.Encoder;
 /*
  * Motor control (talonSRX)
  */
-public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX implements Motor {
+public class TitanSRX extends WPI_TalonSRX implements Motor {
 
+    private static final double DEFAULT_PERCENT_FILTER = 1.0;
     private Encoder encoder;
     private static final int TIMEOUT_MS = 30;
     Gyro gyro;
@@ -22,6 +24,9 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
 
     private TitanSRX brownoutFollower = null;
     private boolean brownout = false;
+
+    // todo deduplicate
+    private Filter percentOutputFilter;
 
     /**
      * Constructor for a TalonSRX motor
@@ -34,6 +39,7 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
     public TitanSRX(int channel, boolean reversed) {
         super(channel);
         super.setInverted(reversed);
+        percentOutputFilter = new Filter(DEFAULT_PERCENT_FILTER);
     }
 
     /**
@@ -63,7 +69,17 @@ public class TitanSRX extends com.ctre.phoenix.motorcontrol.can.TalonSRX impleme
     public void set(double speed) {
         if (speed > 1) speed = 1;
         if (speed < -1) speed = -1;
-        super.set(ControlMode.PercentOutput, speed);
+        percentOutputFilter.update(speed);
+        super.set(ControlMode.PercentOutput, percentOutputFilter.getValue());
+    }
+
+    public void setVelocityRPM(double rpm){
+        double ticksper100ms = rpm * 4096 / (60 * 10);
+        this.set(ControlMode.Velocity, ticksper100ms);
+    }
+
+    public void setAngleTicks(double ticks) {
+        this.set(ControlMode.Position, ticks);
     }
 
     @Override

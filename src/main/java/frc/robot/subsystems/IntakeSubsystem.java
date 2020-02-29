@@ -8,7 +8,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.motor.Filter;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.TitanButton;
@@ -20,27 +23,55 @@ public class IntakeSubsystem extends SubsystemBase {
 	 */
 	private TitanSRX intakeMotor;
 
-	private static final double EXPEL_SPEED = 1;
-	private static final double INTAKE_SPEED = -1;
+	private static final double EXPEL_SPEED = -.7;
+	private static final double INTAKE_SPEED = .5;
+	private double currentSpeed = 0;
+	private final Filter intakeMotorFilter;
 
 	public IntakeSubsystem(TitanSRX intakeMotor, Solenoid piston) {
 		this.intakeMotor = intakeMotor;
 		this.piston = piston;
+		intakeMotorFilter = new Filter(0.7);
 	}
 
-	public void stop() { intakeMotor.set(0); }
+	public void stop() {
+		currentSpeed = 0;
+		intakeMotorFilter.setValue(0);
+		this.intakeMotor.stop();
+	}
 
 	public void expel() {
-		intakeMotor.set(EXPEL_SPEED);
+		currentSpeed = EXPEL_SPEED;
 	}
 
 	public void intake() {
-		intakeMotor.set(INTAKE_SPEED);
+		currentSpeed = INTAKE_SPEED;
 	}
 
 	public void setSpeed(double speed) {
-		intakeMotor.set(speed);
+		speed = MathUtil.clamp(speed, EXPEL_SPEED, INTAKE_SPEED);
+		this.currentSpeed = speed;
 	}
+
+	public void toggleIntakeMotors() {
+		boolean isRunning = currentSpeed != 0;
+		SmartDashboard.putBoolean("Intake Motor Running", this.intakeMotor.get() > 0);
+		if (isRunning) {
+			this.stop();
+		} else {
+			this.currentSpeed = INTAKE_SPEED;
+		}
+	}
+
+	/**
+	 * must be called repeatedly
+	 */
+	public void run() {
+		intakeMotorFilter.update(currentSpeed);
+		intakeMotor.set(intakeMotorFilter.getValue());
+	}
+
+
 
 	/**
 	 * Will be called periodically whenever the CommandScheduler runs.

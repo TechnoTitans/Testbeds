@@ -43,10 +43,16 @@ public class Robot extends TimedRobot {
 		robotContainer.hoodMotorEncoder.reset();
 		robotContainer.shootMotorEncoder.reset();
 		robotContainer.zMotorEncoder.reset();
+		robotContainer.driveTrain.resetEncoders();
+
+		double turretAngle = 0; //todo get actual angles for both
+		double hoodAngle = 0;
+//		CommandScheduler.getInstance().schedule(new RotateTurret(turretAngle, robotContainer.turret));
+//		CommandScheduler.getInstance().schedule(new RotateHood(hoodAngle, robotContainer.turret));
 
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.driveTrain, robotContainer.driveTrainCommand);
 		CommandScheduler.getInstance().setDefaultCommand(robotContainer.intake, robotContainer.intakeTeleopCommand);
-		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleop);
+		CommandScheduler.getInstance().setDefaultCommand(robotContainer.turret, robotContainer.turretTeleopCommand);
 //		robotContainer.driveTrain.setShifter(true);
 
 	}
@@ -67,18 +73,17 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().run();
 
 		// todo make everything private that is publicly used here
-		SmartDashboard.putNumber("Flywheel Motor Encoder", robotContainer.shootMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("zMotor Motor Encoder", robotContainer.zMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("hoodMotor Motor Encoder", robotContainer.hoodMotorEncoder.getRawPosition());
-		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
-		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
+//		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
+//		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
 
-		SmartDashboard.putData(robotContainer.shifterSolenoid);
-		SmartDashboard.putData(robotContainer.intakeSolenoid);
-		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
+//		SmartDashboard.putData(robotContainer.shifterSolenoid);
+//		SmartDashboard.putData(robotContainer.intakeSolenoid);
+//		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
 		
-		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
-		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
+//		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
+//		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
 //		SmartDashboard.putNumber("Red value", detectedColor.red);
 //		SmartDashboard.putNumber("Green value", detectedColor.green);
@@ -86,21 +91,59 @@ public class Robot extends TimedRobot {
 
 
 
-		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
-		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
-		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
-		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
 
 		// drivetrain
 		SmartDashboard.putNumber("Falcon Right Front Current", robotContainer.rightFrontMotorFX.getCurrent());
 		SmartDashboard.putNumber("Falcon Left Front Current", robotContainer.leftFrontMotorFX.getCurrent());
 
+		SmartDashboard.putNumber("Falcon RF Temp", robotContainer.rightFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Falcon LF Temp", robotContainer.leftFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Falcon RB Temp", robotContainer.rightBackMotorFX.getTemperature());
+		SmartDashboard.putNumber("Falcon LB Temp", robotContainer.leftBackMotorFX.getTemperature());
+
+
 		TalonSRXConfiguration zMotorConfig = new TalonSRXConfiguration();
 		robotContainer.zMotor.getAllConfigs(zMotorConfig, 0);
 
-		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
-		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
-		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
+//		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
+//		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
+//		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
+
+
+
+		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
+		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600f / 4096);
+		SmartDashboard.putNumber("closed loop error ", robotContainer.shootMotor.getClosedLoopError());
+		SmartDashboard.putNumber("Left Front Falcon Temperature (C)", robotContainer.leftFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Left Back Falcon Temperature (C)", robotContainer.leftBackMotorFX.getTemperature());
+		SmartDashboard.putNumber("Right Front Falcon Temperature (C)", robotContainer.rightFrontMotorFX.getTemperature());
+		SmartDashboard.putNumber("Right Back Falcon Temperature (C)", robotContainer.rightBackMotorFX.getTemperature());
+		SmartDashboard.putNumber("Average Motor Temp", (robotContainer.leftFrontMotorFX.getTemperature() + robotContainer.rightFrontMotorFX.getTemperature()) / 2.0);
+		SmartDashboard.putBoolean("Cooling on", robotContainer.titanFXCoolingPiston.get());
+
+
+		SmartDashboard.putNumber("Flywheel setpoint (RPM)", robotContainer.turret.getRPMSetpoint());
+		SmartDashboard.putNumber("Flywheel velocity (RPM)", robotContainer.shootMotor.getSelectedSensorVelocity() * (60 * 10) / 4096f);
+		SmartDashboard.putNumber("Flywheel Closed Loop Error", robotContainer.shootMotor.getClosedLoopError());
+
+
+		SmartDashboard.putBoolean("Bottom Hood LS", robotContainer.hoodBottomLS.isPressed());
+
+		SmartDashboard.putBoolean("Has Released Mech", robotContainer.climb.hasReleasedMech());
+		SmartDashboard.putNumber("Game Time", robotContainer.climb.getEndgameTime());
+
+		robotContainer.vision.getData();
+
+
+//		SmartDashboard.putNumber("Vision y-angle (degrees)", robotContainer.vision.getAngleY());
+//		SmartDashboard.putNumber("Vision x-angle (degrees)", robotContainer.vision.getAngleX());
+//		SmartDashboard.putNumber("Vision distance (in)", robotContainer.vision.getDistance());
+//		SmartDashboard.putNumber("Vision Center x", robotContainer.vision.getCenterX());
+//		SmartDashboard.putNumber("Vision Center y", robotContainer.vision.getCenterY());
 
 
 	}
@@ -142,9 +185,12 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
+
+		robotContainer.climb.init();
 	}
 
 	/**
@@ -152,6 +198,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+//		double leftJoyZ = robotContainer.oi.getLeftJoyZ();
+//		double flywheelP = (leftJoyZ + 1.0) / 2;
+//		robotContainer.shootMotor.config_kP(PIDConstants.kSlotIdx, flywheelP, PIDConstants.kTimeoutMs);
+//		SmartDashboard.putNumber("Flywheel P", flywheelP);
 	}
 
 	@Override
@@ -165,5 +215,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+
 	}
 }

@@ -36,8 +36,8 @@ public class TurretTeleop extends CommandBase {
 
     @Override
     public void initialize() {
-        hoodFilter = new Filter(0.1);
-        zFilter = new Filter(0.1);
+        hoodFilter = new Filter(0.7);
+        zFilter = new Filter(0.7);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class TurretTeleop extends CommandBase {
             turret.setZMotor(zMotorInput.getAsDouble());
             turret.setHood(hoodMotorInput.getAsDouble());
         }
-        turret.setShooter(turret.getSpeedSetpoint());  // this is set by the buttonbindings
-        SmartDashboard.putNumber("Turret Shooter Speed", turret.getSpeedSetpoint());
+        turret.setShooterVelocityRPM(turret.getRPMSetpoint());
+//        turret.setShooter(turret.getPercentOutputSetpoint());  // this is set by the buttonbindings
     }
 
     @Override

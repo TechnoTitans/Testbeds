@@ -15,5 +15,4 @@ public class FeederSubsystem extends SubsystemBase {
 		this.feederMotor.set(speed);
 	}
 
-
 }

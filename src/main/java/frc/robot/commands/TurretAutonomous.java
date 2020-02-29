@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.Vision;
 import frc.robot.subsystems.TurretSubsystem;
@@ -8,12 +7,11 @@ import frc.robot.subsystems.TurretSubsystem;
 
 
 public class TurretAutonomous extends CommandBase {
-    private double xAngle;
-    private double yAngle;
-    private double distance;
+
     private double shooterSpeed;
     private Vision vision;
     private TurretSubsystem turret;
+
     public TurretAutonomous(Vision vision, TurretSubsystem turret) {
         this.turret = turret;
         this.vision = vision;
@@ -27,18 +25,20 @@ public class TurretAutonomous extends CommandBase {
 
     @Override
     public void execute() {
-        xAngle = vision.getAngleX(); //calculations here to convert from angles to encoder
-        yAngle = vision.getAngleY(); //decide if angle should be the lower angle or larger, then convert from angle to encoder
-        distance = vision.getDistance(); // units in feet
+        double xAngle = vision.getAngleX();
+        double yAngle = vision.getAngleY();
+        double distance = vision.getVisionDistance(); // units in feet
+        double desiredHoodAngle = 0; //todo find out turret angles based on vision
+        double desiredTurretAngle = 0;
         //Decide shooter speed here
-        if (distance > 10){
-            shooterSpeed = 0.8;
-        }
-        turret.getZMotorPID().setSetpoint(xAngle);
-        turret.getHoodPID().setSetpoint(yAngle);
-        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
-        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
-        turret.setShooter(shooterSpeed);
+        turret.setHoodAngle(desiredHoodAngle);
+        turret.setTurrentAngle(desiredTurretAngle);
+
+//        turret.getZMotorPID().setSetpoint(xAngle);
+//        turret.getHoodPID().setSetpoint(yAngle);
+//        turret.setHood(turret.getHoodPID().calculate(turret.getHoodEncoder().getDistance()));
+//        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
+//        turret.setShooter(shooterSpeed);
     }
 
     @Override

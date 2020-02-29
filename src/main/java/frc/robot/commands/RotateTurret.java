@@ -12,23 +12,27 @@ public class RotateTurret extends CommandBase {
     public RotateTurret(double angle, TurretSubsystem turret) {
         addRequirements(turret);
         this.turret = turret;
-        this.angle = angle; //calculations here to convert angle into encoder distance
+        this.angle = angle; //todo calculations here to convert angle into encoder distance
     }
 
     @Override
     public void initialize() {
-        turret.getZMotorPID().setSetpoint(angle);
+
+//        turret.getZMotorPID().setSetpoint(angle);
     }
 
     @Override
     public void execute() {
-        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
+
+//        turret.setZMotor(turret.getZMotorPID().calculate(turret.getZMotorEncoder().getDistance()));
+
     }
 
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return turret.getZMotorPID().atSetpoint(); // some calculations will be made here
+//        return turret.getZMotorPID().atSetpoint(); // some calculations will be made here
+        return false;
     }
 
     @Override

@@ -1,12 +1,18 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.motor.Filter;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanVictor;
+import frc.robot.sensors.LimitSwitch;
 
 @SuppressWarnings("JavadocReference")
 public class TurretSubsystem extends SubsystemBase {
@@ -15,27 +21,24 @@ public class TurretSubsystem extends SubsystemBase {
     public static final double HOOD_PULSES_PER_DEGREE = (187  + 857) / 24.2; // (pulses per degree)
     public static final double ZMOTOR_PULSES_PER_DEGREE = (-5772f) / 45; // (pulses per degree)
     public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
+    public static final double MAX_RPM = 7400; //18730 max rpm / 2.5 gear reduction ratio
+    public static final double RPM_INCREMENT = (1 / 20f) * TurretSubsystem.MAX_RPM;
 
+    private final LimitSwitch leftTurretLS;
+    private final LimitSwitch rightTurretLS;
+    private final LimitSwitch hoodBottomLS;
 
-    /**
-     * The Singleton instance of this TurretSubsystem. External classes should
-     * use the {@link #getInstance()} method to get the instance.
-     */
-//    private final static TurretSubsystem INSTANCE = new TurretSubsystem(shooter, zMotor);
-
-    /**
-     * Creates a new instance of this TurretSubsystem.
-     * This constructor is private since this class is a Singleton. External classes
-     * should use the {@link #getInstance()} method to get the instance.
-     */
     private TitanSRX shooter, zMotor, hood;
     private TitanVictor subShoot;
-    private PIDController zMotorPID, hoodPID;
-    private DigitalInput beltLimitSwitch;
 
-    private double manualSpeedSetpoint;
+    private Filter rpmSetpointFilter;
 
-    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, DigitalInput beltLimitSwitch) {
+    private double manualPercentOutputSetpoint;
+    private double rpmSetpoint;
+
+
+
+    public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS, LimitSwitch hoodBottomLS) {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
@@ -44,25 +47,44 @@ public class TurretSubsystem extends SubsystemBase {
         this.subShoot = subShoot;
         this.zMotor = zMotor;
         this.hood = hood;
-        this.beltLimitSwitch = beltLimitSwitch;
-        zMotorPID = new PIDController(0, 0, 0);
-        hoodPID = new PIDController(0, 0, 0);
+        this.leftTurretLS = leftTurretLS;
+        this.rightTurretLS  = rightTurretLS;
+        this.hoodBottomLS = hoodBottomLS;
+        this.rpmSetpointFilter = new Filter(0.7);
+    }
 
+    @Override
+    public void periodic() {
+        SmartDashboard.putBoolean("[Turret] Left Turret LS", this.leftTurretLS.isPressed());
+        SmartDashboard.putBoolean("[Turret] Right Turret LS", this.rightTurretLS.isPressed());
+        SmartDashboard.putBoolean("[Turret] Hood Bottom LS", this.hoodBottomLS.isPressed());
+//        SmartDashboard.putNumber("[Turret] Azimuth Velocity", this.zMotor.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("[Turret] Hood Position", this.hood.getSelectedSensorPosition());
+        // very important ! this must be called in a loop or it will be be disabled automatically
     }
 
     public void setShooter(double speed) {
         shooter.set(speed);
     }
 
-    public void setSubShoot(double speed) {
-        subShoot.set(speed);
+    public void setShooterVelocityRPM(double rpm){
+        this.rpmSetpoint = MathUtil.clamp(rpm, 0, TurretSubsystem.MAX_RPM);
+        this.shooter.setVelocityRPM(this.rpmSetpoint);
     }
 
     public void setZMotor(double speed) {
+        if (leftTurretLS.isPressed()) {
+            speed = MathUtil.clamp(speed, 0, 1); // assuming +1 is right direction
+        } else if (rightTurretLS.isPressed()) {
+            speed = MathUtil.clamp(speed, -1, 0); // assuming -1 is leftwards
+        }
         zMotor.set(speed);
     }
 
     public void setHood(double speed) {
+        if (hoodBottomLS.isPressed()) {
+            speed = MathUtil.clamp(speed, 0, +1); // assuming positive values allow hood to go up
+        }
         hood.set(speed);
     }
 
@@ -74,33 +96,53 @@ public class TurretSubsystem extends SubsystemBase {
         return hood.getEncoder();
     }
 
-    public PIDController getZMotorPID() {
-        return zMotorPID;
-    }
-
-    public PIDController getHoodPID() {
-        return hoodPID;
-    }
-
-    public DigitalInput getBeltLimitSwitch() {
-        return beltLimitSwitch;
-    }
-
     public TitanSRX getShooter(){
         return shooter;
     }
 
-    public void setSpeedSetpoint(double speed) {
+    public void setPercentOutputSetpoint(double speed) {
         if (speed >= 1) {
             speed = 1;
         } else if (speed <= -1) {
             speed = -1;
         }
-        manualSpeedSetpoint = speed;
+        if (speed < 0){
+            speed = 0;
+        }
+        manualPercentOutputSetpoint = speed;
     }
 
-    public double getSpeedSetpoint() {
-        return manualSpeedSetpoint;
+    public void setRPMSetpoint(double rpm) {
+        this.rpmSetpointFilter.update(rpm);
+        this.rpmSetpoint = rpmSetpointFilter.getValue();
+        this.setShooterVelocityRPM(this.rpmSetpoint);
+    }
+
+    public double getRPMSetpoint(){
+        return rpmSetpoint;
+    }
+
+    public double getPercentOutputSetpoint() {
+        return manualPercentOutputSetpoint;
+    }
+
+    public void increaseRPMSetpoint() {
+        this.rpmSetpoint += TurretSubsystem.RPM_INCREMENT;
+        this.setRPMSetpoint(this.rpmSetpoint);
+    }
+
+    public void decreaseRPMSetpoint() {
+        this.rpmSetpoint -= TurretSubsystem.RPM_INCREMENT;
+        this.setRPMSetpoint(this.rpmSetpoint);
+    }
+
+    public void setTurrentAngle(double degrees) {
+        double ticks = degrees * ZMOTOR_PULSES_PER_DEGREE;
+        zMotor.setAngleTicks(ticks);
+    }
+    public void setHoodAngle(double degrees) {
+        double ticks = degrees * HOOD_PULSES_PER_DEGREE;
+        hood.setAngleTicks(ticks);
     }
 
     /**

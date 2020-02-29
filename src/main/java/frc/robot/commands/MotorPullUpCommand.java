@@ -23,7 +23,7 @@ public class MotorPullUpCommand extends CommandBase {
 
         //Limit stuff
         //Climb
-        climbSubsystem.pullUp();
+        climbSubsystem.setMotorPositive();
     }
 
     @Override

@@ -7,7 +7,6 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class ShootBall extends CommandBase {
     private double speed;
-    private Timer timer = new Timer();
     private TurretSubsystem turret;
     public ShootBall(double speed, TurretSubsystem turret) {
         addRequirements(turret);
@@ -17,7 +16,7 @@ public class ShootBall extends CommandBase {
 
     @Override
     public void initialize() {
-        timer.reset();
+
     }
 
     @Override
@@ -26,7 +25,7 @@ public class ShootBall extends CommandBase {
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return timer.get() >= 3000; //change later
+        return false; //change later
     }
 
     @Override

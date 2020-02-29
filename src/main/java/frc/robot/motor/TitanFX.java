@@ -1,6 +1,7 @@
 package frc.robot.motor;
 
 import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * TitanFX is our enhanced version of the regular TalonFX code
  */
 // todo implement speedcontroller
-public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implements Motor {
+public class TitanFX extends WPI_TalonFX implements Motor {
 
 	private Encoder encoder;
 	private static final int TIMEOUT_MS = 30;
@@ -20,6 +21,9 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 
 	private TitanFX brownoutFollower = null;
 	private boolean brownout = false;
+
+	public static final double DEFAULT_FILTER_VALUE = 1.0; // is like identity function rn
+	private Filter percentOutputFilter;
 
 	/**
 	 * Constructor for a TalonFX motor
@@ -32,6 +36,8 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	public TitanFX(int channel, boolean reversed) {
 		super(channel);
 		super.setInverted(reversed);
+		this.percentOutputFilter = new Filter(DEFAULT_FILTER_VALUE); // maybe constructorize later
+		this.percentOutputFilter.setValue(0);
 	}
 
 	/**
@@ -47,7 +53,6 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	public TitanFX(int channel, boolean reversed, Encoder encoder) {
 		super(channel);
 		super.setInverted(reversed);
-
 		this.encoder = encoder;
 	}
 
@@ -61,7 +66,8 @@ public class TitanFX extends com.ctre.phoenix.motorcontrol.can.TalonFX implement
 	public void set(double speed) {
 		if (speed > 1) speed = 1;
 		if (speed < -1) speed = -1;
-		super.set(ControlMode.PercentOutput, speed);
+		this.percentOutputFilter.update(speed);
+		super.set(ControlMode.PercentOutput, this.percentOutputFilter.getValue());
 	}
 
 	@Override
