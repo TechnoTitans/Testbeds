@@ -27,11 +27,11 @@ public class OI {
 
 	// todo verify this works
 	public double getLeftJoyY() {
-		return deadband(leftJoystick.getY(), 0.1); // todo more readble
+		return deadband(-leftJoystick.getY(), 0.1); // todo more readble
 	}
 
 	public double getRightJoyY() {
-		return deadband(rightJoystick.getY(), 0.1);
+		return deadband(-rightJoystick.getY(), 0.1);
 	}
 
 	public double getXboxLeftY() {
