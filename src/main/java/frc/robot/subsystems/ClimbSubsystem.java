@@ -14,7 +14,7 @@ public class ClimbSubsystem implements Subsystem {
     public static final int TELEOP_DURATION = ((2 * 60) + 15); // (s) teleop period is 2m15s
 //    public static final double TIME_TO_ENDGAME = TELEOP_DURATION - 35; // seconds
     public static final double TIME_TO_ENDGAME = 0; // seconds
-    public static final double WINCH_SPEED = 0.3;
+    public static final double WINCH_SPEED = 1.0;
 
     private TitanSRX motor;
     private Solenoid climbSolenoid;

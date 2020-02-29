@@ -6,12 +6,8 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class OI {
 
-	public static final int BTNNUM_TOGGLE_SHIFTER = 4;
-	public static final int BTNNUM_TOGGLE_INTAKE = 5;
 	public static final int XBOX_BUMPER_RIGHT = 6;
 	public static final int XBOX_BUMPER_LEFT = 5;
-	public static final int BTNNUM_TOGGLE_HOPPER_INTAKE = 2;
-	public static final int BTNNUM_TOGGLE_HOPPER_EXPEL = 3;
 	public static final int BTNNUM_TURRET_AUTO_AIM = 8;
 	public Joystick leftJoystick, rightJoystick;
 	private XboxController xbox;
