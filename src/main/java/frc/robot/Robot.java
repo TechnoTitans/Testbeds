@@ -136,11 +136,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Has Released Mech", robotContainer.climb.hasReleasedMech());
 		SmartDashboard.putNumber("Game Time", robotContainer.climb.getEndgameTime());
 
-		SmartDashboard.putNumber("Vision y-angle (degrees)", robotContainer.vision.getAngleY());
-		SmartDashboard.putNumber("Vision x-angle (degrees)", robotContainer.vision.getAngleX());
-		SmartDashboard.putNumber("Vision distance (feet)", robotContainer.vision.getDistance());
-		SmartDashboard.putNumber("Vision Center x", robotContainer.vision.getCenterX());
-		SmartDashboard.putNumber("Vision Center y", robotContainer.vision.getCenterY());
+//		SmartDashboard.putNumber("Vision y-angle (degrees)", robotContainer.vision.getAngleY());
+//		SmartDashboard.putNumber("Vision x-angle (degrees)", robotContainer.vision.getAngleX());
+//		SmartDashboard.putNumber("Vision distance (in)", robotContainer.vision.getDistance());
+//		SmartDashboard.putNumber("Vision Center x", robotContainer.vision.getCenterX());
+//		SmartDashboard.putNumber("Vision Center y", robotContainer.vision.getCenterY());
 
 
 	}
@@ -192,6 +192,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+//		double leftJoyZ = robotContainer.oi.getLeftJoyZ();
+//		double flywheelP = (leftJoyZ + 1.0) / 2;
+//		robotContainer.shootMotor.config_kP(PIDConstants.kSlotIdx, flywheelP, PIDConstants.kTimeoutMs);
+//		SmartDashboard.putNumber("Flywheel P", flywheelP);
 	}
 
 	@Override
@@ -205,5 +209,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+
 	}
 }
