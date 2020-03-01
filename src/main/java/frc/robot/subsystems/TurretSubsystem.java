@@ -20,7 +20,7 @@ public class TurretSubsystem extends SubsystemBase {
     public static final double FLYWHEEL_PULSES_PER_REVOLUTION = (4100 + 40); // (pulses per rev)
     public static final double MAX_RPM = 7400; //18730 max rpm / 2.5 gear reduction ratio
     public static final double RPM_INCREMENT = (1 / 20f) * TurretSubsystem.MAX_RPM;
-    public static final int HOOD_MIN_TICKS = -877;
+    public static final int HOOD_MAX_TICKS = 877;
 
     private final LimitSwitch leftTurretLS;
     private final LimitSwitch rightTurretLS;
@@ -54,6 +54,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.rpmSetpointFilter = new Filter(0.1);
         this.hoodPositionFilterTicks = new Filter(0.7);
         this.turretPreset = TurretPreset.OFF;
+//        this.turretPreset = TurretPreset.LINE; // For testing purposes
     }
 
     @Override
@@ -65,11 +66,13 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("[Turret] Hood Position", this.hood.getSelectedSensorPosition());
         SmartDashboard.putString("Current Preset", this.turretPreset.name());
 
+        // TODO: TEST
         if (this.hoodBottomLS.isPressed()) {
             this.hood.getEncoder().reset();
+            this.setHoodPositionSetpoint(MathUtil.clamp(turretPreset.desiredHoodEncoderPositionPreset, -HOOD_MAX_TICKS, 0));
+        } else {
+            this.setHoodPositionSetpoint(turretPreset.desiredHoodEncoderPositionPreset);
         }
-
-        this.setHoodPositionSetpoint(turretPreset.desiredHoodEncoderPositionPreset);
         this.setRPMSetpoint(turretPreset.flywheelRPMPreset);
 
     }
@@ -79,7 +82,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setHoodPositionTicks(double ticks) {
-        this.hoodPositionSetpoint = MathUtil.clamp(ticks, HOOD_MIN_TICKS, 0);
+        this.hoodPositionSetpoint = MathUtil.clamp(ticks, -HOOD_MAX_TICKS, 0);
         this.hood.setAngleTicks(ticks);
     }
 
@@ -99,6 +102,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void setHood(double speed) {
         // if presets hood is still not working, comment out this if statement
+        // TODO: test this before next match
         if (hoodBottomLS.isPressed()) {
             speed = MathUtil.clamp(speed, 0, +1); // assuming positive values allow hood to go up
         }
@@ -145,6 +149,10 @@ public class TurretSubsystem extends SubsystemBase {
         return rpmSetpoint;
     }
 
+    public double getHoodPositionSetpoint(){
+        return hoodPositionSetpoint;
+    }
+
     public double getPercentOutputSetpoint() {
         return manualPercentOutputSetpoint;
     }
@@ -176,6 +184,14 @@ public class TurretSubsystem extends SubsystemBase {
         int desiredIndex = (currentIndex + 1) % TurretPreset.values().length;
         turretPreset = TurretPreset.values()[desiredIndex];
     }
+
+    public void setAutoPreset(int index) {
+        turretPreset = TurretPreset.values()[index];
+    }
+
+//    public void setAutoPreset() {
+//        turretPreset = TurretPreset.values()[2];
+//    }
 
     /**
      * Returns the Singleton instance of this TurretSubsystem. This static method

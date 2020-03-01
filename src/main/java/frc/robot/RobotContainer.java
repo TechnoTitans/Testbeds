@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.DriveStraightAuto;
+import frc.robot.commands.auto.ShootThenDriveStraightAuto;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
@@ -151,7 +152,7 @@ public class RobotContainer {
         zMotorEncoder = new QuadEncoder(zMotor, 0, false);
         zMotor.setEncoder(zMotorEncoder);
 
-        hoodMotorEncoder = new QuadEncoder(hoodMotor, 0, false);
+        hoodMotorEncoder = new QuadEncoder(hoodMotor, 0, true);
         hoodMotor.setEncoder(hoodMotorEncoder);
 
         shootMotorEncoder = new QuadEncoder(shootMotor, 0, false); // todo rename shootmotor to flywheel motor
@@ -320,7 +321,8 @@ public class RobotContainer {
         turretTeleopCommand = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
         turretAutoCommand = new TurretAutonomous(vision, turret);
 
-        autonomousCommand = new DriveStraightAuto(driveTrain, 3f * 12, 0.1);
+//        autonomousCommand = new DriveStraightAuto(driveTrain, 3f * 12, 0.1);
+        autonomousCommand = new ShootThenDriveStraightAuto(driveTrain, 3f * 12, 0.1, turret, hopper, feeder, intake);
 //        autonomousCommand = new DoNothingAuto();
         // Configure the button bindings
         configureButtonBindings();
@@ -349,7 +351,7 @@ public class RobotContainer {
 
         // MARK - bindings
 
-//        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 

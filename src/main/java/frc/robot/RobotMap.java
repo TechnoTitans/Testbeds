@@ -47,7 +47,8 @@ public final class RobotMap {
     public static final int HOPPER_MOTOR = 8; // victor
     public static final boolean REVERSED_HOPPER_MOTOR = false;
     public static final int HOOD = 9; // victor
-    public static final boolean REVERSED_HOOD = false;
+//    public static final boolean REVERSED_HOOD = false;
+    public static final boolean REVERSED_HOOD = true;
     public static final int FLYWHEEL1 = 10;
     public static final boolean REVERSED_FLYWHEEL1 = false;
     public static final int FLYWHEEL2 = 11; // victor
@@ -69,6 +70,7 @@ public final class RobotMap {
 
     public static final int HOOD_BOTTOM_LS = 2;
     public static final boolean HOOD_BOTTOM_LS_INVERTED = false;
+//    public static final boolean HOOD_BOTTOM_LS_INVERTED = true;
 
 
 

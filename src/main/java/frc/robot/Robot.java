@@ -75,10 +75,13 @@ public class Robot extends TimedRobot {
 		// todo make everything private that is publicly used here
 		SmartDashboard.putNumber("zMotor Motor Encoder", robotContainer.zMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("hoodMotor Motor Encoder", robotContainer.hoodMotorEncoder.getRawPosition());
+		SmartDashboard.putNumber("hoodMotor Error", robotContainer.turret.getHoodPositionSetpoint() -
+													robotContainer.hoodMotorEncoder.getRawPosition());
+
 //		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
 //		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
 
-//		SmartDashboard.putData(robotContainer.shifterSolenoid);
+		SmartDashboard.putBoolean("Shifter State (True: LOW, False: HIGH)", robotContainer.shifterSolenoid.get());
 //		SmartDashboard.putData(robotContainer.intakeSolenoid);
 //		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
 		
