@@ -327,6 +327,7 @@ public class RobotContainer {
         CommandScheduler.getInstance().registerSubsystem(driveTrain);
         CommandScheduler.getInstance().registerSubsystem(controlPanel);
         CommandScheduler.getInstance().registerSubsystem(feeder);
+        CommandScheduler.getInstance().registerSubsystem(hopper);
         CommandScheduler.getInstance().registerSubsystem(intake);
 
     }
