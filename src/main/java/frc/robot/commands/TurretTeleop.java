@@ -46,14 +46,13 @@ public class TurretTeleop extends CommandBase {
             hoodFilter.update(hoodMotorInput.getAsDouble());
             zFilter.update(zMotorInput.getAsDouble());
             turret.setZMotor(zFilter.getValue());
-            turret.setHood(hoodFilter.getValue());
+//            turret.setHood(hoodFilter.getValue()); // this is now controlled by presets
         }
         else {
             turret.setZMotor(zMotorInput.getAsDouble());
-            turret.setHood(hoodMotorInput.getAsDouble());
+//            turret.setHood(hoodMotorInput.getAsDouble());
         }
         turret.setShooterVelocityRPM(turret.getRPMSetpoint());
-//        turret.setShooter(turret.getPercentOutputSetpoint());  // this is set by the buttonbindings
     }
 
     @Override
