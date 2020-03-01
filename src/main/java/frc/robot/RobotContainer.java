@@ -116,6 +116,7 @@ public class RobotContainer {
     private TitanButton btnToggleColorMechPiston;
     private TitanButton btnReleaseClimbMechPiston;
     private TitanButton btnScrollPresets;
+    private TitanButton btnRotateColorMech;
 
     private Trigger climbPositiveTrigger;
 	private Trigger climbNegativeTrigger;
@@ -162,9 +163,10 @@ public class RobotContainer {
         rightTurretLS = new LimitSwitch(RobotMap.RIGHT_TURRET_LS, RobotMap.RIGHT_TURRET_LS_INVERTED);
         hoodBottomLS = new LimitSwitch(RobotMap.HOOD_BOTTOM_LS, RobotMap.HOOD_BOTTOM_LS_INVERTED);
         turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, leftTurretLS, rightTurretLS, hoodBottomLS);
+
         spinningMotor = new TitanSRX(RobotMap.COLOR_WHEEL_MOTOR, RobotMap.REVERSED_COLOR_WHEEL);
-//        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
-//        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
+        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
+        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
 
         leftFrontMotorFX = new TitanFX(RobotMap.LEFT_TALON_FRONT, RobotMap.REVERSED_LF_TALON);
         leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
@@ -301,7 +303,14 @@ public class RobotContainer {
 //                titanFXCoolingPiston.set(true);
 //            }
 //        }, driveTrain));
-        btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
+
+        // HEY HEY HEYYYY
+        // HEY HEY HEYYYY
+        // WHATSUP WHATSUP WHATSUP WHATSUP WHATSUP WHATSUP WHATSUPPPPPPPPPP
+        // BITCONNNEEEEEEEEEEEEEEEEEEEEEEEEEEEEECT
+        btnToggleColorMechPiston = new TitanButton(oi.rightJoystick, 6);
+        btnRotateColorMech = new TitanButton(oi.rightJoystick, 7);
+
         btnReleaseClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
         btnToggleHopperIntake = new TitanButton(oi.rightJoystick, 3);
         btnToggleHopperExpel = new TitanButton(oi.rightJoystick, 2);
@@ -338,7 +347,6 @@ public class RobotContainer {
         CommandScheduler.getInstance().registerSubsystem(feeder);
         CommandScheduler.getInstance().registerSubsystem(hopper);
         CommandScheduler.getInstance().registerSubsystem(intake);
-
     }
 
     /**
@@ -367,6 +375,10 @@ public class RobotContainer {
 
         btnToggleColorMechPiston.whenPressed(() -> {
             colorMechPiston.set(!colorMechPiston.get());
+        });
+
+        btnRotateColorMech.whileHeld(() -> {
+            controlPanel.moveToColor();
         });
 
         btnReleaseClimbMechPiston.whenPressed(() -> {

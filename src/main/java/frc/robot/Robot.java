@@ -88,11 +88,13 @@ public class Robot extends TimedRobot {
 //		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
 //		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
-//		SmartDashboard.putNumber("Red value", detectedColor.red);
-//		SmartDashboard.putNumber("Green value", detectedColor.green);
-//		SmartDashboard.putNumber("Blue value", detectedColor.blue);
+		SmartDashboard.putNumber("Red value", robotContainer.controlPanel.getColor().red);
+		SmartDashboard.putNumber("Green value", robotContainer.controlPanel.getColor().green);
+		SmartDashboard.putNumber("Blue value", robotContainer.controlPanel.getColor().blue);
 
-
+		SmartDashboard.putString("Color", robotContainer.controlPanel.findColor());
+		SmartDashboard.putString("Closest Color String", robotContainer.controlPanel.findClosestColor());
+		SmartDashboard.putString("FMS Color", robotContainer.controlPanel.getFMSColor());
 
 //		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
 //		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());

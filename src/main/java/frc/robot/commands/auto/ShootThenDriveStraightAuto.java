@@ -32,7 +32,6 @@ public class ShootThenDriveStraightAuto extends CommandBase {
 //	private final Command hopperCommand;
 
 	/**
-	 *
 	 * @param driveTrain drivetrain subsystem
 	 * @param distance distance to travel in inches
 	 * @param speed desired speed to travel

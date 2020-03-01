@@ -17,10 +17,11 @@ import com.revrobotics.ColorMatch;
 import javax.xml.crypto.Data;
 
 public class ControlPanelSubsystem extends SubsystemBase {
+    private final double COLOR_ERROR_THRESHOLD = 0.2;
 
     private TitanSRX spinningMotor;
     private I2C.Port i2cPort = I2C.Port.kOnboard;
-    private ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    private ColorSensorV3 colorSensor;
 
     private final Color BlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     private final Color GreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
@@ -49,6 +50,15 @@ public class ControlPanelSubsystem extends SubsystemBase {
         }
     }
 
+    public void moveToColor() {
+        String color = getFMSColor();
+        if (!findClosestColor().equals(color)){
+            setSpeed(.5);
+        } else {
+            setSpeed(0);
+        }
+    }
+
     public void moveRotations(double rotations) {
         rotations *= 4096;
         spinningMotor.set(rotations);
@@ -72,17 +82,47 @@ public class ControlPanelSubsystem extends SubsystemBase {
         return colorString;
     }
 
-    public ColorSensorV3.RawColor getColor(){
-        ColorSensorV3.RawColor rawColor = colorSensor.getRawColor();
+    public String findClosestColor() {
+        Color detectedColor = colorSensor.getColor();
+        double error = 10;
 
-        return colorSensor.getRawColor();
+        String closestColor = "Unknown";
+
+        if (calculateError(detectedColor, BlueTarget) < error && calculateError(detectedColor, BlueTarget) < COLOR_ERROR_THRESHOLD) {
+            error = calculateError(detectedColor, BlueTarget);
+            closestColor = "Blue";
+        } else if (calculateError(detectedColor, GreenTarget) < error && calculateError(detectedColor, GreenTarget) < COLOR_ERROR_THRESHOLD) {
+            error = calculateError(detectedColor, GreenTarget);
+            closestColor = "Green";
+        } else if (calculateError(detectedColor, YellowTarget) < error && calculateError(detectedColor, YellowTarget) < COLOR_ERROR_THRESHOLD) {
+            error = calculateError(detectedColor, YellowTarget);
+            closestColor = "Yellow";
+        } else if (calculateError(detectedColor, RedTarget) < error && calculateError(detectedColor, RedTarget) < COLOR_ERROR_THRESHOLD) {
+            error = calculateError(detectedColor, RedTarget);
+            closestColor = "Red";
+        }
+
+        return closestColor;
+    }
+
+    private double calculateError(Color detected, Color target) {
+        double redError = Math.abs(detected.red - target.red);
+        double greenError = Math.abs(detected.green - target.green);
+        double blueError = Math.abs(detected.blue - target.blue);
+        return redError + greenError + blueError;
+    }
+
+    public Color getColor(){
+//        ColorSensorV3.RawColor rawColor = colorSensor.getRawColor();
+//        colorSensor.getColor().
+
+        return colorSensor.getColor();
     }
 
     public String getFMSColor(){
         String gameData;
         gameData = DriverStation.getInstance().getGameSpecificMessage();
-        if(gameData.length() > 0)
-        {
+        if(gameData.length() > 0) {
             switch (gameData.charAt(0))
             {
                 case 'B' :
