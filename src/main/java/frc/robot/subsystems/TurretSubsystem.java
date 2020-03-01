@@ -51,7 +51,7 @@ public class TurretSubsystem extends SubsystemBase {
         this.leftTurretLS = leftTurretLS;
         this.rightTurretLS  = rightTurretLS;
         this.hoodBottomLS = hoodBottomLS;
-        this.rpmSetpointFilter = new Filter(0.7);
+        this.rpmSetpointFilter = new Filter(0.1);
         this.hoodPositionFilterTicks = new Filter(0.7);
         this.turretPreset = TurretPreset.OFF;
     }
@@ -98,6 +98,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setHood(double speed) {
+        // if presets hood is still not working, comment out this if statement
         if (hoodBottomLS.isPressed()) {
             speed = MathUtil.clamp(speed, 0, +1); // assuming positive values allow hood to go up
         }

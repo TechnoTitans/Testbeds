@@ -273,6 +273,11 @@ public class RobotContainer {
         hoodMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kI, PIDConstants.kTimeoutMs);
         hoodMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kD, PIDConstants.kTimeoutMs);
 
+//        hoodMotor.configForwardSoftLimitThreshold(TurretSubsystem.HOOD_MIN_TICKS, 0);
+//        hoodMotor.configReverseSoftLimitThreshold(-5, 0);
+//        hoodMotor.configForwardSoftLimitEnable(true, 0);
+//        hoodMotor.configReverseSoftLimitEnable(true, 0);
+
         /*
         shootMotor.setupCurrentLimiting(5, 0, 0);
         intakeMotor.setupCurrentLimiting(5, 0, 0);
@@ -325,7 +330,9 @@ public class RobotContainer {
         CommandScheduler.getInstance().registerSubsystem(climb);
         CommandScheduler.getInstance().registerSubsystem(turret);
         CommandScheduler.getInstance().registerSubsystem(driveTrain);
-        CommandScheduler.getInstance().registerSubsystem(controlPanel);
+        CommandScheduler.getInstance().registerSubsystem(hopper);
+//        CommandScheduler.getInstance().registerSubsystem(controlPanel); // DO NOT USE UNTIL SUBSYSTEM HAS BEEN INSTANTIATED
+
         CommandScheduler.getInstance().registerSubsystem(feeder);
         CommandScheduler.getInstance().registerSubsystem(intake);
 
