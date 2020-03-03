@@ -27,10 +27,8 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	/**
 	 * Constructor for a TalonFX motor
 	 *
-	 * @param channel
-	 *            The port where the TalonFX is plugged in.
-	 * @param reversed
-	 *            If the TalonFX should invert the signal.
+	 * @param channel  The port where the TalonFX is plugged in.
+	 * @param reversed If the TalonFX should invert the signal.
 	 */
 	public TitanFX(int channel, boolean reversed) {
 		super(channel);
@@ -42,12 +40,9 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	/**
 	 * Constructor
 	 *
-	 * @param channel
-	 *            The port where the TalonFX is plugged in.
-	 * @param reversed
-	 *            If the TalonX should invert the signal.
-	 * @param encoder
-	 *            Encoder to attach to this TalonFX.
+	 * @param channel  The port where the TalonFX is plugged in.
+	 * @param reversed If the TalonX should invert the signal.
+	 * @param encoder  Encoder to attach to this TalonFX.
 	 */
 	public TitanFX(int channel, boolean reversed, Encoder encoder) {
 		super(channel);
@@ -58,8 +53,7 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	/**
 	 * Set the speed of the TalonFX.
 	 *
-	 * @param speed
-	 *            -- Speed from 0 to 1 (or negative for backwards)
+	 * @param speed -- Speed from 0 to 1 (or negative for backwards)
 	 */
 	@Override
 	public void set(double speed) {
@@ -123,7 +117,6 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	}
 
 
-	
 	public double getError() {
 		return super.getClosedLoopError(0);
 	}
@@ -132,27 +125,27 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	public void stop() {
 		set(0);
 	}
-	
+
 	public void follow(TitanFX other) {
 		other.brownoutFollower = this;
 		this.set(ControlMode.Follower, other.getChannel());
 	}
 
 
-	 public void setupCurrentLimiting(int currentLimit, int currentLimitThreshold, int limitTimeout) {
+	public void setupCurrentLimiting(int currentLimit, int currentLimitThreshold, int limitTimeout) {
 		SupplyCurrentLimitConfiguration currentLimitor = new SupplyCurrentLimitConfiguration(true,
-			currentLimit, currentLimitThreshold, limitTimeout);
+				currentLimit, currentLimitThreshold, limitTimeout);
 		this.configSupplyCurrentLimit(currentLimitor);
 		this.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, currentLimit, currentLimitThreshold, limitTimeout));
 		// todo change above maybe idk
 
-    }
+	}
 
 	public void disableCurrentLimiting() {
 //	    this.enableCurrentLimit(false);
-    }
+	}
 
-    public void enableBrownoutProtection() {
+	public void enableBrownoutProtection() {
 		if (brownoutFollower != null) {
 			brownoutFollower.coast();
 		}
@@ -170,6 +163,7 @@ public class TitanFX extends WPI_TalonFX implements Motor {
 	public void configPID(double P, double D, double F) {
 		configPID(P, 0, D, F, 0);
 	}
+
 	public void configPID(double P, double I, double D, double F, int iZone) {
 		// If these ever need to be nonzero, we can make them parameters instead
 		final int pidSlot = 0, profileSlot = 0;

@@ -3,7 +3,7 @@ package frc.robot.motor;
 public interface Encoder {
 
 	double getDistance();
-	
+
 	double getSpeed();
 
 	double getSpeedInches();
@@ -14,7 +14,7 @@ public interface Encoder {
 
 	void resetTo(double position);
 
-    double getRawPosition();
+	double getRawPosition();
 
-    double getInchesPerPulse();
+	double getInchesPerPulse();
 }

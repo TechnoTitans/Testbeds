@@ -5,23 +5,25 @@ import frc.robot.subsystems.HopperSubsystem;
 
 public class HopperIntake extends CommandBase {
 
-    final HopperSubsystem hopper;
+	final HopperSubsystem hopper;
 
-    public HopperIntake(HopperSubsystem hopper) {
-        this.hopper = hopper;
-    }
+	public HopperIntake(HopperSubsystem hopper) {
+		this.hopper = hopper;
+	}
 
-    @Override
-    public void execute() {
-        hopper.intake();
-    }
+	@Override
+	public void execute() {
+		hopper.intake();
+	}
 
-    @Override
-    public boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
-    }
+	@Override
+	public boolean isFinished() {
+		// TODO: Make this return true when this Command no longer needs to run execute()
+		return false;
+	}
 
-    @Override
-    public void end(boolean interrupted) { hopper.stop(); }
+	@Override
+	public void end(boolean interrupted) {
+		hopper.stop();
+	}
 }

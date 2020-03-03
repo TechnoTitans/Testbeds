@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("zMotor Motor Encoder", robotContainer.zMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("hoodMotor Motor Encoder", robotContainer.hoodMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("hoodMotor Error", robotContainer.turret.getHoodPositionSetpoint() -
-													robotContainer.hoodMotorEncoder.getRawPosition());
+				robotContainer.hoodMotorEncoder.getRawPosition());
 
 //		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
 //		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Shifter State (True: LOW, False: HIGH)", robotContainer.shifterSolenoid.get());
 //		SmartDashboard.putData(robotContainer.intakeSolenoid);
 //		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
-		
+
 //		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
 //		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
@@ -113,7 +113,6 @@ public class Robot extends TimedRobot {
 //		SmartDashboard.putNumber("Zmotor Config continousCurrentlimit", zMotorConfig.continuousCurrentLimit);
 //		SmartDashboard.putNumber("Zmotor Config peak limit", zMotorConfig.peakCurrentLimit);
 //		SmartDashboard.putNumber("Zmotor Config duration", zMotorConfig.peakCurrentDuration);
-
 
 
 		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());

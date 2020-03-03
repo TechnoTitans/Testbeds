@@ -13,57 +13,56 @@ import frc.robot.motor.TitanFX;
 import frc.robot.sensors.TitanGyro;
 
 
-
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends SubsystemBase {
 
-    public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // inches per pulse
-    public static final double MAX_MOTOR_TEMP = 50;
+	public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // inches per pulse
+	public static final double MAX_MOTOR_TEMP = 50;
 
 
-    private final SpeedController leftSpeedController;
-    private final SpeedController rightSpeedController;
+	private final SpeedController leftSpeedController;
+	private final SpeedController rightSpeedController;
 //    private final DifferentialDrive drive;
 
 
-    public static boolean SHIFT_HIGH_TORQUE = true;
-    public static boolean SHIFT_LOW_TORQUE = !SHIFT_HIGH_TORQUE; // for programmers' convenience
+	public static boolean SHIFT_HIGH_TORQUE = true;
+	public static boolean SHIFT_LOW_TORQUE = !SHIFT_HIGH_TORQUE; // for programmers' convenience
 
-    private TitanFX left;
-    private TitanFX right;
-    private Gyro gyro;
-    private Solenoid shifterSolenoid;
-    private Solenoid coolingSolenoid;
-    private Compressor compressor;
+	private TitanFX left;
+	private TitanFX right;
+	private Gyro gyro;
+	private Solenoid shifterSolenoid;
+	private Solenoid coolingSolenoid;
+	private Compressor compressor;
 
 
-    private DifferentialDriveOdometry odometry;
+	private DifferentialDriveOdometry odometry;
 
-    //TankDrive setup
+	//TankDrive setup
 
-    private PIDController drivePID;
-    //TankDrive setup
+	private PIDController drivePID;
+	//TankDrive setup
 
-    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
-        this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(0)), shifterSolenoid, coolingSolenoid, compressor);
-    }
+	public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
+		this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(0)), shifterSolenoid, coolingSolenoid, compressor);
+	}
 
-    public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
-        this.left = leftTalonFX;
-        this.right = rightTalonFX;
-        this.gyro = gyro;
-        this.shifterSolenoid = shifterSolenoid;
-        this.drivePID = new PIDController(0, 0,0);
+	public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
+		this.left = leftTalonFX;
+		this.right = rightTalonFX;
+		this.gyro = gyro;
+		this.shifterSolenoid = shifterSolenoid;
+		this.drivePID = new PIDController(0, 0, 0);
 //        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
-        this.leftSpeedController = leftTalonFX;
-        this.rightSpeedController = rightTalonFX;
+		this.leftSpeedController = leftTalonFX;
+		this.rightSpeedController = rightTalonFX;
 //        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
-        this.coolingSolenoid = coolingSolenoid;
-        this.compressor = compressor;
-        resetEncoders();
-    }
+		this.coolingSolenoid = coolingSolenoid;
+		this.compressor = compressor;
+		resetEncoders();
+	}
 
-    //Odometry stuff
+	//Odometry stuff
 
 //    public Rotation2d getAngle(){
 //        return Rotation2d.fromDegrees(getHeading());
@@ -96,138 +95,138 @@ public class TankDrive extends SubsystemBase {
 
 //set the speed the motors
 
-    public PIDController getPID(){
-        return drivePID;
-    }
+	public PIDController getPID() {
+		return drivePID;
+	}
 
-    public void set(double speed) {
-        left.set(speed);
-        right.set(speed);
+	public void set(double speed) {
+		left.set(speed);
+		right.set(speed);
 //        drive.tankDrive(speed, speed);
-    }
+	}
 
-    public void set(double leftTSpeed, double rightTSpeed) {
-        left.set(leftTSpeed);
-        right.set(rightTSpeed);
+	public void set(double leftTSpeed, double rightTSpeed) {
+		left.set(leftTSpeed);
+		right.set(rightTSpeed);
 //        drive.tankDrive(leftTSpeed, rightTSpeed);
-    }
+	}
 
-    public void stop() {
-        this.set(0);
-    }
+	public void stop() {
+		this.set(0);
+	}
 
-    //Turning in place
+	//Turning in place
 
-    public void turnInPlace(boolean ifRight, double speed) {
-        if (ifRight) {
-            left.set(speed);
-            right.set(-speed);
-        } else {
-            left.set(-speed);
-            right.set(speed);
-        }
-    }
+	public void turnInPlace(boolean ifRight, double speed) {
+		if (ifRight) {
+			left.set(speed);
+			right.set(-speed);
+		} else {
+			left.set(-speed);
+			right.set(speed);
+		}
+	}
 
-    //Other movements
+	//Other movements
 
-    public void brake() {
-        left.brake();
-        right.brake();
-    }
+	public void brake() {
+		left.brake();
+		right.brake();
+	}
 
-    
-    public void coast() {
-        left.coast();
-        right.coast();
-    }
 
-    
-    public void resetEncoders() {
-        this.left.getEncoder().reset();
-        this.right.getEncoder().reset();
-    }
+	public void coast() {
+		left.coast();
+		right.coast();
+	}
 
-    
-    public Encoder getLeftEncoder() {
-        return left.getEncoder();
-    }
 
-    
-    public Encoder getRightEncoder() {
-        return right.getEncoder();
-    }
+	public void resetEncoders() {
+		this.left.getEncoder().reset();
+		this.right.getEncoder().reset();
+	}
 
-    
-    public TitanFX getLeft() {
-        return left;
-    }
 
-    
-    public TitanFX getRight() {
-        return right;
-    }
+	public Encoder getLeftEncoder() {
+		return left.getEncoder();
+	}
 
-    
-    public void enableBrownoutProtection() {
-        left.enableBrownoutProtection();
-        right.enableBrownoutProtection();
-    }
 
-    
-    public void disableBrownoutProtection() {
-        left.disableBrownoutProtection();
-        right.disableBrownoutProtection();
-    }
+	public Encoder getRightEncoder() {
+		return right.getEncoder();
+	}
 
-    
-    public double[] getSpeed() {
-        return new double[] { left.getSpeed(), right.getSpeed() };
-    }
+
+	public TitanFX getLeft() {
+		return left;
+	}
+
+
+	public TitanFX getRight() {
+		return right;
+	}
+
+
+	public void enableBrownoutProtection() {
+		left.enableBrownoutProtection();
+		right.enableBrownoutProtection();
+	}
+
+
+	public void disableBrownoutProtection() {
+		left.disableBrownoutProtection();
+		right.disableBrownoutProtection();
+	}
+
+
+	public double[] getSpeed() {
+		return new double[]{left.getSpeed(), right.getSpeed()};
+	}
 
 //    public double getHeading() {
 //        return Math.IEEEremainder(gyro.getAngle(), 360); //assuming gyro is not reversed
 //    }
 
-    public Gyro getGyro() {
-        return gyro;
-    }
+	public Gyro getGyro() {
+		return gyro;
+	}
 
-    public boolean hasGyro() {
-        return !(gyro == null);
-    }
+	public boolean hasGyro() {
+		return !(gyro == null);
+	}
 
-    //Cooling
-    public boolean getCoolingEnabled() {
-        return this.coolingSolenoid.get();
-    }
+	//Cooling
+	public boolean getCoolingEnabled() {
+		return this.coolingSolenoid.get();
+	}
 
-    public void setCooling(boolean on) {
-        this.coolingSolenoid.set(on);
-    }
+	public void setCooling(boolean on) {
+		this.coolingSolenoid.set(on);
+	}
 
-    public void toggleCooling() {
-        boolean currentStatus = this.getCoolingEnabled();
-        this.setCooling(!currentStatus);
-    }
+	public void toggleCooling() {
+		boolean currentStatus = this.getCoolingEnabled();
+		this.setCooling(!currentStatus);
+	}
 
-    public boolean getPressureSwitchValue() {
-        return this.compressor.getPressureSwitchValue();
-    }
+	public boolean getPressureSwitchValue() {
+		return this.compressor.getPressureSwitchValue();
+	}
 
-    // MARK - Shifter
-    public boolean getShifterEnabled() {
-        return this.shifterSolenoid.get();
-    }
+	// MARK - Shifter
+	public boolean getShifterEnabled() {
+		return this.shifterSolenoid.get();
+	}
 
-    public void setShifter(boolean pistonDeployed) {
-        this.shifterSolenoid.set(pistonDeployed);
-    }
+	public void setShifter(boolean pistonDeployed) {
+		this.shifterSolenoid.set(pistonDeployed);
+	}
 
-    public void toggleShifter() {
-        boolean currentStatus = this.getShifterEnabled();
-        this.setShifter(!currentStatus);
+	public void toggleShifter() {
+		boolean currentStatus = this.getShifterEnabled();
+		this.setShifter(!currentStatus);
 //        this.setShifter(true);
-    }
+	}
 
 }
 

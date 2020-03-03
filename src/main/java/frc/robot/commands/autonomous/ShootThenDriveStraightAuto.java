@@ -31,8 +31,8 @@ public class ShootThenDriveStraightAuto extends CommandBase {
 
 	/**
 	 * @param driveTrain drivetrain subsystem
-	 * @param distance distance to travel in inches
-	 * @param speed desired speed to travel
+	 * @param distance   distance to travel in inches
+	 * @param speed      desired speed to travel
 	 */
 	public ShootThenDriveStraightAuto(TankDrive driveTrain, double distance, double speed,
 									  TurretSubsystem turret, HopperSubsystem hopper, FeederSubsystem feeder,
@@ -80,7 +80,7 @@ public class ShootThenDriveStraightAuto extends CommandBase {
 		}
 
 //		hopper.intake();
-		if(timer.get() >= 11) {
+		if (timer.get() >= 11) {
 			feeder.setBelt(0);
 			hopper.stop();
 //			intake.setSpeed(0);

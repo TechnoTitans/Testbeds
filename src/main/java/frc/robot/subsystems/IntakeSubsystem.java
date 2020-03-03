@@ -70,7 +70,6 @@ public class IntakeSubsystem extends SubsystemBase {
 	}
 
 
-
 	/**
 	 * Will be called periodically whenever the CommandScheduler runs.
 	 */

@@ -19,10 +19,9 @@ public class DriveStraightAuto extends CommandBase {
 	private final Filter speedFilter;
 
 	/**
-	 *
 	 * @param driveTrain drivetrain subsystem
-	 * @param distance distance to travel in inches
-	 * @param speed desired speed to travel
+	 * @param distance   distance to travel in inches
+	 * @param speed      desired speed to travel
 	 */
 	public DriveStraightAuto(TankDrive driveTrain, double distance, double speed) {
 		super();

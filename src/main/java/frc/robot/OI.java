@@ -19,7 +19,9 @@ public class OI {
 	private XboxController xbox;
 
 
-	public OI() { initialize();}
+	public OI() {
+		initialize();
+	}
 
 	private void initialize() {
 		leftJoystick = new Joystick(RobotMap.LEFT_JOYSTICK);
@@ -66,10 +68,10 @@ public class OI {
 	public double deadband(double value, double deadband) {
 		if (-deadband <= value && value <= deadband) {
 			value = 0;
-		} else if (value > deadband){
+		} else if (value > deadband) {
 			value -= deadband;
 			value *= (1 + deadband);
-		} else if (value < -deadband){
+		} else if (value < -deadband) {
 			value += deadband;
 			value *= (1 + deadband);
 		}
