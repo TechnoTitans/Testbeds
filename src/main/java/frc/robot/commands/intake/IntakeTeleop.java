@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -7,13 +7,15 @@ import frc.robot.subsystems.IntakeSubsystem;
 import java.util.function.DoubleSupplier;
 
 public class IntakeTeleop extends CommandBase {
-	private final IntakeSubsystem intake;
-	private final DoubleSupplier rollerInput;
-	private final Button intakeToggleBtn;
 
 	private boolean pressedLast = false;
 
-	public IntakeTeleop(DoubleSupplier rollerInput, IntakeSubsystem intake, Button intakeToggleButton) {
+	private final DoubleSupplier rollerInput;
+	private final Button intakeToggleBtn;
+
+	private final IntakeSubsystem intake;
+
+	public IntakeTeleop(IntakeSubsystem intake, DoubleSupplier rollerInput, Button intakeToggleButton) {
 		super();
 		this.intake = intake;
 		this.rollerInput = rollerInput;

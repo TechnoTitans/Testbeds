@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -9,7 +9,6 @@ import frc.robot.subsystems.TankDrive;
 
 public class DriveStraightAuto extends CommandBase {
 
-	// note! This auto assumes
 
 	public static final double MAX_DISTANCE = 25 * 12; // inches
 
@@ -20,10 +19,9 @@ public class DriveStraightAuto extends CommandBase {
 	private final Filter speedFilter;
 
 	/**
-	 *
 	 * @param driveTrain drivetrain subsystem
-	 * @param distance distance to travel in inches
-	 * @param speed desired speed to travel
+	 * @param distance   distance to travel in inches
+	 * @param speed      desired speed to travel
 	 */
 	public DriveStraightAuto(TankDrive driveTrain, double distance, double speed) {
 		super();
@@ -43,6 +41,8 @@ public class DriveStraightAuto extends CommandBase {
 	@Override
 	public void initialize() {
 		this.driveTrain.resetEncoders();
+		// todo test enforcing low shifter
+//		this.driveTrain.setShifter(TankDrive.SHIFT_LOW_TORQUE);	// note! This auto assumes high speed mode, not high power mode. we will ensure this here
 		this.speedFilter.setValue(0); // reset the filter so that subsequent autonomouses work
 	}
 
@@ -63,11 +63,12 @@ public class DriveStraightAuto extends CommandBase {
 	@Override
 	public boolean isFinished() {
 		// TODO Enforce max distance here with condition
+		final double distanceTraveled = driveTrain.getRightEncoder().getDistance();
 		if (Math.signum(this.desiredDistance) == -1) {
-			return driveTrain.getRightEncoder().getDistance() <= this.desiredDistance;
-
+			// todo test out traveling max distance
+			return (distanceTraveled <= this.desiredDistance) || distanceTraveled <= -MAX_DISTANCE;
 		} else {
-			return driveTrain.getRightEncoder().getDistance() >= this.desiredDistance;
+			return distanceTraveled >= this.desiredDistance || distanceTraveled >= MAX_DISTANCE;
 		}
 	}
 }

@@ -19,63 +19,62 @@ import edu.wpi.first.wpilibj.I2C;
  */
 public final class RobotMap {
 
-    public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
+	public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
 
-    // PCM Numbers
-    public static final int GEAR_SHIFT_SOLENOID = 0;
-    public static final int INTAKE_SOLENOID = 1;
-    public static final int FALCON_COOLING_PORT = 2;
-    public static final int CLIMB_MECH_PISTON = 3;
-    public static final int COLOR_MECH_PISTON = 4;
+	// PCM Numbers
+	public static final int GEAR_SHIFT_SOLENOID = 0;
+	public static final int INTAKE_SOLENOID = 1;
+	public static final int FALCON_COOLING_PORT = 2;
+	public static final int CLIMB_MECH_PISTON = 3;
+	public static final int COLOR_MECH_PISTON = 4;
 
 
-    //  Can IDS
+	//  Can IDS
 
-    public static final int COMPRESSOR_ID = 2;
+	public static final int COMPRESSOR_ID = 2;
 
-    public static final int LEFT_TALON_FRONT = 5, LEFT_TALON_BACK = 6;
-    public static final boolean REVERSED_LF_TALON = false, REVERSED_LB_TALON = false;
+	public static final int LEFT_TALON_FRONT = 5, LEFT_TALON_BACK = 6;
+	public static final boolean REVERSED_LF_TALON = false, REVERSED_LB_TALON = false;
 
-    public static final int RIGHT_TALON_FRONT = 3, RIGHT_TALON_BACK = 4;
-    public static final boolean REVERSED_RF_TALON = true, REVERSED_RB_TALON = true;
+	public static final int RIGHT_TALON_FRONT = 3, RIGHT_TALON_BACK = 4;
+	public static final boolean REVERSED_RF_TALON = true, REVERSED_RB_TALON = true;
 
-    public static final int INTAKE_MOTOR = 7; // victor
+	public static final int INTAKE_MOTOR = 7; // victor
 
-    public static final boolean REVERSED_INTAKE_MOTOR = false;
+	public static final boolean REVERSED_INTAKE_MOTOR = false;
 
-    public static final int HOPPER_MOTOR = 8; // victor
-    public static final boolean REVERSED_HOPPER_MOTOR = false;
-    public static final int HOOD = 9; // victor
-//    public static final boolean REVERSED_HOOD = false;
-    public static final boolean REVERSED_HOOD = true;
-    public static final int FLYWHEEL1 = 10;
-    public static final boolean REVERSED_FLYWHEEL1 = false;
-    public static final int FLYWHEEL2 = 11; // victor
-    public static final boolean REVERSED_FLYWHEEL2 = false;
-    public static final int TURRET_ROTATION = 12;
-    public static final boolean REVERSED_TURRET_ROTATION = false;
-    public static final int FEEDER_MOTOR = 13; // victor
-    public static final boolean REVERSED_FEEDER = false;
-    public static final int COLOR_WHEEL_MOTOR = 14;
-    public static final boolean REVERSED_COLOR_WHEEL = false;
-    public static final int WINCH_MOTOR = 15;
-    public static final boolean WINCH_MOTOR_REVERSED = false;
-    // LimitSwitch
-    public static final int LEFT_TURRET_LS = 0;
-    public static final boolean LEFT_TURRET_LS_INVERTED = true;
+	public static final int HOPPER_MOTOR = 8; // victor
+	public static final boolean REVERSED_HOPPER_MOTOR = false;
+	public static final int HOOD = 9; // victor
+	//    public static final boolean REVERSED_HOOD = false;
+	public static final boolean REVERSED_HOOD = true;
+	public static final int FLYWHEEL1 = 10;
+	public static final boolean REVERSED_FLYWHEEL1 = false;
+	public static final int FLYWHEEL2 = 11; // victor
+	public static final boolean REVERSED_FLYWHEEL2 = false;
+	public static final int TURRET_ROTATION = 12;
+	public static final boolean REVERSED_TURRET_ROTATION = false;
+	public static final int FEEDER_MOTOR = 13; // victor
+	public static final boolean REVERSED_FEEDER = false;
+	public static final int COLOR_WHEEL_MOTOR = 14;
+	public static final boolean REVERSED_COLOR_WHEEL = false;
+	public static final int WINCH_MOTOR = 15;
+	public static final boolean WINCH_MOTOR_REVERSED = false;
+	// LimitSwitch
+	public static final int LEFT_TURRET_LS = 0;
+	public static final boolean LEFT_TURRET_LS_INVERTED = true;
 
-    public static final int RIGHT_TURRET_LS = 1;
-    public static final boolean RIGHT_TURRET_LS_INVERTED = true;
+	public static final int RIGHT_TURRET_LS = 1;
+	public static final boolean RIGHT_TURRET_LS_INVERTED = true;
 
-    public static final int HOOD_BOTTOM_LS = 2;
-    public static final boolean HOOD_BOTTOM_LS_INVERTED = false;
+	public static final int HOOD_BOTTOM_LS = 2;
+	public static final boolean HOOD_BOTTOM_LS_INVERTED = false;
 //    public static final boolean HOOD_BOTTOM_LS_INVERTED = true;
 
 
-
-    // Joysticks
-    public static final int LEFT_JOYSTICK = 0;
-    public static final int RIGHT_JOYSTICK = 1;
-    public static final int AUX_JOYSTICK_1 = 2;
+	// Joysticks
+	public static final int LEFT_JOYSTICK = 0;
+	public static final int RIGHT_JOYSTICK = 1;
+	public static final int AUX_JOYSTICK_1 = 2;
 }

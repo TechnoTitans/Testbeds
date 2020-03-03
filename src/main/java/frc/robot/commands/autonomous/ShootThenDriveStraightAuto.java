@@ -1,11 +1,9 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.commands.HopperIntake;
 import frc.robot.motor.Filter;
 import frc.robot.subsystems.*;
 
@@ -15,26 +13,26 @@ public class ShootThenDriveStraightAuto extends CommandBase {
 
 	public static final double MAX_DISTANCE = 25 * 12; // inches
 
-
-	private final TankDrive driveTrain;
 	private final double desiredDistance;
 	private final double desiredSpeed;
+
 	private final Filter speedFilter;
 
+	private final Timer timer;
 
+	private final TankDrive driveTrain;
 	private final TurretSubsystem turret;
 	private final HopperSubsystem hopper;
 	private final FeederSubsystem feeder;
 	private final IntakeSubsystem intake;
 
-	private final Timer timer;
 
 //	private final Command hopperCommand;
 
 	/**
 	 * @param driveTrain drivetrain subsystem
-	 * @param distance distance to travel in inches
-	 * @param speed desired speed to travel
+	 * @param distance   distance to travel in inches
+	 * @param speed      desired speed to travel
 	 */
 	public ShootThenDriveStraightAuto(TankDrive driveTrain, double distance, double speed,
 									  TurretSubsystem turret, HopperSubsystem hopper, FeederSubsystem feeder,
@@ -82,7 +80,7 @@ public class ShootThenDriveStraightAuto extends CommandBase {
 		}
 
 //		hopper.intake();
-		if(timer.get() >= 11) {
+		if (timer.get() >= 11) {
 			feeder.setBelt(0);
 			hopper.stop();
 //			intake.setSpeed(0);

@@ -8,8 +8,8 @@ public class Filter {
 		this.sensitivity = sensitivity;
 	}
 
-	public void update(double newValue){
-		value = sensitivity * newValue + (1-sensitivity) * value;
+	public void update(double newValue) {
+		value = sensitivity * newValue + (1 - sensitivity) * value;
 	}
 
 	public double getValue() {
