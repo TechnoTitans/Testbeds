@@ -75,21 +75,26 @@ public class Robot extends TimedRobot {
 		// todo make everything private that is publicly used here
 		SmartDashboard.putNumber("zMotor Motor Encoder", robotContainer.zMotorEncoder.getRawPosition());
 		SmartDashboard.putNumber("hoodMotor Motor Encoder", robotContainer.hoodMotorEncoder.getRawPosition());
+		SmartDashboard.putNumber("hoodMotor Error", robotContainer.turret.getHoodPositionSetpoint() -
+													robotContainer.hoodMotorEncoder.getRawPosition());
+
 //		SmartDashboard.putNumber("Drive Train Encoder LF", robotContainer.leftFrontMotorFX.getSelectedSensorPosition());
 //		SmartDashboard.putNumber("Drive Train Encoder RF", robotContainer.rightFrontMotorFX.getSelectedSensorPosition());
 
-//		SmartDashboard.putData(robotContainer.shifterSolenoid);
+		SmartDashboard.putBoolean("Shifter State (True: LOW, False: HIGH)", robotContainer.shifterSolenoid.get());
 //		SmartDashboard.putData(robotContainer.intakeSolenoid);
 //		SmartDashboard.putData(robotContainer.titanFXCoolingPiston);
 		
 //		SmartDashboard.putNumber("Xbox Left", robotContainer.oi.getXboxLeftY());
 //		SmartDashboard.putNumber("Robot Input", robotContainer.oi.getXboxLeftY());
 //		ColorSensorV3.RawColor detectedColor = robotContainer.controlPanel.getColor();
-//		SmartDashboard.putNumber("Red value", detectedColor.red);
-//		SmartDashboard.putNumber("Green value", detectedColor.green);
-//		SmartDashboard.putNumber("Blue value", detectedColor.blue);
+		SmartDashboard.putNumber("Red value", robotContainer.controlPanel.getColor().red);
+		SmartDashboard.putNumber("Green value", robotContainer.controlPanel.getColor().green);
+		SmartDashboard.putNumber("Blue value", robotContainer.controlPanel.getColor().blue);
 
-
+		SmartDashboard.putString("Color", robotContainer.controlPanel.findColor());
+		SmartDashboard.putString("Closest Color String", robotContainer.controlPanel.findClosestColor());
+		SmartDashboard.putString("FMS Color", robotContainer.controlPanel.getFMSColor());
 
 //		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
 //		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());

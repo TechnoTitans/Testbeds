@@ -32,7 +32,7 @@ public class TurretAutonomous extends CommandBase {
         double desiredTurretAngle = 0;
         //Decide shooter speed here
         turret.setHoodAngle(desiredHoodAngle);
-        turret.setTurrentAngle(desiredTurretAngle);
+        turret.setTurretAngle(desiredTurretAngle);
 
 //        turret.getZMotorPID().setSetpoint(xAngle);
 //        turret.getHoodPID().setSetpoint(yAngle);

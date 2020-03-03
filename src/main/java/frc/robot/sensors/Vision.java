@@ -10,10 +10,12 @@ public class Vision {
 
     SerialPort visionData;
 
+
+
     /**
      * The number of values (doubles) we'll be recieving from vision
      */
-    private static final int NUM_VALUES = 5;
+    private static final int NUM_VALUES = 6;
     private static final int BYTES_FROM_DEVICE = NUM_VALUES * 8;
 
     public Vision() {
@@ -22,12 +24,12 @@ public class Vision {
 
     // TODO make this work
     public double[] getData() {
-        double[] data = new double[5];
+        double[] data = new double[6];
         int c = 0;
 
         byte[] visionDataBytes = visionData.read(BYTES_FROM_DEVICE); //if no target is detected returns all -1
 
-        for (int i = 0; i < 40; i += 8) {
+        for (int i = 0; i < BYTES_FROM_DEVICE; i += 8) {
             data[c] = ByteBuffer.wrap(Arrays.copyOfRange(visionDataBytes, i, i + 8)).getDouble();
             c++;
         }

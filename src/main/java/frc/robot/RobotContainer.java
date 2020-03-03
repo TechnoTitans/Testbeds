@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.DriveStraightAuto;
+import frc.robot.commands.auto.ShootThenDriveStraightAuto;
 import frc.robot.motor.TitanFX;
 import frc.robot.motor.TitanSRX;
 import frc.robot.motor.TitanVictor;
@@ -114,9 +115,12 @@ public class RobotContainer {
     private TitanButton btnTurretManual;
     private TitanButton btnToggleColorMechPiston;
     private TitanButton btnReleaseClimbMechPiston;
+    private TitanButton btnScrollPresets;
+    private TitanButton btnRotateColorMech;
 
     private Trigger climbPositiveTrigger;
 	private Trigger climbNegativeTrigger;
+	private Trigger scrollTurretPresetTrigger;
 
 
 	// todo find actual values
@@ -149,7 +153,7 @@ public class RobotContainer {
         zMotorEncoder = new QuadEncoder(zMotor, 0, false);
         zMotor.setEncoder(zMotorEncoder);
 
-        hoodMotorEncoder = new QuadEncoder(hoodMotor, 0, false);
+        hoodMotorEncoder = new QuadEncoder(hoodMotor, 0, true);
         hoodMotor.setEncoder(hoodMotorEncoder);
 
         shootMotorEncoder = new QuadEncoder(shootMotor, 0, false); // todo rename shootmotor to flywheel motor
@@ -159,9 +163,10 @@ public class RobotContainer {
         rightTurretLS = new LimitSwitch(RobotMap.RIGHT_TURRET_LS, RobotMap.RIGHT_TURRET_LS_INVERTED);
         hoodBottomLS = new LimitSwitch(RobotMap.HOOD_BOTTOM_LS, RobotMap.HOOD_BOTTOM_LS_INVERTED);
         turret = new TurretSubsystem(shootMotor, subShootMotor, zMotor, hoodMotor, leftTurretLS, rightTurretLS, hoodBottomLS);
+
         spinningMotor = new TitanSRX(RobotMap.COLOR_WHEEL_MOTOR, RobotMap.REVERSED_COLOR_WHEEL);
-//        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
-//        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
+        colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
+        controlPanel = new ControlPanelSubsystem(spinningMotor, colorSensor);
 
         leftFrontMotorFX = new TitanFX(RobotMap.LEFT_TALON_FRONT, RobotMap.REVERSED_LF_TALON);
         leftBackMotorFX = new TitanFX(RobotMap.LEFT_TALON_BACK, RobotMap.REVERSED_LB_TALON);
@@ -252,6 +257,11 @@ public class RobotContainer {
         zMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kI, PIDConstants.kTimeoutMs);
         zMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_ZMotor_Gains.kD, PIDConstants.kTimeoutMs);
 
+        zMotor.configForwardSoftLimitThreshold((int) Math.round(40 * TurretSubsystem.ZMOTOR_PULSES_PER_DEGREE), 0);
+        zMotor.configReverseSoftLimitThreshold((int) Math.round(-40 * TurretSubsystem.ZMOTOR_PULSES_PER_DEGREE), 0);
+        zMotor.configForwardSoftLimitEnable(true, 0);
+        zMotor.configReverseSoftLimitEnable(true, 0);
+
         hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
                 PIDConstants.kPIDLoopIdx,
                 PIDConstants.kTimeoutMs);
@@ -265,6 +275,11 @@ public class RobotContainer {
         hoodMotor.config_kP(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kP, PIDConstants.kTimeoutMs);
         hoodMotor.config_kI(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kI, PIDConstants.kTimeoutMs);
         hoodMotor.config_kD(PIDConstants.kSlotIdx, PIDConstants.Turret_Hood_Gains.kD, PIDConstants.kTimeoutMs);
+
+//        hoodMotor.configForwardSoftLimitThreshold(TurretSubsystem.HOOD_MIN_TICKS, 0);
+//        hoodMotor.configReverseSoftLimitThreshold(-5, 0);
+//        hoodMotor.configForwardSoftLimitEnable(true, 0);
+//        hoodMotor.configReverseSoftLimitEnable(true, 0);
 
         /*
         shootMotor.setupCurrentLimiting(5, 0, 0);
@@ -288,7 +303,14 @@ public class RobotContainer {
 //                titanFXCoolingPiston.set(true);
 //            }
 //        }, driveTrain));
-        btnToggleColorMechPiston = new TitanButton(oi.leftJoystick, 5);
+
+        // HEY HEY HEYYYY
+        // HEY HEY HEYYYY
+        // WHATSUP WHATSUP WHATSUP WHATSUP WHATSUP WHATSUP WHATSUPPPPPPPPPP
+        // BITCONNNEEEEEEEEEEEEEEEEEEEEEEEEEEEEECT
+        btnToggleColorMechPiston = new TitanButton(oi.rightJoystick, 6);
+        btnRotateColorMech = new TitanButton(oi.rightJoystick, 7);
+
         btnReleaseClimbMechPiston = new TitanButton(oi.leftJoystick, 3);
         btnToggleHopperIntake = new TitanButton(oi.rightJoystick, 3);
         btnToggleHopperExpel = new TitanButton(oi.rightJoystick, 2);
@@ -308,8 +330,8 @@ public class RobotContainer {
         turretTeleopCommand = new TurretTeleop(oi::getXboxRightX, oi::getXboxRightY, turret, true);
         turretAutoCommand = new TurretAutonomous(vision, turret);
 
-
-        autonomousCommand = new DriveStraightAuto(driveTrain, 3f * 12, 0.1);
+//        autonomousCommand = new DriveStraightAuto(driveTrain, 3f * 12, 0.1);
+        autonomousCommand = new ShootThenDriveStraightAuto(driveTrain, 3f * 12, 0.1, turret, hopper, feeder, intake);
 //        autonomousCommand = new DoNothingAuto();
         // Configure the button bindings
         configureButtonBindings();
@@ -317,7 +339,14 @@ public class RobotContainer {
         driverCamera = new DriverCamera();
 
         CommandScheduler.getInstance().registerSubsystem(climb);
+        CommandScheduler.getInstance().registerSubsystem(turret);
+        CommandScheduler.getInstance().registerSubsystem(driveTrain);
+        CommandScheduler.getInstance().registerSubsystem(hopper);
+//        CommandScheduler.getInstance().registerSubsystem(controlPanel); // DO NOT USE UNTIL SUBSYSTEM HAS BEEN INSTANTIATED
 
+        CommandScheduler.getInstance().registerSubsystem(feeder);
+        CommandScheduler.getInstance().registerSubsystem(hopper);
+        CommandScheduler.getInstance().registerSubsystem(intake);
     }
 
     /**
@@ -330,7 +359,7 @@ public class RobotContainer {
 
         // MARK - bindings
 
-//        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
+        btnToggleShifter.whenPressed(new ToggleGearShifter(driveTrain));
         btnToggleHopperIntake.whileHeld(new HopperIntake(hopper));
         btnToggleHopperExpel.whileHeld(new HopperExpel(hopper));
 
@@ -348,6 +377,10 @@ public class RobotContainer {
             colorMechPiston.set(!colorMechPiston.get());
         });
 
+        btnRotateColorMech.whileHeld(() -> {
+            controlPanel.moveToColor();
+        });
+
         btnReleaseClimbMechPiston.whenPressed(() -> {
             climb.releaseMech();
         });
@@ -358,6 +391,9 @@ public class RobotContainer {
 		//   _ d _
 		climbNegativeTrigger = new Trigger(() -> oi.getXbox().getPOV() == 0).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.NEGATIVE));
 		climbPositiveTrigger = new Trigger(() -> oi.getXbox().getPOV() == 180).whileActiveContinuous(new MoveWinchMotor(climb, MoveWinchMotor.Direction.POSITIVE));
+        scrollTurretPresetTrigger = new Trigger(() -> oi.getXboxLeftTrigger() == 1).whenActive(new InstantCommand(() -> {
+            turret.scrollThruPreset();
+        }, turret));
 
 
 //		btnTurretAutoAim.whenPressed(new InstantCommand(() -> {
