@@ -1,14 +1,16 @@
-package frc.robot.commands;
+package frc.robot.commands.turret;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TurretSubsystem;
 
 
 public class ShootBall extends CommandBase {
+
     private double speed;
     private TurretSubsystem turret;
-    public ShootBall(double speed, TurretSubsystem turret) {
+
+
+    public ShootBall(TurretSubsystem turret, double speed) {
         addRequirements(turret);
         this.turret = turret;
         this.speed = speed;

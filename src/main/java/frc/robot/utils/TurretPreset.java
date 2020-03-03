@@ -3,7 +3,6 @@ package frc.robot.utils;
 public enum TurretPreset {
 //    TEST(10, 100),
 
-    // TODO add back flywheel speeds
     OFF(0, 3),
     WALL(2220, 0),
 //    LINE(2960, -568), //-597

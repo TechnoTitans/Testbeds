@@ -1,9 +1,7 @@
-package frc.robot.commands;
+package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
 
 
 public class FeedBall extends CommandBase {
@@ -20,7 +18,7 @@ public class FeedBall extends CommandBase {
 
     }
 
-    // extract constant
+    // todo extract constant
     @Override
     public void execute() {
         feederSubsystem.setBelt(.5);

@@ -1,20 +1,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.DriverStation;
-
-import frc.robot.motor.TitanSRX;
-
-import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
-
-import javax.xml.crypto.Data;
+import com.revrobotics.ColorSensorV3;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.motor.TitanSRX;
 
 public class ControlPanelSubsystem extends SubsystemBase {
     private final double COLOR_ERROR_THRESHOLD = 0.2;

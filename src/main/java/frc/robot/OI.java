@@ -10,9 +10,13 @@ public class OI {
 	public static final int XBOX_BUMPER_LEFT = 5;
 	public static final int XBOX_BTN_SELECT = 7;
 	public static final int XBOX_BTN_START = 8;
-	public Joystick leftJoystick, rightJoystick;
+
+	private static final double PERCENT_DEADBAND_THRESHOLD = 0.1;
+
+
+	private Joystick leftJoystick;
+	private Joystick rightJoystick;
 	private XboxController xbox;
-	private static final double percentDeadbandThreshold = 0.1;
 
 
 	public OI() { initialize();}
@@ -23,15 +27,20 @@ public class OI {
 		xbox = new XboxController(RobotMap.AUX_JOYSTICK_1);
 	}
 
+	public Joystick getLeftJoystick() {
+		return leftJoystick;
+	}
 
+	public Joystick getRightJoystick() {
+		return rightJoystick;
+	}
 
-	// todo verify this works
 	public double getLeftJoyY() {
-		return deadband(-leftJoystick.getY(), 0.1); // todo more readble
+		return deadband(-leftJoystick.getY(), PERCENT_DEADBAND_THRESHOLD);
 	}
 
 	public double getRightJoyY() {
-		return deadband(-rightJoystick.getY(), 0.1);
+		return deadband(-rightJoystick.getY(), PERCENT_DEADBAND_THRESHOLD);
 	}
 
 	public double getXboxLeftY() {

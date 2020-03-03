@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.Vision;
@@ -12,7 +12,7 @@ public class TurretAutonomous extends CommandBase {
     private Vision vision;
     private TurretSubsystem turret;
 
-    public TurretAutonomous(Vision vision, TurretSubsystem turret) {
+    public TurretAutonomous(TurretSubsystem turret, Vision vision) {
         this.turret = turret;
         this.vision = vision;
         addRequirements(turret);

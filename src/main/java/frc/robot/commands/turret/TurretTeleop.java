@@ -1,6 +1,5 @@
-package frc.robot.commands;
+package frc.robot.commands.turret;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.motor.Filter;
 import frc.robot.subsystems.TurretSubsystem;
@@ -8,23 +7,23 @@ import frc.robot.subsystems.TurretSubsystem;
 import java.util.function.DoubleSupplier;
 
 public class TurretTeleop extends CommandBase {
-    private double speed;
-    private TurretSubsystem turret;
-    private final double min = 0;
-    private final double max = 0;
-    private int reversed = 1;
+
+
     private boolean filterEnabled;
+
     private Filter hoodFilter;
     private Filter zFilter;
     DoubleSupplier zMotorInput, hoodMotorInput;
-    public TurretTeleop(DoubleSupplier zMotorInput, DoubleSupplier hoodMotorInput, TurretSubsystem turret) {
+    private TurretSubsystem turret;
+
+    public TurretTeleop(TurretSubsystem turret, DoubleSupplier zMotorInput, DoubleSupplier hoodMotorInput) {
         // If any subsystems are needed, you will need to pass them into the requires() method
         addRequirements(turret);
         this.zMotorInput = zMotorInput;
         this.hoodMotorInput = hoodMotorInput;
         this.turret = turret;
     }
-    public TurretTeleop(DoubleSupplier zMotorInput, DoubleSupplier hoodMotorInput, TurretSubsystem turret, boolean filterEnabled) {
+    public TurretTeleop(TurretSubsystem turret, DoubleSupplier zMotorInput, DoubleSupplier hoodMotorInput, boolean filterEnabled) {
         // If any subsystems are needed, you will need to pass them into the requires() method
         addRequirements(turret);
         this.zMotorInput = zMotorInput;
@@ -64,7 +63,6 @@ public class TurretTeleop extends CommandBase {
 
     @Override
     public boolean isFinished() {
-//        return turret.getZMotorEncoder().getDistance() >= max || turret.getZMotorEncoder().getDistance() <= min;
         return false;
     }
 }

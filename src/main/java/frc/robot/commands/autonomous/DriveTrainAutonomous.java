@@ -1,15 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.autonomous;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TankDrive;
 
 
 public class DriveTrainAutonomous extends CommandBase {
+
     private double distance;
     TankDrive drive;
 
-    public DriveTrainAutonomous(double distance, TankDrive drive) {
+    public DriveTrainAutonomous(TankDrive drive, double distance) {
         this.distance = distance; // computations here
         this.drive = drive;
         addRequirements(drive);

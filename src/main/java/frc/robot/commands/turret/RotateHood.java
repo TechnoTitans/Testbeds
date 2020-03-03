@@ -1,14 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.TurretSubsystem;
 
 
 public class RotateHood extends CommandBase {
+
     private double angle;
     private TurretSubsystem turret;
-    public RotateHood(double angle, TurretSubsystem turret) {
+
+    public RotateHood(TurretSubsystem turret, double angle) {
         this.angle = angle; // todo calculations here to convert angle into encoders
         this.turret = turret;
         addRequirements(turret);

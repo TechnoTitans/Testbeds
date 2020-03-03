@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+/**
+ * A Vision utility class, which acts kind of like a subsystem but not really (does not extend `SubsystemBase`)
+ */
 public class Vision {
 
     SerialPort visionData;

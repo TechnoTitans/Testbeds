@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Motor control (talonFX)
  * TitanFX is our enhanced version of the regular TalonFX code
  */
-// todo implement speedcontroller
 public class TitanFX extends WPI_TalonFX implements Motor {
 
 	private Encoder encoder;

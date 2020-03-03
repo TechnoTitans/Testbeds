@@ -25,10 +25,6 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer robotContainer;
 
-	// todo move to better place
-	// todo calc more accurate values
-
-	// todo reverse talonfx encoders by wrapping around
 
 	/**
 	 * This method is run when the robot is first started up and should be used for any
@@ -41,7 +37,7 @@ public class Robot extends TimedRobot {
 		robotContainer = new RobotContainer();
 
 		robotContainer.hoodMotorEncoder.reset();
-		robotContainer.shootMotorEncoder.reset();
+		robotContainer.flywheelMotorEncoder.reset();
 		robotContainer.zMotorEncoder.reset();
 		robotContainer.driveTrain.resetEncoders();
 
@@ -98,7 +94,7 @@ public class Robot extends TimedRobot {
 
 //		SmartDashboard.putNumber("Turret zMotor current", robotContainer.zMotor.getCurrent());
 //		SmartDashboard.putNumber("Turret hood current", robotContainer.hoodMotor.getCurrent());
-//		SmartDashboard.putNumber("Turret flywheel current", robotContainer.shootMotor.getCurrent());
+//		SmartDashboard.putNumber("Turret flywheel current", robotContainer.flywheelMotor.getCurrent());
 //		SmartDashboard.putNumber("Turret intake current", robotContainer.intakeMotor.getCurrent());
 
 		// drivetrain
@@ -121,8 +117,8 @@ public class Robot extends TimedRobot {
 
 
 		SmartDashboard.putNumber("Flywheel setpoint (rpm)", robotContainer.turret.getRPMSetpoint());
-		SmartDashboard.putNumber("flywheel velocity", robotContainer.shootMotor.getSelectedSensorVelocity() * 600f / 4096);
-		SmartDashboard.putNumber("closed loop error ", robotContainer.shootMotor.getClosedLoopError());
+		SmartDashboard.putNumber("flywheel velocity", robotContainer.flywheelMotor.getSelectedSensorVelocity() * 600f / 4096);
+		SmartDashboard.putNumber("closed loop error ", robotContainer.flywheelMotor.getClosedLoopError());
 		SmartDashboard.putNumber("Left Front Falcon Temperature (C)", robotContainer.leftFrontMotorFX.getTemperature());
 		SmartDashboard.putNumber("Left Back Falcon Temperature (C)", robotContainer.leftBackMotorFX.getTemperature());
 		SmartDashboard.putNumber("Right Front Falcon Temperature (C)", robotContainer.rightFrontMotorFX.getTemperature());
@@ -132,8 +128,8 @@ public class Robot extends TimedRobot {
 
 
 		SmartDashboard.putNumber("Flywheel setpoint (RPM)", robotContainer.turret.getRPMSetpoint());
-		SmartDashboard.putNumber("Flywheel velocity (RPM)", robotContainer.shootMotor.getSelectedSensorVelocity() * (60 * 10) / 4096f);
-		SmartDashboard.putNumber("Flywheel Closed Loop Error", robotContainer.shootMotor.getClosedLoopError());
+		SmartDashboard.putNumber("Flywheel velocity (RPM)", robotContainer.flywheelMotor.getSelectedSensorVelocity() * (60 * 10) / 4096f);
+		SmartDashboard.putNumber("Flywheel Closed Loop Error", robotContainer.flywheelMotor.getClosedLoopError());
 
 
 		SmartDashboard.putBoolean("Bottom Hood LS", robotContainer.hoodBottomLS.isPressed());
@@ -205,7 +201,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 //		double leftJoyZ = robotContainer.oi.getLeftJoyZ();
 //		double flywheelP = (leftJoyZ + 1.0) / 2;
-//		robotContainer.shootMotor.config_kP(PIDConstants.kSlotIdx, flywheelP, PIDConstants.kTimeoutMs);
+//		robotContainer.flywheelMotor.config_kP(PIDConstants.kSlotIdx, flywheelP, PIDConstants.kTimeoutMs);
 //		SmartDashboard.putNumber("Flywheel P", flywheelP);
 	}
 

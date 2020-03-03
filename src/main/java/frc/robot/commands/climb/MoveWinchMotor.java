@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -8,7 +8,7 @@ import java.util.Objects;
 public class MoveWinchMotor extends CommandBase {
 
 
-    public static enum Direction {
+    public enum Direction {
         POSITIVE,
         NEGATIVE
     }

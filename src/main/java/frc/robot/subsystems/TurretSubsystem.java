@@ -4,9 +4,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.motor.Encoder;
 import frc.robot.motor.Filter;
 import frc.robot.motor.TitanSRX;
-import frc.robot.motor.Encoder;
 import frc.robot.motor.TitanVictor;
 import frc.robot.sensors.LimitSwitch;
 import frc.robot.utils.TurretPreset;
@@ -40,10 +40,7 @@ public class TurretSubsystem extends SubsystemBase {
     private Filter hoodPositionFilterTicks;
 
     public TurretSubsystem(TitanSRX shooter, TitanVictor subShoot, TitanSRX zMotor, TitanSRX hood, LimitSwitch leftTurretLS, LimitSwitch rightTurretLS, LimitSwitch hoodBottomLS) {
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
-        //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
-        //       such as SpeedControllers, Encoders, DigitalInputs, etc.
+
         this.shooter = shooter;
         this.subShoot = subShoot;
         this.zMotor = zMotor;
@@ -179,7 +176,6 @@ public class TurretSubsystem extends SubsystemBase {
     
 
     public void scrollThruPreset() {
-        // todo
         int currentIndex = turretPreset.ordinal();
         int desiredIndex = (currentIndex + 1) % TurretPreset.values().length;
         turretPreset = TurretPreset.values()[desiredIndex];

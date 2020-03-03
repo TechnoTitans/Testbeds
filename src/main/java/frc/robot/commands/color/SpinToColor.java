@@ -1,6 +1,4 @@
-package frc.robot.commands;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.ControlPanelSubsystem;
+package frc.robot.commands.color;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

@@ -1,7 +1,5 @@
 package frc.robot.motor;
 
-import frc.robot.motor.Encoder;
-
 public interface Motor {
 
 	void set(double speed);

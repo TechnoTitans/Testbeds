@@ -1,15 +1,14 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 
 public class HopperAuto extends CommandBase {
-    private final HopperSubsystem hopper;
-//    private int timer;
+
     private Timer timer;
+    private final HopperSubsystem hopper;
 
     public HopperAuto(HopperSubsystem hopper) {
         this.hopper = hopper;

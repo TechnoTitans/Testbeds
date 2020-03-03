@@ -1,33 +1,31 @@
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.motor.Filter;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.TankDrive;
 
 import java.util.function.DoubleSupplier;
 
 
-public class DriveTrainCommand extends CommandBase {
+public class DriveTrainTeleop extends CommandBase {
 
     public static final double MAX_SPEED = 1.0;
+    private boolean filterEnabled;
 
-    private final TankDrive driveTrain;
     private DoubleSupplier leftInput, rightInput;
     private Filter leftFilter, rightFilter;
 
-    private boolean filterEnabled;
-    Timer coolingTimer = new Timer();
-    public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, TankDrive driveTrain) {
+    private Timer coolingTimer = new Timer();
+    private final TankDrive driveTrain;
+
+    public DriveTrainTeleop(TankDrive driveTrain, DoubleSupplier leftInput, DoubleSupplier rightInput) {
         // enable filtering by default
-        this(leftInput, rightInput, driveTrain, true);
+        this(driveTrain, leftInput, rightInput, true);
     }
 
-    public DriveTrainCommand(DoubleSupplier leftInput, DoubleSupplier rightInput, TankDrive driveTrain, boolean filterEnabled) {
+    public DriveTrainTeleop(TankDrive driveTrain, DoubleSupplier leftInput, DoubleSupplier rightInput, boolean filterEnabled) {
         this.driveTrain = driveTrain;
         this.leftInput = leftInput; // adapted from the `DriveTrain` example // todo explain double supplier
         this.rightInput = rightInput;
