@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.Encoder;
-import frc.robot.motor.TitanFX;
 import frc.robot.sensors.TitanGyro;
 
 
