@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.Encoder;
+import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.TitanGyro;
 
 
@@ -27,8 +28,8 @@ public class TankDrive extends SubsystemBase {
 	public static boolean SHIFT_HIGH_TORQUE = true;
 	public static boolean SHIFT_LOW_TORQUE = !SHIFT_HIGH_TORQUE; // for programmers' convenience
 
-	private TitanFX left;
-	private TitanFX right;
+	private TitanSRX left;
+	private TitanSRX right;
 	private Gyro gyro;
 	private Solenoid shifterSolenoid;
 	private Solenoid coolingSolenoid;
@@ -42,11 +43,11 @@ public class TankDrive extends SubsystemBase {
 	private PIDController drivePID;
 	//TankDrive setup
 
-	public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
-		this(leftTalonFX, rightTalonFX, new TitanGyro(new AnalogGyro(0)), shifterSolenoid, coolingSolenoid, compressor);
+	public TankDrive(TitanSRX leftTalonSRX, TitanSRX rightTalonSRX, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
+		this(leftTalonSRX, rightTalonSRX, new TitanGyro(new AnalogGyro(0)), shifterSolenoid, coolingSolenoid, compressor);
 	}
 
-	public TankDrive(TitanFX leftTalonFX, TitanFX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
+	public TankDrive(TitanSRX leftTalonFX, TitanSRX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
 		this.left = leftTalonFX;
 		this.right = rightTalonFX;
 		this.gyro = gyro;
@@ -156,12 +157,12 @@ public class TankDrive extends SubsystemBase {
 	}
 
 
-	public TitanFX getLeft() {
+	public TitanSRX getLeft() {
 		return left;
 	}
 
 
-	public TitanFX getRight() {
+	public TitanSRX getRight() {
 		return right;
 	}
 

@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.motor.Encoder;
+import frc.robot.motor.TitanSRX;
 
 public abstract class DriveTrain extends SubsystemBase {
 
@@ -21,9 +22,9 @@ public abstract class DriveTrain extends SubsystemBase {
 
 	public abstract Encoder getRightEncoder();
 
-	public abstract TitanFX getLeft();
+	public abstract TitanSRX getLeft();
 
-	public abstract TitanFX getRight();
+	public abstract TitanSRX getRight();
 
 	public abstract Gyro getGyro();
 
