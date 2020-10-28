@@ -16,99 +16,31 @@ import frc.robot.sensors.TitanGyro;
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends SubsystemBase {
 
-	public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // inches per pulse
-	public static final double MAX_MOTOR_TEMP = 50;
-
-
-	private final SpeedController leftSpeedController;
-	private final SpeedController rightSpeedController;
-//    private final DifferentialDrive drive;
-
-
-	public static boolean SHIFT_HIGH_TORQUE = true;
-	public static boolean SHIFT_LOW_TORQUE = !SHIFT_HIGH_TORQUE; // for programmers' convenience
-
 	private TitanSRX left;
 	private TitanSRX right;
 	private Gyro gyro;
-	private Solenoid shifterSolenoid;
-	private Solenoid coolingSolenoid;
-	private Compressor compressor;
-
-
-	private DifferentialDriveOdometry odometry;
 
 	//TankDrive setup
 
-	private PIDController drivePID;
-	//TankDrive setup
-
-	public TankDrive(TitanSRX leftTalonSRX, TitanSRX rightTalonSRX, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
-		this(leftTalonSRX, rightTalonSRX, new TitanGyro(new AnalogGyro(0)), shifterSolenoid, coolingSolenoid, compressor);
+	public TankDrive(TitanSRX leftTalonSRX, TitanSRX rightTalonSRX) {
+		this(leftTalonSRX, rightTalonSRX, new TitanGyro(new AnalogGyro(0)));
 	}
 
-	public TankDrive(TitanSRX leftTalonFX, TitanSRX rightTalonFX, Gyro gyro, Solenoid shifterSolenoid, Solenoid coolingSolenoid, Compressor compressor) {
+	public TankDrive(TitanSRX leftTalonFX, TitanSRX rightTalonFX, Gyro gyro) {
 		this.left = leftTalonFX;
 		this.right = rightTalonFX;
 		this.gyro = gyro;
-		this.shifterSolenoid = shifterSolenoid;
-		this.drivePID = new PIDController(0, 0, 0);
-//        this.odometry = new DifferentialDriveOdometry(getAngle(), new Pose2d());
-		this.leftSpeedController = leftTalonFX;
-		this.rightSpeedController = rightTalonFX;
-//        this.drive = new DifferentialDrive(leftSpeedController, rightSpeedController);
-		this.coolingSolenoid = coolingSolenoid;
-		this.compressor = compressor;
 		resetEncoders();
-	}
-
-	//Odometry stuff
-
-//    public Rotation2d getAngle(){
-//        return Rotation2d.fromDegrees(getHeading());
-//    }
-
-//    public Pose2d getPose(){
-//        return odometry.getPoseMeters();
-//    }
-//
-////    public void periodic(){
-////        odometry.update(getAngle(), left.getEncoder().getDistance(), right.getEncoder().getDistance());
-////    }
-//
-//    public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-//        return new DifferentialDriveWheelSpeeds(left.getEncoder().getSpeed(), right.getEncoder().getSpeed());
-//    }
-//    public void resetOdometry(Pose2d pose){
-//        resetEncoders();
-////        odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-//    }
-//
-//    public void tankDriveVolts(double leftVolts, double rightVolts){
-//        leftSpeedController.setVoltage(leftVolts);
-//        rightSpeedController.setVoltage(rightVolts);
-//    }
-//
-//    public void setMaxOutput(double maxOutput){
-//        drive.setMaxOutput(maxOutput);
-//    }
-
-//set the speed the motors
-
-	public PIDController getPID() {
-		return drivePID;
 	}
 
 	public void set(double speed) {
 		left.set(speed);
 		right.set(speed);
-//        drive.tankDrive(speed, speed);
 	}
 
 	public void set(double leftTSpeed, double rightTSpeed) {
 		left.set(leftTSpeed);
 		right.set(rightTSpeed);
-//        drive.tankDrive(leftTSpeed, rightTSpeed);
 	}
 
 	public void stop() {
@@ -178,54 +110,12 @@ public class TankDrive extends SubsystemBase {
 		right.disableBrownoutProtection();
 	}
 
-
-	public double[] getSpeed() {
-		return new double[]{left.getSpeed(), right.getSpeed()};
-	}
-
-//    public double getHeading() {
-//        return Math.IEEEremainder(gyro.getAngle(), 360); //assuming gyro is not reversed
-//    }
-
 	public Gyro getGyro() {
 		return gyro;
 	}
 
 	public boolean hasGyro() {
 		return !(gyro == null);
-	}
-
-	//Cooling
-	public boolean getCoolingEnabled() {
-		return this.coolingSolenoid.get();
-	}
-
-	public void setCooling(boolean on) {
-		this.coolingSolenoid.set(on);
-	}
-
-	public void toggleCooling() {
-		boolean currentStatus = this.getCoolingEnabled();
-		this.setCooling(!currentStatus);
-	}
-
-	public boolean getPressureSwitchValue() {
-		return this.compressor.getPressureSwitchValue();
-	}
-
-	// MARK - Shifter
-	public boolean getShifterEnabled() {
-		return this.shifterSolenoid.get();
-	}
-
-	public void setShifter(boolean pistonDeployed) {
-		this.shifterSolenoid.set(pistonDeployed);
-	}
-
-	public void toggleShifter() {
-		boolean currentStatus = this.getShifterEnabled();
-		this.setShifter(!currentStatus);
-//        this.setShifter(true);
 	}
 
 }
