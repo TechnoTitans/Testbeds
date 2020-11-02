@@ -18,4 +18,12 @@ import edu.wpi.first.wpilibj.I2C;
  * constants are needed, to reduce verbosity.
  */
 public final class RobotMap {
+    // CAN IDs
+    //todo find the actual ids
+    public static final int LEFT_TALON = 0;
+    public static final int RIGHT_TALON = 0;
+
+    //Sensor Ports
+    public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
+
 }

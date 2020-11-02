@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.motor.TitanSRX;
+import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.*;
 
 /**
@@ -34,8 +35,36 @@ public class RobotContainer {
 	/**
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
 	 */
-	public RobotContainer() {
 
+	//Motors
+	TitanSRX leftMotor;
+	TitanSRX rightMotor;
+
+	//Encoders
+	QuadEncoder leftMotorEncoder;
+	QuadEncoder rightMotorEncoder;
+
+	//Subsystems
+	TankDrive driveTrain;
+
+	//Sensors
+	ColorSensorV3 colorSensor;
+
+
+	public RobotContainer() {
+		//motors and encoders
+		leftMotor = new TitanSRX(RobotMap.LEFT_TALON, false); //could be true
+		rightMotor = new TitanSRX(RobotMap.RIGHT_TALON, true); //could be false
+		leftMotorEncoder = new QuadEncoder(leftMotor, TankDrive.DRIVETRAIN_INCHES_PER_PULSE,false); //could be true
+		rightMotorEncoder = new QuadEncoder(rightMotor, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true); //could be false
+		leftMotor.setEncoder(leftMotorEncoder);
+		rightMotor.setEncoder(rightMotorEncoder);
+
+		//subsystems
+		driveTrain = new TankDrive(leftMotor, rightMotor);
+
+		//sensors
+		colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
 	}
 
 	/**

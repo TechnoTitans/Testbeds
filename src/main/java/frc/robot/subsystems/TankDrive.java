@@ -16,6 +16,9 @@ import frc.robot.sensors.TitanGyro;
 @SuppressWarnings("ConstantConditions")
 public class TankDrive extends SubsystemBase {
 
+	//todo find actual inches_per_pulse
+	public static final double DRIVETRAIN_INCHES_PER_PULSE = 100 / 82763f; // inches per pulse for encoder
+
 	private TitanSRX left;
 	private TitanSRX right;
 	private Gyro gyro;
