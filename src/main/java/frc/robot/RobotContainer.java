@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ExampleCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.QuadEncoder;
 import frc.robot.subsystems.*;
@@ -65,6 +66,10 @@ public class RobotContainer {
 
 		//sensors
 		colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
+
+		//CommandScheduler
+		CommandScheduler.getInstance().registerSubsystem(driveTrain);
+		CommandScheduler.getInstance().schedule(new ExampleCommand(driveTrain));
 	}
 
 	/**
