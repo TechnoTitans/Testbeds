@@ -7,21 +7,12 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.motor.TitanSRX;
 import frc.robot.sensors.QuadEncoder;
+import frc.robot.sensors.TitanButton;
 import frc.robot.subsystems.*;
 
 /**
@@ -38,12 +29,10 @@ public class RobotContainer {
 	 */
 
 	//Motors
-	TitanSRX leftMotor;
-	TitanSRX rightMotor;
+	TitanSRX mainMotor;
 
 	//Encoders
-	QuadEncoder leftMotorEncoder;
-	QuadEncoder rightMotorEncoder;
+	QuadEncoder mainMotorEncoder;
 
 	//Subsystems
 	TankDrive driveTrain;
@@ -51,25 +40,32 @@ public class RobotContainer {
 	//Sensors
 	ColorSensorV3 colorSensor;
 
+	//buttons
+	TitanButton testButton;
+
+	OI oi;
 
 	public RobotContainer() {
 		//motors and encoders
-		leftMotor = new TitanSRX(RobotMap.LEFT_TALON, false); //could be true
-		rightMotor = new TitanSRX(RobotMap.RIGHT_TALON, true); //could be false
-		leftMotorEncoder = new QuadEncoder(leftMotor, TankDrive.DRIVETRAIN_INCHES_PER_PULSE,false); //could be true
-		rightMotorEncoder = new QuadEncoder(rightMotor, TankDrive.DRIVETRAIN_INCHES_PER_PULSE, true); //could be false
-		leftMotor.setEncoder(leftMotorEncoder);
-		rightMotor.setEncoder(rightMotorEncoder);
+		mainMotor = new TitanSRX(RobotMap.MAIN_TALON, false); //could be true
+		mainMotorEncoder = new QuadEncoder(mainMotor, TankDrive.DRIVETRAIN_INCHES_PER_PULSE,false); //could be true
+		mainMotor.setEncoder(mainMotorEncoder);
 
 		//subsystems
-		driveTrain = new TankDrive(leftMotor, rightMotor);
+		driveTrain = new TankDrive(mainMotor);
 
 		//sensors
-		colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
+//		colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
+
+		//buttons
+		oi = new OI();
+		testButton = new TitanButton(oi.getXbox(), 3);
+
+		configureButtonBindings();
 
 		//CommandScheduler
-		CommandScheduler.getInstance().registerSubsystem(driveTrain);
-		CommandScheduler.getInstance().schedule(new ExampleCommand(driveTrain));
+//		CommandScheduler.getInstance().registerSubsystem(driveTrain);
+//		CommandScheduler.getInstance().schedule(new ExampleCommand(driveTrain));
 	}
 
 	/**
@@ -79,7 +75,7 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-
+		testButton.whileHeld(() -> mainMotor.set(0.5));
 	}
 
 }

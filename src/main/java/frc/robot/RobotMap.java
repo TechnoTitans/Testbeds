@@ -20,10 +20,12 @@ import edu.wpi.first.wpilibj.I2C;
 public final class RobotMap {
     // CAN IDs
     //todo find the actual ids
-    public static final int LEFT_TALON = 0;
-    public static final int RIGHT_TALON = 0;
+    public static final int MAIN_TALON = 0;
 
     //Sensor Ports
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
+
+    //Xbox controller
+    public static final int XBOX_PORT = 2;
 
 }

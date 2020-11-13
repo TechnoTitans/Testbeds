@@ -10,7 +10,7 @@ public abstract class DriveTrain extends SubsystemBase {
 
 	public abstract void set(double speed);
 
-	public abstract void set(double leftSpeed, double rightSpeed);
+//	public abstract void set(double leftSpeed, double rightSpeed);
 
 	public abstract void stop();
 
@@ -18,13 +18,17 @@ public abstract class DriveTrain extends SubsystemBase {
 
 	public abstract void resetEncoders();
 
-	public abstract Encoder getLeftEncoder();
+	public abstract Encoder getEncoder();
 
-	public abstract Encoder getRightEncoder();
+//	public abstract Encoder getLeftEncoder();
 
-	public abstract TitanSRX getLeft();
+//	public abstract Encoder getRightEncoder();
 
-	public abstract TitanSRX getRight();
+//	public abstract TitanSRX getLeft();
+
+//	public abstract TitanSRX getRight();
+
+	public abstract TitanSRX getMotor();
 
 	public abstract Gyro getGyro();
 
