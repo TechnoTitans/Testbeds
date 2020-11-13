@@ -59,7 +59,7 @@ public class RobotContainer {
 
 		//buttons
 		oi = new OI();
-		testButton = new TitanButton(oi.getXbox(), 3);
+		testButton = new TitanButton(oi.joystick, 1);
 
 		configureButtonBindings();
 

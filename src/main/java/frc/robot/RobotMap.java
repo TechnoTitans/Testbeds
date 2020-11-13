@@ -26,6 +26,7 @@ public final class RobotMap {
     public static I2C.Port COLOR_SENSOR_PORT = I2C.Port.kOnboard;
 
     //Xbox controller
-    public static final int XBOX_PORT = 2;
+//    public static final int XBOX_PORT = 4;
+    public static final int JOYSTICK_PORT = 4;
 
 }
