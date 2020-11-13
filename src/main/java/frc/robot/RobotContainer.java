@@ -34,6 +34,7 @@ public class RobotContainer {
 	//Encoders
 	QuadEncoder mainMotorEncoder;
 
+
 	//Subsystems
 	TankDrive driveTrain;
 
@@ -41,7 +42,8 @@ public class RobotContainer {
 	ColorSensorV3 colorSensor;
 
 	//buttons
-	TitanButton testButton;
+	TitanButton startButton;
+	TitanButton stopButton;
 
 	OI oi;
 
@@ -59,7 +61,8 @@ public class RobotContainer {
 
 		//buttons
 		oi = new OI();
-		testButton = new TitanButton(oi.joystick, 1);
+		startButton = new TitanButton(oi.joystick, 1);
+		stopButton = new TitanButton(oi.joystick, 2);
 
 		configureButtonBindings();
 
@@ -75,7 +78,9 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		testButton.whileHeld(() -> mainMotor.set(0.5));
+		startButton.whileHeld(() -> mainMotor.setAngleTicks(480));
+//		startButton.whileHeld(() -> mainMotor.set(1));
+		stopButton.whenPressed(() -> mainMotor.set(1));
 	}
 
 }

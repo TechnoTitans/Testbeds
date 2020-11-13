@@ -30,6 +30,7 @@ public class ExampleCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return this.driveTrain.getLeftEncoder().getDistance() > MAX_DISTANCE;
+//        return this.driveTrain.getLeftEncoder().getDistance() > MAX_DISTANCE;
+        return true;
     }
 }
