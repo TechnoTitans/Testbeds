@@ -34,7 +34,6 @@ public class RobotContainer {
 	//Encoders
 	QuadEncoder mainMotorEncoder;
 
-
 	//Subsystems
 	TankDrive driveTrain;
 
@@ -42,16 +41,23 @@ public class RobotContainer {
 	ColorSensorV3 colorSensor;
 
 	//buttons
-	TitanButton startButton;
-	TitanButton stopButton;
+	TitanButton buttonOne;
+	TitanButton buttonTwo;
+	TitanButton buttonThree;
+	TitanButton buttonFour;
+	TitanButton buttonFive;
 
 	OI oi;
+
+	double pConstant = 4;
 
 	public RobotContainer() {
 		//motors and encoders
 		mainMotor = new TitanSRX(RobotMap.MAIN_TALON, false); //could be true
-		mainMotorEncoder = new QuadEncoder(mainMotor, TankDrive.DRIVETRAIN_INCHES_PER_PULSE,false); //could be true
+		mainMotorEncoder = new QuadEncoder(mainMotor, 0,true); //could be true
 		mainMotor.setEncoder(mainMotorEncoder);
+
+		mainMotor.configPID(pConstant,0,0);
 
 		//subsystems
 		driveTrain = new TankDrive(mainMotor);
@@ -61,8 +67,11 @@ public class RobotContainer {
 
 		//buttons
 		oi = new OI();
-		startButton = new TitanButton(oi.joystick, 1);
-		stopButton = new TitanButton(oi.joystick, 2);
+		buttonOne = new TitanButton(oi.joystick, 1);
+		buttonTwo = new TitanButton(oi.joystick, 2);
+		buttonThree = new TitanButton(oi.joystick, 3);
+		buttonFour = new TitanButton(oi.joystick, 4);
+		buttonFive = new TitanButton(oi.joystick, 5);
 
 		configureButtonBindings();
 
@@ -78,11 +87,24 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		startButton.whileHeld(() -> mainMotor.setAngleTicks(480));
-//		startButton.whileHeld(() -> mainMotor.set(1));
-		stopButton.whenPressed(() -> mainMotor.set(1));
-	}
+//		startButton.whileHeld(() -> mainMotor.setAngleTicks(480));
+		buttonOne.whenPressed(() -> mainMotor.set(.1));
+		buttonOne.whenReleased(() -> mainMotor.set(0));
 
+		buttonThree.whenPressed(() -> mainMotor.set(-.1));
+		buttonThree.whenReleased(() -> mainMotor.set(0));
+
+		buttonTwo.whenPressed(() -> mainMotor.setAngleTicks(0));
+
+		buttonFour.whenPressed(() -> {
+			pConstant += .05;
+			mainMotor.config_kP(0, pConstant);
+		});
+		buttonFive.whenPressed(() -> {
+			pConstant -= .05;
+			mainMotor.config_kP(0, pConstant);
+		});
+	}
 }
 
 
