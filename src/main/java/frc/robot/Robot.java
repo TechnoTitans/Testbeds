@@ -52,10 +52,7 @@ public class Robot extends TimedRobot {
 		// and running subsystem periodic() methods.  This must be called from the robot's periodic
 		// block in order for anything in the Command-based framework to work.
 		// 44:pulses per revolution, 34:1 gearbox
-		SmartDashboard.putNumber("Encoder Value", robotContainer.mainMotorEncoder.getRawPosition());
-		SmartDashboard.putNumber("Encoder Value Degrees", robotContainer.mainMotorEncoder.getRawPosition() * 360f / (44 * 34f));
-		SmartDashboard.putNumber("Encoder Value Rotations", robotContainer.mainMotorEncoder.getRawPosition() / (44 * 34f));
-		SmartDashboard.putNumber("P Constant", robotContainer.pConstant);
+
 		CommandScheduler.getInstance().run();
 	}
 

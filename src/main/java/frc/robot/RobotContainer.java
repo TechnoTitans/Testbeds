@@ -28,56 +28,9 @@ public class RobotContainer {
 	 * The container for the robot.  Contains subsystems, OI devices, and commands.
 	 */
 
-	//Motors
-	TitanSRX mainMotor;
-
-	//Encoders
-	QuadEncoder mainMotorEncoder;
-
-	//Subsystems
-	TankDrive driveTrain;
-
-	//Sensors
-	ColorSensorV3 colorSensor;
-
-	//buttons
-	TitanButton buttonOne;
-	TitanButton buttonTwo;
-	TitanButton buttonThree;
-	TitanButton buttonFour;
-	TitanButton buttonFive;
-
-	OI oi;
-
-	double pConstant = 4;
 
 	public RobotContainer() {
-		//motors and encoders
-		mainMotor = new TitanSRX(RobotMap.MAIN_TALON, false); //could be true
-		mainMotorEncoder = new QuadEncoder(mainMotor, 0,true); //could be true
-		mainMotor.setEncoder(mainMotorEncoder);
 
-		mainMotor.configPID(pConstant,0,0);
-
-		//subsystems
-		driveTrain = new TankDrive(mainMotor);
-
-		//sensors
-//		colorSensor = new ColorSensorV3(RobotMap.COLOR_SENSOR_PORT);
-
-		//buttons
-		oi = new OI();
-		buttonOne = new TitanButton(oi.joystick, 1);
-		buttonTwo = new TitanButton(oi.joystick, 2);
-		buttonThree = new TitanButton(oi.joystick, 3);
-		buttonFour = new TitanButton(oi.joystick, 4);
-		buttonFive = new TitanButton(oi.joystick, 5);
-
-		configureButtonBindings();
-
-		//CommandScheduler
-//		CommandScheduler.getInstance().registerSubsystem(driveTrain);
-//		CommandScheduler.getInstance().schedule(new ExampleCommand(driveTrain));
 	}
 
 	/**
@@ -87,23 +40,7 @@ public class RobotContainer {
 	 * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-//		startButton.whileHeld(() -> mainMotor.setAngleTicks(480));
-		buttonOne.whenPressed(() -> mainMotor.set(.1));
-		buttonOne.whenReleased(() -> mainMotor.set(0));
 
-		buttonThree.whenPressed(() -> mainMotor.set(-.1));
-		buttonThree.whenReleased(() -> mainMotor.set(0));
-
-		buttonTwo.whenPressed(() -> mainMotor.setAngleTicks(0));
-
-		buttonFour.whenPressed(() -> {
-			pConstant += .05;
-			mainMotor.config_kP(0, pConstant);
-		});
-		buttonFive.whenPressed(() -> {
-			pConstant -= .05;
-			mainMotor.config_kP(0, pConstant);
-		});
 	}
 }
 
