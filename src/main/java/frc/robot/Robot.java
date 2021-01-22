@@ -20,10 +20,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-	private Command autonomousCommand;
+	Command autonomousCommand = new autonomousCommand();
 
 	private RobotContainer robotContainer;
 
+	public static TitanSRX mainMotor;
 
 	/**
 	 * This method is run when the robot is first started up and should be used for any
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
 
+		autonomousCommand = new autonomousCommand();
 
 	}
 
@@ -75,11 +77,12 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-//		autonomousCommand = robotContainer.getAutonomousCommand();
+
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null) {
 			autonomousCommand.schedule();
+
 		}
 	}
 
@@ -100,6 +103,8 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
+
+
 
 	}
 
